@@ -82,10 +82,8 @@ resource "null_resource" "basic_remote"{
       "yes | sudo apt install openjdk-8-jre-headless",
       "wget https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz",
       "tar xvf kafka_2.13-3.2.0.tgz",
-       # 카프카 힙메모리 환경변수 설정을 bashrc에 추가등록 및 바로 적용
-      "echo \"export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'\" >> ~/.bashrc  &&  source ~/.bashrc",
-
-
+      # 카프카 힙메모리 환경변수 설정을 bashrc에 추가등록
+      "echo \"export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'\" >> ~/.bashrc",  # source 명령어는 안됨.
     ]
   }
 }
