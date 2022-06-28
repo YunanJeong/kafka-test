@@ -51,8 +51,8 @@ resource "aws_security_group" "basic_sgroup"{
 # Set Up Basic Insatnce
 ######################################################################
 resource "aws_instance" "basic" {
-  ami           = var.ami_fluentd
-  instance_type = var.instance_type_basic
+  ami           = var.ami
+  instance_type = var.instance_type
   tags = merge(var.tags, {Name = var.tag_name}, )
   key_name = var.key_pair_name
   security_groups = [aws_security_group.basic_sgroup.name, ]

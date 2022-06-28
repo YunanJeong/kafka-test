@@ -21,9 +21,9 @@ variable "my_ip_list"{
 ######################################################################
 # Set Up Basic
 ######################################################################
-variable "ami_fluentd"{}
-variable "tag_name_fluentd"{}
-variable "instance_type_fluentd"{
+variable "ami"{}
+variable "tag_name"{}
+variable "instance_type"{
   default = "t2.micro"
 }
 
