@@ -21,7 +21,12 @@ variable "my_ip_list"{
 ######################################################################
 # Set Up Basic
 ######################################################################
-variable "ami"{}
+variable "ami"{
+  # 기본 우분투
+  description = "Canonical, Ubuntu, 22.04 LTS, amd64 jammy image build on 2022-04-20"
+  type = string
+  default = "ami-063454de5fe8eba79"
+}
 variable "tag_name"{}
 variable "instance_type"{
   default = "t2.micro"
