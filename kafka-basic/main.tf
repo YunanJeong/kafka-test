@@ -84,6 +84,8 @@ resource "null_resource" "basic_remote"{
       "tar xvf kafka_2.13-3.2.0.tgz",
       # 카프카 힙메모리 환경변수 설정을 bashrc에 추가등록
       "echo \"export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'\" >> ~/.bashrc",  # source 명령어는 안됨.
+      # TODO 카프카 설정: ${var.kafka_dir}에 있는 config/server.properties 셋업하기
+      # TODO 주키퍼 실행: ${var.kafka_dir}/bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
     ]
   }
 }

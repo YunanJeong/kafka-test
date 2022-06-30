@@ -31,7 +31,7 @@ variable "tag_name"{}
 variable "instance_type"{
   default = "t2.micro"
 }
-
+variable "kafka_dir"{}
 ######################################################################
 #Set Up Existing Git Server
 ######################################################################
