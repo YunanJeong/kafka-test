@@ -46,18 +46,37 @@ resource "aws_security_group" "basic_sgroup"{
   }
 }
 
+resource "aws_security_group" "kafka_sgroup"{
+  name = "yunan_kafka_sgroup"
+  ingress {
+    from_port = 9092
+    to_port = 9092
+    description = "for kafka communication"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
 ######################################################################
-# Set Up Basic Insatnce
+# Set Up Basic Instance
 ######################################################################
 resource "aws_instance" "basic" {
   ami           = var.ami
   instance_type = var.instance_type
   tags = merge(var.tags, {Name = var.tag_name}, )
   key_name = var.key_pair_name
-  security_groups = [aws_security_group.basic_sgroup.name, ]
+  security_groups = [
+    aws_security_group.basic_sgroup.name,
+    aws_security_group.kafka_sgroup.name,
+  ]
 }
 
+data "template_file" "kafka_properties" {
+  template = file("${path.module}/config/server.properties")
+  vars = {
+    AWS-PUBLIC-DNS-OR-HOSTNAME-HERE = aws_instance.basic.public_dns
+  }
+}
 
 #################################################
 # Basic Commands
@@ -73,19 +92,38 @@ resource "null_resource" "basic_remote"{
     agent = false
   }
 
+  provisioner "file" {
+    content = data.template_file.kafka_properties.rendered
+    destination = "/home/ubuntu/server.properties"
+  }
   # 실행된 원격 인스턴스에서 수행할 cli명령어
   provisioner "remote-exec" {
     inline = [
       "cloud-init status --wait", # cloud-init이 끝날 떄 까지 기다린다. 에러 예방 차원에서 항상 써준다.
       "mkdir test-make-instance",
       "sudo apt update",
-      "yes | sudo apt install openjdk-8-jre-headless",
-      "wget https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz",
-      "tar xvf kafka_2.13-3.2.0.tgz",
-      # 카프카 힙메모리 환경변수 설정을 bashrc에 추가등록
+      "yes | sudo apt install openjdk-8-jdk-headless",
+      "wget https://dlcdn.apache.org/kafka/3.2.0/${var.kafka_ver}.tgz",
+      "tar xvf ${var.kafka_ver}.tgz",
+
+      # 카프카 힙메모리 설정
+      "export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'",
       "echo \"export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'\" >> ~/.bashrc",  # source 명령어는 안됨.
-      # TODO 카프카 설정: ${var.kafka_dir}에 있는 config/server.properties 셋업하기
-      # TODO 주키퍼 실행: ${var.kafka_dir}/bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
+
+      # 주키퍼 실행
+      "${var.kafka_ver}/bin/zookeeper-server-start.sh -daemon ${var.kafka_ver}/config/zookeeper.properties",
+
+      # 카프카 브로커 설정
+      "sudo mv /home/ubuntu/server.properties ${var.kafka_ver}/config/server.properties",
+
+      # 카프카 실행
+      "${var.kafka_ver}/bin/kafka-server-start.sh -daemon ${var.kafka_ver}/config/server.properties",
+
+      # 실행확인
+      "jps -vm",
+
+      # 카프카 정상동작 확인용 정보 요청 # terraform으로 실행시 broker id 가 -1로 인식되는 문제가 있음.
+      #"${var.kafka_ver}/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092",
     ]
   }
 }
