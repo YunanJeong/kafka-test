@@ -14,6 +14,19 @@ output "instance_public_ip_basic" {
   description = "Public IP address of the EC2 instance"
   value       = aws_instance.basic.public_ip
 }
+output "instance_public_ipv4_dns" {
+  value = aws_instance.basic.public_dns
+}
+output "instance_public_hostname_for_kafka"{
+  value = split(".", aws_instance.basic.public_dns)[0]
+}
+output "instance_private_ipv4_dns" {
+  value = aws_instance.basic.private_dns
+}
+output "instance_hostname" {
+  description = "hostname"
+  value = split(".", aws_instance.basic.private_dns)[0]
+}
 output "instance_tags_basic" {
   description = "Instance Tags"
   value = aws_instance.basic.tags
