@@ -4,3 +4,4 @@
 .terraform*
 config/*
 !config/config_example.tfvars.example
+!server.properties
