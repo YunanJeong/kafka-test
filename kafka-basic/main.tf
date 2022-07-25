@@ -55,6 +55,13 @@ resource "aws_security_group" "kafka_sgroup"{
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 8083
+    to_port = 8083
+    description = "for kafka connect"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 ######################################################################
