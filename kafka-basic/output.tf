@@ -31,6 +31,6 @@ output "instance_tags_basic" {
   description = "Instance Tags"
   value = aws_instance.basic.tags
 }
-output "instance_type"{
-  value = aws_instance.instance_type
+output "instance_type" {
+  value = aws_instance.basic.instance_type
 }
