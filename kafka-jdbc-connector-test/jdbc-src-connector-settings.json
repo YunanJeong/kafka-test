@@ -1,0 +1,11 @@
+{
+  "name": "test-source-sqlite-jdbc-autoincrement",
+  "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+  "tasks.max": "1",
+  "connection.url": "jdbc:sqlserver://${ip_address:port};databaseName=${db_name}",
+  "connection.user": "${db_user}",
+  "connection.password": "${db_password}",
+  "mode": "bulk",
+  "incrementing.column.name": "CustomerId",
+  "topic.prefix": "test-jdbc-"
+}
