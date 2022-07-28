@@ -1,0 +1,7 @@
+*tfstate*
+*tfvars*
+*.lock.*
+.terraform*
+config/*
+!config/config_example.tfvars.example
+!server.properties

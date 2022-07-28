@@ -1,0 +1,32 @@
+# key pair
+key_pair_name = "my_keypair"
+private_key_path = "/home/ubuntu/.ssh/my_keypair.pem"
+tags = {
+    Owner = "kkkkkkkkk@mygmail.com"
+    Service = "service_tag"
+}
+my_ip_list = ["x.x.x.x/32", "x.x.x.x/32"]  # yunan_internet_pc, yunan_home
+######################################################################
+# Set Up Basic
+######################################################################
+ami_basic = "ami-xxxxxxxxxxxxxx"  # yunan-testbed-fluentd
+tag_name_basic = "my-basic-instance-by-terraform"
+kafka_dir = "/kafka_2.13-3.2.0"
+instance_type = "t2.micro"
+######################################################################
+#Set Up Existing Git Server
+######################################################################
+git_info = {
+    user = "myName"
+    token = "myToken" # git pull only
+}
+gitlab_instance = ""
+
+######################################################################
+#Set Up Kafka JDBC connector
+######################################################################
+db_ip =
+db_name =
+db_user =
+db_pass =
+db_key_column =
