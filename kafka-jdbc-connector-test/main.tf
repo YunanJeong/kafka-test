@@ -146,10 +146,11 @@ resource "null_resource" "basic_remote"{
       # 커넥터 다운로드
       "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip",
       # 압축해제
+      "sudo apt install unzip",
       "unzip confluentinc-kafka-connect-jdbc-10.5.1",
       # 커넥트 플러그인 경로로 옮기기
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-jdbc-10.5.1",
-
+      # 커넥트 실행 및 커넥터 연결
       "sudo mv /home/ubuntu/connect-standalone.properties ${var.kafka_ver}/config/connect-standalone.properties",
       "sudo mv /home/ubuntu/jdbc-src-connector-settings.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
       "${var.kafka_ver}/bin/connect-standalone.sh ${var.kafka_ver}/config/connect-standalone.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
