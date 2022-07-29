@@ -34,3 +34,7 @@ output "instance_tags_basic" {
 output "instance_type" {
   value = aws_instance.basic.instance_type
 }
+
+output "db_ip"{
+  value = var.db_ip
+}
