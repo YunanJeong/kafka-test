@@ -1,5 +1,6 @@
 # kafka-jdbc-connector-test
-오픈소스 커넥터인 jdbc 커넥터 사용시 메모, 참고사항
+- terraform으로 하나의 EC2 인스턴스에서 kafka broker, connect, jdbc source connector를 실행시키는 예제
+- 오픈소스 커넥터인 jdbc 커넥터 사용시 메모, 참고사항 등
 
 ## 실행
 - 초기화: `$terraform init`
