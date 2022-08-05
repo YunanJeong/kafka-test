@@ -155,7 +155,8 @@ resource "null_resource" "basic_remote"{
       "sudo mv /home/ubuntu/connect-standalone.properties ${var.kafka_ver}/config/connect-standalone.properties",
       "sudo mv /home/ubuntu/jdbc-src-connector-settings.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
       "${var.kafka_ver}/bin/connect-standalone.sh -daemon ${var.kafka_ver}/config/connect-standalone.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
-
+       # 실행확인 # remote-exec의 마지막이 데몬실행이면 무시된다. 바로 뒤에 간단한 커맨드나 아주 짧은 지연이라도 있어야 무시되지 않는다.
+      "jps -vm",
       # 토픽 리스트 확인
       # ./bin/kafka-topics.sh --list --bootstrap-server localhost:9092,
       # 토픽 데이터 확인
