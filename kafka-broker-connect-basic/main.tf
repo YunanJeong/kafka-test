@@ -112,8 +112,7 @@ resource "null_resource" "basic_remote"{
   provisioner "remote-exec" {
     inline = [
       "cloud-init status --wait",
-      "sudo apt update",
-      "sudo apt install -y openjdk-8-jdk-headless",
+      "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
       "wget https://dlcdn.apache.org/kafka/3.2.0/${var.kafka_ver}.tgz",
       "tar xvf ${var.kafka_ver}.tgz",
 
@@ -127,6 +126,7 @@ resource "null_resource" "basic_remote"{
 
       # 커넥트 실행
       "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
+      "${var.kafka_ver}/bin/connect-distributed.sh -daemon ${var.kafka_ver}/config/connect-distributed.properties",
 
       # 커넥터 다운로드
       "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip",

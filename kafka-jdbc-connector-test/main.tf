@@ -154,7 +154,7 @@ resource "null_resource" "basic_remote"{
       # 커넥트 실행 및 커넥터 연결
       "sudo mv /home/ubuntu/connect-standalone.properties ${var.kafka_ver}/config/connect-standalone.properties",
       "sudo mv /home/ubuntu/jdbc-src-connector-settings.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
-      "${var.kafka_ver}/bin/connect-standalone.sh ${var.kafka_ver}/config/connect-standalone.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
+      "${var.kafka_ver}/bin/connect-standalone.sh -daemon ${var.kafka_ver}/config/connect-standalone.properties ${var.kafka_ver}/config/jdbc-src-connector-settings.properties",
 
       # 토픽 리스트 확인
       # ./bin/kafka-topics.sh --list --bootstrap-server localhost:9092,
