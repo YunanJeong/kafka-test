@@ -149,6 +149,7 @@ resource "null_resource" "basic_remote"{
       "sudo apt install unzip",
       "unzip confluentinc-kafka-connect-jdbc-10.5.1",
       # 커넥트 플러그인 경로로 옮기기
+      "sudo mkdir -p /usr/local/share/kafka/plugins",
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-jdbc-10.5.1",
       # 커넥트 실행 및 커넥터 연결
       "sudo mv /home/ubuntu/connect-standalone.properties ${var.kafka_ver}/config/connect-standalone.properties",
