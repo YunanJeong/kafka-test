@@ -129,7 +129,7 @@ resource "null_resource" "basic_remote"{
       "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.0/confluentinc-kafka-connect-s3-10.1.0.zip",
       # 압축해제
       "sudo apt install unzip",
-      "unzip confluentinc-kafka-connect-jdbc-10.5.1",
+      "unzip confluentinc-kafka-connect-jdbc-10.5.1.zip",
       "unzip confluentinc-kafka-connect-s3-10.1.0.zip",
       # 커넥트 플러그인 경로에 커넥터 설치
       "sudo mkdir -p /usr/local/share/kafka/plugins",
@@ -138,6 +138,9 @@ resource "null_resource" "basic_remote"{
       # 커넥트 실행
       "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
       "${var.kafka_ver}/bin/connect-distributed.sh -daemon ${var.kafka_ver}/config/connect-distributed.properties",
+
+      # 실행확인 # remote-exec의 마지막이 데몬실행이면 무시된다. 바로 뒤에 간단한 커맨드나 아주 짧은 지연이라도 있어야 무시되지 않는다.
+      "jps -vm",
 
       # 카프카 정상동작 확인용 정보 요청 # terraform으로 실행시 broker id 가 -1로 인식되는 문제가 있음.
       #"${var.kafka_ver}/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092",
