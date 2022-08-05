@@ -17,7 +17,7 @@ body = {
         "storage.class": "io.confluent.connect.s3.storage.S3Storage",
         "flush.size": 1000,
         "s3.bucket.name": "my-s3-bucket-name",
-        "s3.region": "ap-northeast-1",
+        "s3.region": "ap-northeast-2",
         "topics.dir": "my-s3-dir",
         # "s3.compression.type": "gzip",
         "s3.compression.type": "none",
