@@ -124,10 +124,6 @@ resource "null_resource" "basic_remote"{
       "sudo mv /home/ubuntu/server.properties ${var.kafka_ver}/config/server.properties",
       "${var.kafka_ver}/bin/kafka-server-start.sh -daemon ${var.kafka_ver}/config/server.properties",
 
-      # 커넥트 실행
-      "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
-      "${var.kafka_ver}/bin/connect-distributed.sh -daemon ${var.kafka_ver}/config/connect-distributed.properties",
-
       # 커넥터 다운로드
       "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip",
       "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.0/confluentinc-kafka-connect-s3-10.1.0.zip",
@@ -135,10 +131,13 @@ resource "null_resource" "basic_remote"{
       "sudo apt install unzip",
       "unzip confluentinc-kafka-connect-jdbc-10.5.1",
       "unzip confluentinc-kafka-connect-s3-10.1.0.zip",
-      # 커텍트 플러그인 경로에 커넥터 설치
+      # 커넥트 플러그인 경로에 커넥터 설치
       "sudo mkdir -p /usr/local/share/kafka/plugins",
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-jdbc-10.5.1",
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-s3-10.1.0  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0",
+      # 커넥트 실행
+      "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
+      "${var.kafka_ver}/bin/connect-distributed.sh -daemon ${var.kafka_ver}/config/connect-distributed.properties",
 
       # 카프카 정상동작 확인용 정보 요청 # terraform으로 실행시 broker id 가 -1로 인식되는 문제가 있음.
       #"${var.kafka_ver}/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092",
