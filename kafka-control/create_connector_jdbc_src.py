@@ -7,7 +7,7 @@ headers = {
 }
 
 body = {
-    "name": "test-source-sqlite-jdbc-autoincrement",
+    "name": "jdbc-src",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
         "tasks.max": "1",
@@ -19,6 +19,16 @@ body = {
         "topic.prefix": "test-jdbc-"
     }
 }
+
+    #"table.whitelist": "Customers", # 특정 테이블들만 조회
+    #"table.blacklist": "xxx",  # 특정 테이블 제외
+
+    # 특정 값을 record의 key로 취급하여 토픽에 저장하기. whitelist 설정 필요.
+    #"transforms": "createKey,extractInt",
+    #"transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    #"transforms.createKey.fields": "CustomerId",
+    #"transforms.extractInt.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    #"transforms.extractInt.field": "CustomerId",
 
 # ensure_ascil 옵션: 한글 등을 아스키가 아니라 한글 그대로 보여줌
 kafka_connect = 'http://localhost:8083/connectors'

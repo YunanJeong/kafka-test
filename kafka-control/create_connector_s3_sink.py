@@ -1,3 +1,7 @@
+"""s3-sink 사용시, AWS Credential 필요.
+
+guava.jar 별도 다운로드 후 플러그인 경로에 설치 필요.
+"""
 import json
 import requests
 
@@ -25,6 +29,9 @@ body = {
         "timezone": "Asia/Seoul"
     }
 }
+
+# "store.kafka.keys": "true",  # default: false. # record의 key를 별도파일로 저장하기. true인데 record의 key가 null이면 에러 발생.
+# "keys.format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat", 별도 저장할 key의 파일 형식
 
 # ensure_ascil 옵션: 한글 등을 아스키가 아니라 한글 그대로 보여줌
 kafka_connect = 'http://localhost:8083/connectors'
