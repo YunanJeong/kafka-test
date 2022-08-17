@@ -135,12 +135,17 @@ resource "null_resource" "basic_remote"{
       "sudo mkdir -p /usr/local/share/kafka/plugins",
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-jdbc-10.5.1",
       "sudo mv /home/ubuntu/confluentinc-kafka-connect-s3-10.1.0  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0",
+      # s3 커넥터 관련 추가 dependency 세팅
+      "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
+      "sudo mv /home/ubuntu/guava-11.0.2.jar /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0/lib/guava-11.0.2.jar",
+
       # 커넥트 실행
       "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
       "${var.kafka_ver}/bin/connect-distributed.sh -daemon ${var.kafka_ver}/config/connect-distributed.properties",
 
       # 실행확인 # remote-exec의 마지막이 데몬실행이면 무시된다. 바로 뒤에 간단한 커맨드나 아주 짧은 지연이라도 있어야 무시되지 않는다.
       "jps -vm",
+
 
       # 카프카 정상동작 확인용 정보 요청 # terraform으로 실행시 broker id 가 -1로 인식되는 문제가 있음.
       #"${var.kafka_ver}/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092",
