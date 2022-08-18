@@ -107,6 +107,10 @@ resource "null_resource" "basic_remote"{
     content = file("${path.module}/config/connect-distributed.properties")
     destination = "/home/ubuntu/connect-distributed.properties"
   }
+  provisioner "file"{
+    content = file("/home/ubuntu/.aws/credentials")
+    destination = "/home/ubuntu/credentials"
+  }
 
   # 실행된 원격 인스턴스에서 수행할 cli명령어
   provisioner "remote-exec" {
@@ -133,11 +137,13 @@ resource "null_resource" "basic_remote"{
       "unzip confluentinc-kafka-connect-s3-10.1.0.zip",
       # 커넥트 플러그인 경로에 커넥터 설치
       "sudo mkdir -p /usr/local/share/kafka/plugins",
-      "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-jdbc-10.5.1",
-      "sudo mv /home/ubuntu/confluentinc-kafka-connect-s3-10.1.0  /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0",
+      "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/",
+      "sudo mv /home/ubuntu/confluentinc-kafka-connect-s3-10.1.0  /usr/local/share/kafka/plugins/",
       # s3 커넥터 관련 추가 dependency 세팅
       "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
-      "sudo mv /home/ubuntu/guava-11.0.2.jar /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0/lib/guava-11.0.2.jar",
+      "sudo mv /home/ubuntu/guava-11.0.2.jar /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0/lib/",
+      # s3 커넥터를 위한 aws credentials 세팅
+      "mkdir .aws  &&  sudo mv /home/ubuntu/credentials /home/ubuntu/.aws/",
 
       # 커넥트 실행
       "sudo mv /home/ubuntu/connect-distributed.properties ${var.kafka_ver}/config/connect-distributed.properties",
