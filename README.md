@@ -1,6 +1,16 @@
 # kafka-test
 kafka-test
 
+# 디렉토리
+├── README.md
+├── basic-instance/
+├── kafka-broker-basic/
+├── kafka-broker-connect-basic/
+├── kafka-control/
+├── kafka-jdbc-connector-test/
+├── python-kafka-test/
+└── test-db-broker-s3/
+
 # 봐야할 내용
 1. kafka 기본
 2. CDC, CT 방식중 CT 방식 먼저
