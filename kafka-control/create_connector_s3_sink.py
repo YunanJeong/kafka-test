@@ -13,26 +13,43 @@ headers = {
 body = {
     "name": "my-connector-name",
     "config": {
-        "topics": "my-topic-name",
-        "tasks.max": 3,
+
+        "topics": "my-topic",
+        "tasks.max": 1,
         "connector.class": "io.confluent.connect.s3.S3SinkConnector",
-        # "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
-        "format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat",
         "storage.class": "io.confluent.connect.s3.storage.S3Storage",
-        "flush.size": 1000,
-        "s3.bucket.name": "my-s3-bucket-name",
+        "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+        "partitioner.class": "io.confluent.connect.storage.partitioner.TimeBasedPartitioner",
+
+        # "partitioner.class": "io.confluent.connect.storage.partitioner.HourlyPartitioner",
+        "path.format": "'year'=YYYY/'month'=MM/'day'=dd/'hour'=HH",
+        "partition.duration.ms": "3600000",
+        # "partition.duration.ms"는 새로운 "path.format"을 생성하는 빈도를 결정하는 수치다.
+        # path.format에 시간설정을 했다고 자동으로 처리되는게 아니라 partition.duration.ms를 지정해줘야한다.
+        # 안그러면 제시간에 s3 디렉토리가 생성안되고, 기존에 업로드 하던 경로에서 계속 업로드한다.
+
+        "flush.size": 1,
         "s3.region": "ap-northeast-2",
-        "topics.dir": "my-s3-dir",
-        # "s3.compression.type": "gzip",
-        "s3.compression.type": "none",
+        "s3.bucket.name": "my-bucket-name",
+        "topics.dir": "yunantest",
+
         "locale": "ko_KR",
-        "timezone": "Asia/Seoul"
+        "timezone": "Asia/Seoul",
+        "timestamp.extractor": "RecordField",
+        "timestamp.field": "RegDate"
     }
 }
-
+# "format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat",
 # "store.kafka.keys": "true",  # default: false. # record의 key를 별도파일로 저장하기. true인데 record의 key가 null이면 에러 발생.
 # "keys.format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat", 별도 저장할 key의 파일 형식
 
+# "parquet.codec": "none",  # ParquetFormat과 세트. s3.compression.type과 역할이 비슷
+# "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+# "s3.compression.type": "gzip",
+# "timestamp.extractor"
+    # "WallClock": "" (default)
+    # "Record": Record의 timestamp (즉, kafka 토픽에 적재된 시간)
+    # "RecordField": "timestamp.field항목을 추가로 써서 record의 특정 시간 필드를
 # ensure_ascil 옵션: 한글 등을 아스키가 아니라 한글 그대로 보여줌
 kafka_connect = 'http://localhost:8083/connectors'
 response = requests.post(kafka_connect, json.dumps(body, ensure_ascii=False), headers=headers)
