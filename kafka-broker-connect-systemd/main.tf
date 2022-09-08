@@ -113,16 +113,16 @@ resource "null_resource" "basic_remote"{
   }
 
   provisioner "file"{
-    content = file("${path.module}/config/kafka-zookeeper.service")
-    destination = "/home/ubuntu/kafka-zookeeper.service"
+    content = file("${path.module}/config/zookeeper.service")
+    destination = "/home/ubuntu/zookeeper.service"
   }
   provisioner "file"{
     content = file("${path.module}/config/kafka-broker.service")
-    destination = "/home/ubuntu/kafka-broker.service"
+    destination = "/home/ubuntu/broker.service"
   }
   provisioner "file"{
     content = file("${path.module}/config/kafka-connect.service")
-    destination = "/home/ubuntu/kafka-connect.service"
+    destination = "/home/ubuntu/connect.service"
   }
   # 실행된 원격 인스턴스에서 수행할 cli명령어
   provisioner "remote-exec" {
@@ -134,9 +134,7 @@ resource "null_resource" "basic_remote"{
       "tar xvf ${var.kafka_ver}.tgz",
       "sudo mv ${var.kafka_ver}/ /usr/local/kafka/",
 
-      # 주키퍼 및 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹힌다.)
-      "export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'",
-      "echo \"export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'\" >> ~/.bashrc",  # source 명령어는 안됨.
+      # 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹히니, 서비스 파일에서 지정)
       "sudo mv /home/ubuntu/server.properties /usr/local/kafka/config/server.properties",
 
       # 커넥트 설정
