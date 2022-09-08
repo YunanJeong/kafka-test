@@ -117,11 +117,11 @@ resource "null_resource" "basic_remote"{
     destination = "/home/ubuntu/zookeeper.service"
   }
   provisioner "file"{
-    content = file("${path.module}/config/kafka-broker.service")
+    content = file("${path.module}/config/broker.service")
     destination = "/home/ubuntu/broker.service"
   }
   provisioner "file"{
-    content = file("${path.module}/config/kafka-connect.service")
+    content = file("${path.module}/config/connect.service")
     destination = "/home/ubuntu/connect.service"
   }
   # 실행된 원격 인스턴스에서 수행할 cli명령어
