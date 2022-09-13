@@ -1,6 +1,15 @@
 import json
 import requests
 
+connect_ip = 'localhost:8083'
+
+db_ip = 'localhost:1433'
+db_name = 'TutorialDB'
+db_user = 'tester'
+db_pass = 'tester^381'
+db_table = 'Customers'
+incrementing_col = 'CustomerId'
+
 headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -11,11 +20,12 @@ body = {
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
         "tasks.max": "1",
-        "connection.url": "jdbc:sqlserver://${SET-DB-IP-HERE};databaseName=${SET-DB-NAME-HERE}",
-        "connection.user": "${SET-DB-USER-HERE}",
-        "connection.password": "${SET-DB-PASS-HERE}",
-        "mode": "bulk",
-        "incrementing.column.name": "${SET-DB-TABLENAME-HERE}",
+        "connection.url": "jdbc:sqlserver://"+db_ip+";databaseName="+db_name,
+        "connection.user": db_user,
+        "connection.password": db_pass,
+        #"mode": "bulk",
+        "mode": "incrementing",
+        "incrementing.column.name": incrementing_col,
         "topic.prefix": "test-jdbc-"
     }
 }
@@ -31,6 +41,6 @@ body = {
     #"transforms.extractInt.field": "CustomerId",
 
 # ensure_ascil 옵션: 한글 등을 아스키가 아니라 한글 그대로 보여줌
-kafka_connect = 'http://localhost:8083/connectors'
+kafka_connect = 'http://'+connect_ip+'/connectors'
 response = requests.post(kafka_connect, json.dumps(body, ensure_ascii=False), headers=headers)
 print(response)
