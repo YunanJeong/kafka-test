@@ -35,16 +35,7 @@ variable "kafka_ver"{
   default = "kafka_2.13-3.2.0"
 }
 ######################################################################
-#Set Up Existing Git Server
+# AWS Credentials
 ######################################################################
-variable "git_info"{
-  type = map(string)
-  default = ({
-    user = ""
-    token = ""
-  })
-}
-variable "gitlab_instance"{
-  default = ""
-}
-
+variable "aws_access_key"{}
+variable "aws_secret_key"{}

@@ -84,6 +84,13 @@ data "template_file" "kafka_properties" {
     AWS-PUBLIC-DNS-OR-HOSTNAME-HERE = aws_instance.basic.public_dns
   }
 }
+data "template_file" "connect_service" {
+  template = file("${path.module}/config/connect.service")
+  vars = {
+    AWS-ACCESS-KEY-HERE = var.aws_access_key
+    AWS-SECRET-KEY-HERE = var.aws_secret_key
+  }
+}
 
 #################################################
 # Basic Commands
@@ -107,10 +114,6 @@ resource "null_resource" "basic_remote"{
     content = file("${path.module}/config/connect-distributed.properties")
     destination = "/home/ubuntu/connect-distributed.properties"
   }
-  provisioner "file"{
-    content = file("/home/ubuntu/.aws/credentials")
-    destination = "/home/ubuntu/credentials"
-  }
 
   provisioner "file"{
     content = file("${path.module}/config/zookeeper.service")
@@ -121,7 +124,7 @@ resource "null_resource" "basic_remote"{
     destination = "/home/ubuntu/broker.service"
   }
   provisioner "file"{
-    content = file("${path.module}/config/connect.service")
+    content = data.template_file.connect_service.rendered
     destination = "/home/ubuntu/connect.service"
   }
   # 실행된 원격 인스턴스에서 수행할 cli명령어
@@ -153,14 +156,13 @@ resource "null_resource" "basic_remote"{
       # s3 커넥터 관련 추가 셋업
       "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
       "sudo mv /home/ubuntu/guava-11.0.2.jar /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0/lib/",
-      "mkdir .aws  &&  sudo mv /home/ubuntu/credentials /home/ubuntu/.aws/",
 
       # 서비스등록
-      "sudo mv /home/ubuntu/kafka-zookeeper.service /etc/systemd/system/",
-      "sudo mv /home/ubuntu/kafka-broker.service /etc/systemd/system/",
-      "sudo mv /home/ubuntu/kafka-connect.service /etc/systemd/system/",
+      "sudo mv /home/ubuntu/zookeeper.service /etc/systemd/system/",
+      "sudo mv /home/ubuntu/broker.service /etc/systemd/system/",
+      "sudo mv /home/ubuntu/connect.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
-      "sudo systemctl start kafka-broker.service kafka-connect.service",  # zookeeper는 broker의 requires로 실행
+      "sudo systemctl start broker.service connect.service",  # zookeeper는 broker의 requires로 실행
 
       # 실행확인 # remote-exec의 마지막이 데몬실행이면 무시된다. 바로 뒤에 간단한 커맨드나 아주 짧은 지연이라도 있어야 무시되지 않는다.
       "jps -vm",
