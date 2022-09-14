@@ -145,7 +145,7 @@ resource "null_resource" "basic_remote"{
 
       # 필요 커넥터 설치
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
-      "sudo apt install unzip  &&  unzip '~/*.zip'",
+      "sudo apt install unzip  &&  unzip '*.zip'",
       "sudo mkdir -p /usr/local/share/kafka/plugins",
       "sudo mv ~/confluentinc-kafka-connect-*/  /usr/local/share/kafka/plugins/",
 
