@@ -135,7 +135,7 @@ resource "null_resource" "basic_remote"{
 
       "wget ${var.kafka_index}",
       "tar xvf ${var.kafka_ver}.tgz",
-      "sudo mv ${var.kafka_ver} /usr/local/kafka",  # 디렉토리 이름을 변경하면서 이동
+      "sudo mv ${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 변경하면서 이동
 
       # 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹히니, 서비스 파일에서 지정)
       "sudo mv ~/server.properties /usr/local/kafka/config/server.properties",
@@ -147,17 +147,14 @@ resource "null_resource" "basic_remote"{
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
       "sudo apt install unzip  &&  unzip '~/*.zip'",
       "sudo mkdir -p /usr/local/share/kafka/plugins",
-      "sudo mv ~/${var.jdbc_con_ver}  /usr/local/share/kafka/plugins/",
-      "sudo mv ~/${var.s3_con_ver}  /usr/local/share/kafka/plugins/",
+      "sudo mv ~/confluentinc-kafka-connect-*/  /usr/local/share/kafka/plugins/",
 
       # s3 커넥터 관련 추가 셋업
       "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
       "sudo mv ~/guava-11.0.2.jar /usr/local/share/kafka/plugins/${var.s3_con_ver}/lib/",
 
-      # 서비스등록
-      "sudo mv ~/zookeeper.service /etc/systemd/system/",
-      "sudo mv ~/broker.service /etc/systemd/system/",
-      "sudo mv ~/connect.service /etc/systemd/system/",
+      # 서비스등록 (zookeeper, broker, connect)
+      "sudo mv ~/*.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
       "sudo systemctl start broker.service connect.service",  # zookeeper는 broker의 requires로 실행
 
