@@ -133,34 +133,31 @@ resource "null_resource" "basic_remote"{
       "cloud-init status --wait",
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
-      "wget https://dlcdn.apache.org/kafka/3.2.0/${var.kafka_ver}.tgz",
+      "wget ${var.kafka_index}",
       "tar xvf ${var.kafka_ver}.tgz",
-      "sudo mv ${var.kafka_ver}/ /usr/local/kafka/",
+      "sudo mv ${var.kafka_ver} /usr/local/kafka",  # 디렉토리 이름을 변경하면서 이동
 
       # 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹히니, 서비스 파일에서 지정)
-      "sudo mv /home/ubuntu/server.properties /usr/local/kafka/config/server.properties",
+      "sudo mv ~/server.properties /usr/local/kafka/config/server.properties",
 
       # 커넥트 설정
-      "sudo mv /home/ubuntu/connect-distributed.properties /usr/local/kafka/config/connect-distributed.properties",
+      "sudo mv ~/connect-distributed.properties /usr/local/kafka/config/connect-distributed.properties",
 
       # 필요 커넥터 설치
-      "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip",
-      "wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.0/confluentinc-kafka-connect-s3-10.1.0.zip",
-      "sudo apt install unzip",
-      "unzip confluentinc-kafka-connect-jdbc-10.5.1.zip",
-      "unzip confluentinc-kafka-connect-s3-10.1.0.zip",
+      "wget ${var.jdbc_con_index} ${var.s3_con_index}",
+      "sudo apt install unzip  &&  unzip '~/*.zip'",
       "sudo mkdir -p /usr/local/share/kafka/plugins",
-      "sudo mv /home/ubuntu/confluentinc-kafka-connect-jdbc-10.5.1  /usr/local/share/kafka/plugins/",
-      "sudo mv /home/ubuntu/confluentinc-kafka-connect-s3-10.1.0  /usr/local/share/kafka/plugins/",
+      "sudo mv ~/${var.jdbc_con_ver}  /usr/local/share/kafka/plugins/",
+      "sudo mv ~/${var.s3_con_ver}  /usr/local/share/kafka/plugins/",
 
       # s3 커넥터 관련 추가 셋업
       "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
-      "sudo mv /home/ubuntu/guava-11.0.2.jar /usr/local/share/kafka/plugins/confluentinc-kafka-connect-s3-10.1.0/lib/",
+      "sudo mv ~/guava-11.0.2.jar /usr/local/share/kafka/plugins/${var.s3_con_ver}/lib/",
 
       # 서비스등록
-      "sudo mv /home/ubuntu/zookeeper.service /etc/systemd/system/",
-      "sudo mv /home/ubuntu/broker.service /etc/systemd/system/",
-      "sudo mv /home/ubuntu/connect.service /etc/systemd/system/",
+      "sudo mv ~/zookeeper.service /etc/systemd/system/",
+      "sudo mv ~/broker.service /etc/systemd/system/",
+      "sudo mv ~/connect.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
       "sudo systemctl start broker.service connect.service",  # zookeeper는 broker의 requires로 실행
 

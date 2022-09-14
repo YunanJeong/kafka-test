@@ -1,21 +1,30 @@
-# key pair
-key_pair_name = "my_keypair"
-private_key_path = "/home/ubuntu/.ssh/my_keypair.pem"
 tags = {
     Owner = "kkkkkkkkk@mygmail.com"
     Service = "service_tag"
 }
 my_ip_list = ["x.x.x.x/32", "x.x.x.x/32"]  # yunan_internet_pc, yunan_home
+
 ######################################################################
 # Set Up Basic
 ######################################################################
-ami_basic = "ami-xxxxxxxxxxxxxx"  # yunan-testbed-fluentd
-tag_name_basic = "my-basic-instance-by-terraform"
-kafka_dir = "/kafka_2.13-3.2.0"
-instance_type = "t2.micro"
+ami = "ami-063454de5fe8eba79"  # Ubuntu 22.04 LTS
+tag_name = "yunan-kafka-service-jdbc-s3"
+instance_type = "m5.large"
 
 ######################################################################
 # AWS Credentials (보안주의!)
 ######################################################################
+key_pair_name = "my_keypair"
+private_key_path = "/home/ubuntu/.ssh/my_keypair.pem"
 aws_access_key = ""
 aws_secret_key = ""
+
+######################################################################
+# Set Up Kafka
+######################################################################
+kafka_index = "https://dlcdn.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz"
+jdbc_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip"
+s3_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.0/confluentinc-kafka-connect-s3-10.1.0.zip"
+kafka_ver = "kafka_2.13-3.2.1"
+jdbc_con_ver = "confluentinc-kafka-connect-jdbc-10.5.1"
+s3_con_ver = "confluentinc-kafka-connect-s3-10.1.0"

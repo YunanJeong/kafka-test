@@ -1,11 +1,3 @@
-variable "key_pair_name"{
-  type = string
-  default = "key_pair_name"
-}
-variable "private_key_path"{
-  type = string
-  default = "Directory of key_pair_file(pem)"
-}
 variable "tags"{
   description = "instance tags"
   type = map(string)
@@ -31,11 +23,26 @@ variable "tag_name"{}
 variable "instance_type"{
   default = "t2.micro"
 }
-variable "kafka_ver"{
-  default = "kafka_2.13-3.2.0"
-}
+
 ######################################################################
 # AWS Credentials
 ######################################################################
 variable "aws_access_key"{}
 variable "aws_secret_key"{}
+variable "key_pair_name"{
+  type = string
+  default = "key_pair_name"
+}
+variable "private_key_path"{
+  type = string
+  default = "Directory of key_pair_file(pem)"
+}
+######################################################################
+# Set Up Kafka
+######################################################################
+variable "kafka_index"{}
+variable "jdbc_con_index"{}
+variable "s3_con_index"{}
+variable "kafka_ver"{}
+variable "jdbc_con_ver"{}
+variable "s3_con_ver"{}
