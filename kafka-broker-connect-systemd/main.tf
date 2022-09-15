@@ -134,8 +134,8 @@ resource "null_resource" "basic_remote"{
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
       "wget ${var.kafka_index}",
-      "tar xvf ${var.kafka_ver}.tgz",
-      "sudo mv ${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 변경하면서 이동
+      "tar xvf ~/${var.kafka_ver}.tgz",
+      "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 변경하면서 이동
 
       # 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹히니, 서비스 파일에서 지정)
       "sudo mv ~/server.properties /usr/local/kafka/config/server.properties",
