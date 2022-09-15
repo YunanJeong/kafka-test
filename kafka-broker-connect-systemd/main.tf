@@ -146,12 +146,12 @@ resource "null_resource" "basic_remote"{
       # 필요 커넥터 설치
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
       "sudo apt install unzip  &&  unzip '*.zip'",
-      "sudo mkdir -p /usr/local/share/kafka/plugins",
-      "sudo mv ~/confluentinc-kafka-connect-*/  /usr/local/share/kafka/plugins/",
+      "sudo mkdir -p /opt/connectors",
+      "sudo mv ~/confluentinc-kafka-connect-*/  /opt/connectors/",
 
       # s3 커넥터 관련 추가 셋업
       "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
-      "sudo mv ~/guava-11.0.2.jar /usr/local/share/kafka/plugins/${var.s3_con_ver}/lib/",
+      "sudo mv ~/guava-11.0.2.jar /opt/connectors/${var.s3_con_ver}/lib/",
 
       # 서비스등록 (zookeeper, broker, connect)
       "sudo mv ~/*.service /etc/systemd/system/",
