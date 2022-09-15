@@ -149,10 +149,6 @@ resource "null_resource" "basic_remote"{
       "sudo mkdir -p /opt/connectors",
       "sudo mv ~/confluentinc-kafka-connect-*/  /opt/connectors/",
 
-      # s3 커넥터 관련 추가 셋업
-      "wget https://repo1.maven.org/maven2/com/google/guava/guava/11.0.2/guava-11.0.2.jar",
-      "sudo mv ~/guava-11.0.2.jar /opt/connectors/${var.s3_con_ver}/lib/",
-
       # 서비스등록 (zookeeper, broker, connect)
       "sudo mv ~/*.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
