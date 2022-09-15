@@ -23,8 +23,8 @@ aws_secret_key = ""
 # Set Up Kafka
 ######################################################################
 kafka_index = "https://dlcdn.apache.org/kafka/3.2.1/kafka_2.13-3.2.1.tgz"
-jdbc_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.1/confluentinc-kafka-connect-jdbc-10.5.1.zip"
-s3_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.0/confluentinc-kafka-connect-s3-10.1.0.zip"
+jdbc_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.2/confluentinc-kafka-connect-jdbc-10.5.2.zip"
+s3_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.1.1/confluentinc-kafka-connect-s3-10.1.1.zip"
 kafka_ver = "kafka_2.13-3.2.1"
-jdbc_con_ver = "confluentinc-kafka-connect-jdbc-10.5.1"
-s3_con_ver = "confluentinc-kafka-connect-s3-10.1.0"
+jdbc_con_ver = "confluentinc-kafka-connect-jdbc-10.5.2"
+s3_con_ver = "confluentinc-kafka-connect-s3-10.1.1"
