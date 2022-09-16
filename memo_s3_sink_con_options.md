@@ -15,12 +15,12 @@
 
 - `rotate.schedule.interval.ms`
 	- 기본적으로 `rotate.interval.ms`와 동일
-	- 차이점: first record가 "파일"에 쓰여진 "(커넥터 서버)시스템 시간"을 시간구간의 기준시작점으로 삼는다.
-	- 현재 시간에 따른 처리를 해야할 때 유용하다.
-	- timezone 옵션 세팅을 확인해야 한다.
-	- 커넥터에 다음 처리할 레코드가 없을 때
-		- connect worker의 offset.flush.interval.ms 옵션에 따라,
-		- 커넥터는 계속 호출된다. 이 때 커넥터는 현재 시간 기준으로 현재 open된 파일을 닫고, s3 업로드 할지말지 여부를 결정한다.
+	- 차이점: 이 옵션은 first record가 "파일"에 쓰여진 "(커넥터 서버)시스템 시간"을 시간구간의 기준시작점으로 삼는다.
+	- 현재 시간에 따라 처리해야할 때 유용하다.
+	- `db.timezone` 옵션 or 시스템 시간을 확인하고 고려해야 한다.
+	- 커넥터에 다음 처리할 Record가 없을 때
+		- connect worker의 `offset.flush.interval.ms` 옵션에 따라, 커넥터는 계속 호출된다.
+		- 이 때 커넥터는 현재 시각 기준으로 현재 open된 파일을 닫고, s3 업로드 할지말지 여부를 결정한다.
 
 - flush size가 매우 크고, rotate 시간 설정이 없을 때의 문제점
 	- 데이터 손실가능성
