@@ -1,13 +1,16 @@
 """s3-sink 사용시, AWS Credential 필요.
 
-guava.jar 별도 다운로드 후 플러그인 경로에 설치 필요.
+guava.jar 별도 다운로드 후 플러그인 경로에 설치 필요. => 10.1.1부터 필요없음. 버그패치됨.
 """
 
 import json
 import requests
 
-
+####################################
+# 보안 주의. git push 주의
+####################################
 connect_ip = 'localhost'
+####################################
 
 headers = {
     'Content-Type': 'application/json',

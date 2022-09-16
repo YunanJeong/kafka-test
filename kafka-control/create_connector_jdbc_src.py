@@ -1,15 +1,18 @@
 import json
 import requests
 
-connect_ip = 'localhost:8083'
+####################################
+# 보안 주의. git push 주의
+####################################
+connect_ip = '0.0.0.0:8083'
 
-db_ip = 'localhost:1433'
+db_ip = '0.0.0.0:1433'
 db_name = 'TutorialDB'
 db_user = 'tester'
 db_pass = 'tester^381'
 db_table = 'Customers'
 incrementing_col = 'CustomerId'
-
+####################################
 headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -30,7 +33,7 @@ body = {
     }
 }
 
-    #"table.whitelist": "Customers", # 특정 테이블들만 조회
+    #"table.whitelist": "Customers, table1, table2", # 특정 테이블들만 조회
     #"table.blacklist": "xxx",  # 특정 테이블 제외
 
     # 특정 값을 record의 key로 취급하여 토픽에 저장하기. whitelist 설정 필요.
