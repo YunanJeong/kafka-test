@@ -39,10 +39,18 @@
 
 # S3 Sink Connector에서 Exacltly-Once Delivery
 - Exactly-once delivery on top of eventual consistency
-	=> https://docs.confluent.io/kafka-connectors/s3-sink/current/overview.html#streaming-etl-demo
+	- 문서: https://docs.confluent.io/kafka-connectors/s3-sink/current/overview.html#streaming-etl-demo
+	- 중복, 손실없이 정확히 한번 전송을 보장하는 방법을 기술하고 있다.
+	
 - 다음과 같은 deterministic한 방법을 써야한다.
-	- TimeBasedPartitioner, TimestampExtractor(Record, RecordField)
-	- rotate.interval.ms 설정
+	- TimeBasedPartitioner 옵션 사용
+	- TimestampExtractor 옵션은 Record or RecordField로 설정
+	- rotate.interval.ms 옵션 사용
 
-- late data possible?
-	- 늦게들어오는 데이터가 있을지 가능성에 대해 얘기하는 것 같은데, 공식문서 설명이 너무 불친절&간결하다.
+- 그럼에도 불구하고 보장되지 않는 케이스
+	- late data possible?
+		- 늦게들어오는 데이터의 존재 가능성이 있으면 Exactly-Once Delivery가 보장되지 않는다.
+			- 정확하지 않음. 공식문서가 너무 불친절&간결하다.
+- 데이터 전송 중 S3 Sink Connector를 교체하는 경우
+	- 어지간하면 중복, 손실이 없다. 최소한 중복은 있어도 손실은 없다. (At-least-Once Delivery 수준)
+		- 다만 At-least-Once도 Exactly-Once도 이 경우 '보장'하는 수준은 아닌 것 같다.
