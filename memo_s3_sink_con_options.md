@@ -1,25 +1,44 @@
 # S3 Sink Connector 시간 관련 옵션 정리
 - `rotate.interval.ms`
-
-	- 이 옵션으로 지정한 시간만큼 계속 한 파일에 write를 해야 하므로, 해당 시간 동안은 file open 상태이다.
-	- 지정 시간이 지나면, 커넥터는
-		- 기존 write하던 파일을 flush하고, s3로 업로드 한다.(각 record에 대한 offset도 이 때 커밋한다.)
-		- 다른 옵션들을 무시하고 새 파일에다가 write를 한다. ("최대"시간구간을 지정하는 것이니까)
-	- 시간 구간의 기준점(시작점)은 first record의 시간이다.
-		- first record의 시간은 timestamp.extractor 옵션에 따라 차이가 있을 수 있다.(record의 특정시간필드 값 등)
-	- 커넥터에 다음 처리할 레코드가 없을 때
-		- 커넥터가 파일을 쓸데없이 open 상태로 두어 시간이 오래 걸릴 수 있음
+	- s3에 파일 커밋(flush하고, 새 파일을 생성)하는 주기
+	- flush.size와 함께 둘 중 먼저 만족하는 조건대로 파일 커밋된다.
+	- 시간 기준
+		- timestamp extractor로 지정된 시간 (WallClock, Record, RecordField)
+		- 시간 구간의 기준점(시작점)은 first record(맨 처음 입력된 record)의 시간이다.
+		- e.g.) `RecordField 기준`으로 60000ms(1분) 설정한 경우,
+			- Event Time이 "0시 1분"인 record가 first record로 입력되었다면,
+			- "0시 1분 ~ 0시 1분 59.999초" 로 기록된 모든 record들은 전부 한 파일에 들어간다.
+			- 위 time interval에 해당하는 record가 계속 무한정 입력되면,
+			 	- flush.size를 만족할 때까지 파일 커밋이 되지 않는다.
+				- 테스트시 똑같은 데이터로 실험할 경우 주의
+				- 계속 한 파일에 대해 open상태로 write 대기해야 하므로 메모리 이슈 등 가능성
+			- 위 time interval을 벗어나는 record가 입력되면,
+				- 파일 커밋된다.
+				- 데이터가 순차적으로 입력되면 문제없다.
+				- 과거데이터, 지연데이터가 들어오면 flush size를 무시하고 현재 작업을 파일 커밋한 후, 새로운 파일에 과거데이터를 기록한다.
+				- 이는 결과값을 얻는데는 문제없으나, 많은 file open/close로 인한 리소스 문제와 S3 비용 문제를 야기할 수 있다.
+			- 서로 다른 시간대의 데이터를 동시에 지속적으로 입력받으면,
+				- flush.size를 무시하고 파일이 무한정으로 나뉘어지는 상황이 발생된다.
+			- 커넥터에 다음 처리할 record가 입력되지 않으면,
+				- 커넥터는 file open 상태로 무한정 대기한다.
+				- flush.size와 rotate.interval.ms 값이 모두 매우 크면 문제가 있다.
+			- 장점:
+				- 한 파일 내 로그들은 특정 시간구간에만 해당한다는 것을 정확히 보장할 수 있다.
 
 - `rotate.schedule.interval.ms`
-	- 기본적으로 `rotate.interval.ms`와 동일
-	- 한 파일에 기록될 시간구간의 최댓값
-	- ex) 1시간이면 최대 1시간크기의 파일이 만들어 진다.
-		- 1시간보다 적을 수도 있다.
-		- 말이 헷갈리는데 flush.size랑 비슷한 개념. flush.size는 한 파일 내 최대 로그 개수를 다루지만, 이건 한 파일 내 최대 시간 구간을 다룬다.
-	
-	- 차이점: 이 옵션은 first record가 "파일"에 쓰여진 "(커넥터 서버)시스템 시간"을 시간구간의 기준시작점으로 삼는다.
-	- 현재 시간에 따라 처리해야할 때 유용하다.
-	- `db.timezone` 옵션 or 시스템 시간을 확인하고 고려해야 한다.
+	- s3에 파일 커밋(파일을 새로 생성)하는 주기
+	- flush.size와 함께 둘 중 먼저 만족하는 조건대로 파일 커밋된다.
+	- 시간 기준
+		- 시스템 시간
+		- timezone의 0시 0분을 기준으로 삼는다.
+		- e.g. 1) 3600000ms(1시간)으로 설정하고, flush.size는 매우 큰 값인 경우,
+			- 0시, 1시, 2시, ... 일 때 새 파일이 생성된다.
+		- e.g. 2) 3000000ms (50분)으로 설정하고, flush.size는 매우 큰 값인 경우,
+			- 0:50, 1:40, 2:30, ... 일 때 새 파일이 생성된다.
+	- timestamp extractor는 s3 path(partition)을 나누는데에만 관여한다.
+		- timestampe extractor가 RecordField일 떄, 
+			- EventTime에 맞는 partition으로 자동 분배되고, 지정 rotate시간이 되면 s3에 별도 파일로 각각 커밋된다.
+
 	- 커넥터에 다음 처리할 Record가 없을 때
 		- connect worker의 `offset.flush.interval.ms` 옵션에 따라, 커넥터는 계속 호출된다.
 		- 이 때 커넥터는 현재 시각 기준으로 현재 open된 파일을 닫고, s3 업로드 할지말지 여부를 결정한다.
