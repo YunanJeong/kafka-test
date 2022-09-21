@@ -51,7 +51,7 @@
 	- 차이점: s3 경로(파티션)을 나누는 기준이 다르다.
 		- rotate.interval.ms 사용시,
 			- timestamp extractor에서 지정한 모드에 따라 s3경로 구분과 rotate를 둘 다 처리한다.
-			- Wallclock 모드 사용시 s3경로 구분도 시스템 시간 기준으로 구분돼서 EventTime에 따라 분류할 수 없다.
+			- Wallclock 모드 사용시, s3경로 구분도 시스템 시간 기준으로 구분돼서 EventTime에 따라 record를 분류할 수 없다.
 			- RecordField 모드 사용시, s3 경로구분과 rotate 모두 EventTime기준으로 처리한다.
 		- rotate.schedule.interval.ms
 			- rotate 시간만 시스템 시간 기준이다.
