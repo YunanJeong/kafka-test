@@ -46,12 +46,27 @@
 			- connect의 설정이다.
 			- 태스크에서 오프셋 커밋을 시도하는 간격을 의미하며, default는 60000
 
+- rotate.interval.ms에서 WallClock모드와 rotate.schedule.interval.ms 비교
+	- 둘 다 시스템 시간 기준인데 무슨 차이가 있을까?
+	- 차이점: s3 경로(파티션)을 나누는 기준이 다르다.
+		- rotate.interval.ms 사용시,
+			- timestamp extractor에서 지정한 모드에 따라 s3경로 구분과 rotate를 둘 다 처리한다.
+			- Wallclock 모드 사용시 s3경로 구분도 시스템 시간 기준으로 구분돼서 EventTime에 따라 분류할 수 없다.
+			- RecordField 모드 사용시, s3 경로구분과 rotate 모두 EventTime기준으로 처리한다.
+		- rotate.schedule.interval.ms
+			- rotate 시간만 시스템 시간 기준이다.
+			- 시간에 따른 s3 경로 구분은 timestamp extractor의 설정에 따른다.
+
 - flush size가 매우 크고, rotate 시간 설정이 없을 때의 문제점
 	- 데이터 손실가능성
 		- flush되지 않은 데이터는 s3 sink의 메모리에 남아있다.
 		- s3 sink가 비정상종료, 또는 교체 등 이유로 종료되면 증발한다.
 		- 시간이 오래 지났을 경우 broker topic에도 삭제되었을 수 있다.
 		- https://stackoverflow.com/questions/50761999/how-can-we-force-confluent-kafka-connect-s3-sink-to-flush
+
+- 결론: 그래서 뭐 써야 하나? (220921 개인 메모)
+	- 내 작업에서는 일단 rotate.schedule.interval.ms 사용하고, path 구분을 위한 timestamp extractor는 RecordFiled(EventTime)을 사용하는 것이 무난해보인다.
+	- 당연히 상황에 따라 옵션은 달라질 수 있다. 
 
 - `retry.backoff.ms` (default: 5000ms)
 	- connector와 connect사이에서 메시지 전송실패 등 예외상황 발생시 retry하는 backoff시간
