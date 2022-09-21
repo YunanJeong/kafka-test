@@ -4,7 +4,7 @@
 	- https://docs.confluent.io/kafka-connectors/s3-sink/current/configuration_options.html#connector
 	- 공식 문서의 내용이 이해하기 어렵다. 
 	- 아래는 직접 실험하면서 정리한 내용이니, 공식문서=>아래글=>공식문서 순으로 읽어보면 옵션의 이해에 도움이될 것이다.
-	- 
+
 - `rotate.interval.ms`
 	- s3에 파일 커밋(flush하고, 새 파일을 생성)하는 주기
 	- flush.size와 함께 둘 중 먼저 만족하는 조건대로 파일 커밋된다.
