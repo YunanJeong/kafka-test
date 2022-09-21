@@ -133,15 +133,11 @@ resource "null_resource" "basic_remote"{
       "cloud-init status --wait",
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
-      "wget ${var.kafka_index}",
-      "tar xvf ~/${var.kafka_ver}.tgz",
-      "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 변경하면서 이동
+      "wget ${var.kafka_index}  &&  tar xvf ~/${var.kafka_ver}.tgz",
+      "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 kafka로 변경하면서 이동
 
-      # 브로커 설정(서비스 실행시 bash파일등의 환경변수 안먹히니, 서비스 파일에서 지정)
-      "sudo mv ~/server.properties /usr/local/kafka/config/server.properties",
-
-      # 커넥트 설정
-      "sudo mv ~/connect-distributed.properties /usr/local/kafka/config/connect-distributed.properties",
+      # broker 및 connect 설정 파일 이동
+      "sudo mv ~/*.properties /usr/local/kafka/config/",
 
       # 필요 커넥터 설치
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
