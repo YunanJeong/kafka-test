@@ -27,8 +27,13 @@ headers = {
 }
 
 query = f"""
-SELECT * FROM  {db_table}
-where CustomerId > 3
+SELECT *
+, DATENAME(YEAR, RegDate)                                       AS [year]
+, right( '0' + CONVERT(NVARCHAR, DATEPART(MONTH, RegDate)), 2 ) AS [month]
+, right( '0' + DATENAME(DAY, RegDate),                      2 ) AS [day]
+, right( '0' + DATENAME(HOUR, RegDate),                     2 ) AS [hour]
+FROM {db_table}
+WHERE CustomerId > 1
 """
 
 body = {
