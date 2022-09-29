@@ -133,10 +133,6 @@ resource "null_resource" "basic_remote"{
       "cloud-init status --wait",
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
-      # File descriptor 설정
-      "sudo su -c \"echo 'ubuntu nofile soft 128000' >> /etc/security/limits.conf\"",
-      # "sudo su -c \"echo 'ubuntu nofile hard 128000' >> /etc/security/limits.conf\"",
-
       "wget ${var.kafka_index}  &&  tar xvf ~/${var.kafka_ver}.tgz",
       "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 kafka로 변경하면서 이동
 

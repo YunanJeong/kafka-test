@@ -25,7 +25,7 @@ LimitNOFILE=128000
 # Environment: 실행시 필요한 환경변수 추가. 여러개일 경우 Environment를 여러번 쓰거나 EnvironmentFile 옵션을 활용한다.
 # EXTRA_ARGS=-Duser.timezone=Asia/Seoul: 해당 서비스가 사용할 타임존을 설정한다.
 # KAFKA_HEAP_OPTS: 이 변수는 쌍따옴표로 값이 할당돼야 한다. 따옴표, 이스케이프 문자 사용 불가. Environment 할당값은 쌍따옴표 붙일 필요 없으므로 제거해준다.
-# LimitNOFILE=128000: systemd 실행시 여기에서도 file descriptor 별도 설정 필요. 128000은 공식 권장 최소값
+# LimitNOFILE=128000: systemd 실행시 file descriptor 시스템설정은 무시한다. 여기서 별도 설정 필요. 128000은 공식 권장 최소값.
 
 [Install]
 WantedBy=multi-user.target
