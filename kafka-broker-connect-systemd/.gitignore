@@ -6,3 +6,4 @@ config/*
 !config/config_example.tfvars.example
 !*.properties
 !*.json
+!*.service
