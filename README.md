@@ -36,7 +36,9 @@ kafka-test
 
 ## 설치 후 빠른 실행시 확인해야할 것
 - server.properties
-	- broker에 해당하는 hostname(또는 ip) 기술
+	- advertised.listeners에 해당 broker에 해당하는 hostname(또는 ip) 기술
+	- log.dirs는 record가 저장되는 장소다.
+		- 디폴트가 /tmp 로 되어있는데, 이는 os에서 삭제해버릴 수도 있는 경로다. /data를 생성해서 써주자.
 - connect-distributed.properties
 	- connector plugin 경로 지정
 - file descriptor 설정
