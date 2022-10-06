@@ -51,3 +51,40 @@ kafka-test
 	- systemd 서비스 실행시,
 		- 설정 파일에서 stdout을 지우면, syslog에도 로그가 남지 않음
 		- 카프카 logs 경로에 남는 로그파일은 syslog(stdout)과 별도로 남음
+
+## kafkacat 활용
+- 설치: `sudo apt install kafkacat`
+- -L: List, 메타 정보 조회
+- -b: broker 지정
+- -t: topic 지정
+- -p: partition 지정
+- -q: quiet
+- -P: Producer Mode
+- -C: Consumer Mode
+
+- 예시)
+	- broker: localhost:9092
+	- topic's name: topicname
+- `$ kafkacat -b localhost:9092 -L`
+	- 해당 브로커의 메타정보를 보여준다.
+	- 브로커, 토픽, 파티션 목록을 보여 준다.
+- `$ kafkacat -b localhost:9092 -t topicname -L`
+	- 브로커와 토픽을 지정하고, L옵션을 설정
+	- 해당 토픽에 한정해서 메타정보를 보여준다.
+- `$ kafkacat -b localhost:9092 -t topicname`
+	- 브로커와 토픽을 지정
+	- 기본적으로 Consumer mode로 취급되어 해당 토픽의 Record를 보여준다.
+	- `$ kafkacat -b localhost:9092 -t topicname -C` 와 동일
+	- 지정 토픽이 존재하지 않는 경우, Consume을 수행했을 때
+		- kafka 내장 쉘명령어는 해당 빈 토픽을 자동생성하지만,
+		- kafkacat은 자동생성하지 않고 에러를 출력한다.
+- `$ kafkacat -b localhost:9092 -t topicname -P`
+	- 브로커와 토픽을 지정하고, Producer mode로 설정했다.
+	- 쉘에서 입력한 내용이 토픽의 Record로 저장된다.
+	- 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
+	- 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
+`$ kafkacat -b localhost:9092 -t topicname`1
+
+- `$ kafkacat -b localhost:9092`
+- `$ kafkacat -b localhost:9092`
+- `$ kafkacat -b localhost:9092`
