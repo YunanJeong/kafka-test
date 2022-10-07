@@ -37,7 +37,7 @@ kafka-test
 ## 설치 후 빠른 실행시 확인해야할 것
 - server.properties
 	- advertised.listeners에 해당 broker에 해당하는 hostname(또는 ip) 기술
-	- log.dirs는 record가 저장되는 장소다.
+	- log.dirs는 record가 저장되는 장소다.(서버, 시스템 로그를 의미하지 않는다.)
 		- 디폴트가 /tmp 로 되어있는데, 이는 os에서 삭제해버릴 수도 있는 경로다. /data를 생성해서 써주자.
 - connect-distributed.properties
 	- connector plugin 경로 지정
@@ -83,8 +83,5 @@ kafka-test
 	- 쉘에서 입력한 내용이 토픽의 Record로 저장된다.
 	- 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
 	- 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
-`$ kafkacat -b localhost:9092 -t topicname`1
-
-- `$ kafkacat -b localhost:9092`
-- `$ kafkacat -b localhost:9092`
-- `$ kafkacat -b localhost:9092`
+- `$ kafkacat -b localhost:9092 -t topicname -q`
+- `$ kafkacat -b localhost:9092 -t topicname -e`
