@@ -1,0 +1,18 @@
+[Unit]
+Description = ksqldb
+After = network.target
+
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = ksqldb
+WorkingDirectory = /usr/bin
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /usr/bin/ksql-server-start /etc/ksqldb/ksql-server.properties
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+
+[Install]
+WantedBy=multi-user.target
