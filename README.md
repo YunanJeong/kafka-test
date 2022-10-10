@@ -84,4 +84,6 @@ kafka-test
 	- 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
 	- 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
 - `$ kafkacat -b localhost:9092 -t topicname -q`
+	- 출력내용 간소화
+	- Consumer Mode와 함께 사용시, Record 내용만 조회할 수 있다.
 - `$ kafkacat -b localhost:9092 -t topicname -e`
