@@ -1,7 +1,8 @@
 """DB가 하루마다 로테이션 될 때 테스트.
 
-https://github.com/haje01/kafka-connect-jdbc 의 수정된 커넥터 사용
-이 커넥터는 현재 bulk모드를 지원하지 않는다
+- https://github.com/haje01/kafka-connect-jdbc 의 수정된 커넥터 사용
+- 이 커넥터는 현재 bulk모드를 지원하지 않는다
+- 이 커넥터는 query 옵션을 반드시 사용해야한다.
 """
 
 import json

@@ -1,6 +1,6 @@
 """쿼리 옵션 테스트.
 
-# bulk mode 일 때 query문에 where 절을 넣을 수 있다.
+# bulk mode 일 때만 query문에 where절을 넣을 수 있다.
 # query 옵션을 쓰면 whitelist, blacklist 옵션은 쓸 수 없다.
 """
 
