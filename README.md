@@ -53,12 +53,13 @@ kafka-test
 		- 카프카 logs 경로에 남는 로그파일은 syslog(stdout)과 별도로 남음
 
 ## kafkacat 활용
-- 설치: `sudo apt install kafkacat`
+- 설치: `$ sudo apt install kafkacat`
 - -L: List, 메타 정보 조회
 - -b: broker 지정
 - -t: topic 지정
 - -p: partition 지정
 - -q: quiet
+- -e: exit
 - -P: Producer Mode
 - -C: Consumer Mode
 
@@ -83,7 +84,11 @@ kafka-test
 	- 쉘에서 입력한 내용이 토픽의 Record로 저장된다.
 	- 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
 	- 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
-- `$ kafkacat -b localhost:9092 -t topicname -q`
-	- 출력내용 간소화
-	- Consumer Mode와 함께 사용시, Record 내용만 조회할 수 있다.
-- `$ kafkacat -b localhost:9092 -t topicname -e`
+- `$ kafkacat -b localhost:9092 -t topicname -C -q`
+	- Consumer Mode에서 q 옵션 사용시, Record 내용만 조회할 수 있다.
+	- '새 메시지가 도착했다'라는 출력이 표시되지 않는다.
+- `$ kafkacat -b localhost:9092 -t topicname -C -e`
+	- e 옵션 사용시 마지막 내용까지 출력한 후 대기모드상태에 있지 않고 자동 exit한다.
+
+## jq 활용
+- 설치: `$ sudo apt install jq`
