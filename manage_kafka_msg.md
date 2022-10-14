@@ -50,7 +50,7 @@
 	- `$ uniq {filename}`
 	- `$ cat {filename} | uniq`
 
-- 정렬과 중복 동시 적용 후 출력
+- 정렬 및 중복제거 후 출력
 	- `$ sort -u {filename}`
 	- `$ cat {filename} | sort -u`
 	- `sort | uniq`도 가능하지만, `sort -u`가 성능면에서 우월하다.
@@ -66,20 +66,31 @@
 
 - 설치: `$ sudo apt install jq`
 
-- 조건부 출력 예제
-	- `$ kafkacat ~~ -q -e | jq`
-		- json line의 stdout을 사람이 보기 편하게 시각화하여 출력한다.
+- `jq '$filter'`
+	- 따옴표 안 문자열을 filter라고 칭한다.
+	- jq는 filter를 어떻게 쓰냐에 따라 json을 필터링한다. (how to use jq = jq filter syntax)
 
-	- `$ kafkacat ~~ -q -e | jq '.'`
-		- 위 명령어처럼 jq만 쓴 것과 동일한 효과
-		- 따옴표안에는 조건문이 들어간다.
-		- '.' (dot) 표현은 '현재까지 정제되어 출력예정인 내용'이라고 보면 된다.
-		- 따옴표 안에서 '|' (pipe)와 함께 추가조건을 쓸 수 있다.
-		- 다음 예제를 보면 '.'과 '|'의 쓰임새를 이해할 수 있다.
+- 기초
+	- `$ jq '.'`
+		- stdin 입력을 받는다. json 문자열을 입력하면, 보기 좋게 출력.
+	- `$ jq '.' {jsonfile}`
+		- json syntax로 기술된 파일을 보기 좋게 출력
+	- `$ cat {jsonfile} | jq` or `$ cat {jsonfile} | jq '.'`
+		- json syntax로 기술된 stdout을 보기 좋게 출력
+		- pipe(|) 앞 내용은 echo, curl, cat 등 stdout이면 모두 적용된다. json syntax에 맞으면 된다.
+		- 이처럼 pipe(|)연산으로 jq를 쓰는 경우가 일반적인 jq 용법이다.
+	- `$ cat {jsonfile} | jq -c`
+		- 대상 json을 jsonline 형식으로 정리하여 출력
+
+- 다양한 jq 필터링으로 json 조건부 출력하기
+	- pipe(|): 따옴표 안에서 추가 필터를 기술할 때 쓴다.
+	- dot(.):  필터를 거쳐가면서 '현재까지 정제된 내용'을 의미
+	- 다음 예제를 보면 '.'과 '|'의 쓰임새를 이해할 수 있다.
 
 	- `$ kafkacat ~~ -q -e | jq '.RegDate'`
 		- RegDate의 value들만 출력한다.
 		- RegDate는 데이터의 시간 필드 예시다. (value가 unix timestamp로 표현되는 json key)
+		- `.RegDate`는 `.["RegDate"]`의 축약형이다.
 
 	- `$ kafkacat ~~ -q -e | jq 'select(.RegDate>=1665500400000)'`
 		- json 리스트에서 RegDate의 값이 1665500400000 이상인 항목만 출력
