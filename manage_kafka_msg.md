@@ -128,3 +128,5 @@
 
 	- `$ cat sample.json | jq '(  select((.Date >= 1664809200000) and (.Date < 1664895600000)) | .Date | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]  ) + "@" +"\(.UserNo)"'`
 		- 시간 범위 내 값들을 {DATETIME}@{UserNo} 형태의 string으로 출력
+
+	- 다양한 연산자 참고: https://hbase.tistory.com/m/167
