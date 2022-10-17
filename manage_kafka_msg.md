@@ -66,7 +66,7 @@
 
 - 설치: `$ sudo apt install jq`
 
-- `jq '$filter'`
+- `jq '{filter}'`
 	- 따옴표 안 문자열을 filter라고 칭한다.
 	- jq는 filter를 어떻게 쓰냐에 따라 json을 필터링한다. (how to use jq = jq filter syntax)
 
@@ -82,24 +82,49 @@
 	- `$ cat {jsonfile} | jq -c`
 		- 대상 json을 jsonline 형식으로 정리하여 출력
 
-- 다양한 jq 필터링으로 json 조건부 출력하기
-	- pipe(|): 따옴표 안에서 추가 필터를 기술할 때 쓴다.
+- Kafka에서
+	- `kafkacat ~~ -q -e | jq '{filter}'` 와 같이 활용할 수 있다.
+
+- 다양한 jq filtering으로 json 조건부 출력하기
+
+	- pipe(|): 추가 필터를 기술할 때 따옴표 안에서 쓴다.
 	- dot(.):  필터를 거쳐가면서 '현재까지 정제된 내용'을 의미
 	- 다음 예제를 보면 '.'과 '|'의 쓰임새를 이해할 수 있다.
+	- 소괄호(()): 연산의 우선순위를 정한다. dot과 pipe도 괄호에 따라 적용기준이 바뀌므로 이를 활용하면 필터를 쉽게 구성할 수 있다.
 
-	- `$ kafkacat ~~ -q -e | jq '.RegDate'`
-		- RegDate의 value들만 출력한다.
-		- RegDate는 데이터의 시간 필드 예시다. (value가 unix timestamp로 표현되는 json key)
-		- `.RegDate`는 `.["RegDate"]`의 축약형이다.
+	- 예시 sample.json
+		- 다음 스키마를 만족하는 json 리스트 파일
+		- Date: 데이터의 시간 필드 (unix timestamp)
+		- UserNo: 사용자 식별 번호 (정수형)
+		- Name: 사용자이름 (문자열)
 
-	- `$ kafkacat ~~ -q -e | jq 'select(.RegDate>=1665500400000)'`
-		- json 리스트에서 RegDate의 값이 1665500400000 이상인 항목만 출력
+	- `$ cat sample.json | jq '.Date'`
+		- Date의 value들만 출력한다.
+		- `.Date`는 `.["Date"]`의 축약형이다.
 
-	- `$ kafkacat ~~ -q -e | jq 'select((.RegDate >= 1664809200000) and (.RegDate < 1664895600000))`
-		- RegDate 범위 조건이 여러개인 경우 and를 사용 가능
+	- `$ cat sample.json | jq '.Date, .UserNo'`
+		- `,`은 개행하여 나열함을 의미한다.
+	- `$ cat sample.json | jq '.Date + .UserNo + 123'`
+		- 숫자값끼리 더한다.
+	- `$ cat sample.json | jq '".Date"'`
+		- 쌍따옴표는 문자열이다. 위 예시는 `.Date`라는 문자열 그대로 출력
+	- `$ cat sample.json | jq '"\(.Date)"'`
+		- `"\()"`: 숫자 필드의 value를 문자열로 변환 후 출력
 
-	- `$ kafkacat ~~ -q -e | jq '.RegDate | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]'`
-		- unix timestamp를 DATETIME 형식으로 변환하여 RegDate의 value 목록 출력
+	- `$ cat sample.json | jq ' "\(.Date)" + "@" + "\(.UserNo)" + "@" + ".Name" + "123" '`
+		- 문자열 합치기
+		- {DATE}@{UserNo}@{Name}{123} 형식으로 출력
 
-	- `$ kafkacat ~~ -q -e | jq 'select((.RegDate >= 1664809200000) and (.RegDate < 1664895600000)) | .RegDate | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]'`
+	- `$ cat sample.json | jq 'select(.Date>=1665500400000)'`
+		- json 리스트에서 Date의 값이 1665500400000 이상인 항목만 출력
+	- `$ cat sample.json | jq 'select((.Date >= 1664809200000) and (.Date < 1664895600000))`
+		- Date 범위 조건이 여러개인 경우 and를 사용 가능
+	- `$ cat sample.json | jq '.Date | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]'`
+		- Date 필드만을 추출하되, unix timestamp를 DATETIME 형식으로 변환하여 출력
+		- `strflocaltime`은  timestamp number를 string으로 변환
+
+	- `$ cat sample.json | jq 'select((.Date >= 1664809200000) and (.Date < 1664895600000)) | .Date | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]'`
 		- DATETIME으로 변환과 시간 범위 지정을 둘다 적용한 예제
+
+	- `$ cat sample.json | jq '(  select((.Date >= 1664809200000) and (.Date < 1664895600000)) | .Date | (. / 1000 | strflocaltime("%F %T.")) + "00\(.%1000)"[-3:]  ) + "@" +"\(.UserNo)"'`
+		- 시간 범위 내 값들을 {DATETIME}@{UserNo} 형태의 string으로 출력
