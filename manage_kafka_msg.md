@@ -41,21 +41,24 @@
 ## 쉘에서 메시지 관리&분석 하기
 - 아래 명령어들은 모두 라인 단위로 이루어진다. (다른 라인끼리만 비교한다. 같은 라인 내에서 중복, 정렬 처리를 하지 않는다.)
 
-- 정렬 후 출력
-	- `$ sort {filename}`
-	- `$ cat {filename} | sort`
+- `sort`
+	- 정렬하여 출력
+		- `$ sort {file}`
+		- `$ cat {file} | sort`
 
-- 중복제거 후 출력 (사용 비권장)
-	- 주의: uniq 명령어만 단독으로 쓰면 순차적으로 나열된 중복라인만 제거해준다. 따라서 먼저 sort하는 과정이 필요하다.
-	- `$ uniq {filename}`
-	- `$ cat {filename} | uniq`
+	- 정렬 및 중복제거하여 출력
+		- `$ sort -u {file}`
+		- `$ cat {file} | sort -u`
+		- `sort | uniq`도 가능하지만, `sort -u`가 성능면에서 우월하다.
 
-- 정렬 및 중복제거 후 출력
-	- `$ sort -u {filename}`
-	- `$ cat {filename} | sort -u`
-	- `sort | uniq`도 가능하지만, `sort -u`가 성능면에서 우월하다.
+- `uniq`
+	- 주의: uniq 명령어만 단독으로 쓰면 순차적으로 나열된 중복라인만 제거된다. 따라서 먼저 sort하는 과정이 필요하다.
+	- `$ sort {file} | uniq`
+	- `$ cat {file} | sort | uniq`
+	- `$ cat {file} | sort | uniq -d`: 중복이 발생한 행만 출력
+	- `$ cat {file} | sort | uniq -u`: 중복이 발생하지 않은 행만 출력
 
-- `$ wc -l {filename}`
+- `$ wc -l {file}`
 	- 특정 파일의 라인 수를 출력하는 쉘 명령어
 
 ## 쉘에서 jq로 JSON 메시지 다루기
