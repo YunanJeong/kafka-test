@@ -1,11 +1,26 @@
 """Bulk 모드 테스트.
 
-- bulk모드에서 query 옵션사용시 where절 사용가능하다.
+- bulk모드에서 query 옵션 사용시 where절 사용가능하다.
 - bulk모드에서 query 옵션과 whitelist, blacklist는 같이 사용할 수 없다.(테이블 지정 중첩되므로)
 
-- whitelist로 다수 테이블을 동시에 bulk로 수집시, DB명과 view명을 일반적으로 다써줘야 한다.
-    => 아래 db_tables 변수 참고
-- 안쓰면 기본DB명, dbo가 붙지만, 실제 다양한 view를 제공하는 라이브DB에서는 오류가 발생할 수 있다.
+- whitelist로 다수 테이블을 bulk 추출 시 (query옵션 사용안할 때),
+    - 테이블명을 나열하면 일반적인 SQL Server 쿼리처럼 DB명.스키마명이 자동인식된다.
+        - e.g) tablename => TutorialDB.dbo.tablename
+
+    - 다음 옵션들을 활용할 수 있다.
+        - catalog.pattern: 카탈로그 지정(DB명에 해당)
+        - schema.pattern: 스키마 지정(MSSQL Server의 "dbo"가 이에 해당한다.)
+        - catalog 및 schema 정보는 다음 쿼리로 확인할 수 있다.
+            - SELECT * FROM {db_name}.INFORMATION_SCHEMA.tables
+
+    - 위 옵션 대신 테이블명에 모두 기술해도 된다.
+    - 여러 DB, 여러 schema를 참조하는 경우, table명에 한번에 써야한다.
+        - e.g) [TutoiralDB1.dbo1.table1, TutorialDB2,dbo2.table2]
+    - (★중요)테이블명만 써도 일반적으로 괜찮지만, 다양한 view를 제공하는 라이브DB에서는 오류가 발생할 수 있다.
+
+- (★중요★)대상 DB의 정확한 구조를 알 수 없는 경우(DB관리팀에서 제한된 schema(동의어, view)를 제공하는 경우)
+    - catalog, schema 설정이 의도대로 작동하지 않을 수 있다.
+    - query 옵션을 사용하는 것이 더 안정적이다.
 
 - batch.max.rows: 한번에 가져오는 batch의 최대 row 수
     - bulk모드의 "batch.max.rows" 옵션은 다른모드일 때와 작동방식이 다르다.
@@ -41,7 +56,7 @@ headers = {
 
 db_tables = ['TutorialDB.dbo.Customers', 'TutorialDB.dbo.Customers2', ]
 body = {
-    "name": "jdbc-src-7",
+    "name": "jdbc-bulktest",
     "config": {
         "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
 
@@ -50,27 +65,25 @@ body = {
         "connection.user": db_user,
         "connection.password": db_pass,
         "mode": "bulk",
-        "topic.prefix": "test-221019-7",
+        "topic.prefix": "test-bulk",
 
         # "query": query,
         "db.timezone": "Asia/Seoul",
         "table.whitelist": ','.join(db_tables),  # 특정 테이블들만 조회
         # "table.blacklist": "xxx",  # 특정 테이블 제외
+        # "catalog.pattern": db_name,
+        # "schema.pattern": "dbo",
 
-        # JsonConverter에서 스키마 미사용하기
         "value.converter": "org.apache.kafka.connect.json.JsonConverter",
         "value.converter.schemas.enable": False,
 
         "poll.interval.ms": 1500000,  # default: 5000ms
-        # "batch.max.rows": 1000,  # default: 100개  # 벌크모드에서는 작동 X
+        "batch.max.rows": 1000,  # default: 100개  # 벌크모드에서는 작동방식 다름
         "timestamp.delay.interval.ms": 2000,  # default: 0ms
 
     }
 }
 
-
-
-# ensure_ascil 옵션: 한글 등을 아스키가 아니라 한글 그대로 보여줌
 kafka_connect = 'http://'+connect_ip+'/connectors'
 response = requests.post(kafka_connect, json.dumps(body, ensure_ascii=False), headers=headers)
 print(response)
