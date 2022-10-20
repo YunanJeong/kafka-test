@@ -4,7 +4,7 @@
 - bulk모드에서 query 옵션과 whitelist, blacklist는 같이 사용할 수 없다.(테이블 지정 중첩되므로)
 
 - whitelist로 다수 테이블을 bulk 추출 시 (query옵션 사용안할 때),
-    - 테이블명을 나열하면 일반적인 SQL Server 쿼리처럼 DB명.스키마명이 자동인식된다.
+    - 테이블명을 나열하면 일반적인 SQL Server 쿼리처럼 해당DB명과 dbo스키마가 사용된다.
         - e.g) tablename => TutorialDB.dbo.tablename
 
     - 다음 옵션들을 활용할 수 있다.
