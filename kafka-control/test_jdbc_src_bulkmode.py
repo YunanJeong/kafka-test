@@ -15,12 +15,20 @@
 
     - 위 옵션 대신 테이블명에 모두 기술해도 된다.
     - 여러 DB, 여러 schema를 참조하는 경우, table명에 한번에 써야한다.
-        - e.g) [TutoiralDB1.dbo1.table1, TutorialDB2,dbo2.table2]
+        - e.g) [TutoiralDB1.dbo1.table1, TutorialDB2.dbo2.table2]
     - (★중요)테이블명만 써도 일반적으로 괜찮지만, 다양한 view를 제공하는 라이브DB에서는 오류가 발생할 수 있다.
 
-- (★중요★)대상 DB의 정확한 구조를 알 수 없는 경우(DB관리팀에서 제한된 schema(동의어, view)를 제공하는 경우)
+- (★중요★)대상 DB의 정확한 구조를 알 수 없는 경우(DB관리팀에서 제한된 schema(alias, view)를 제공하는 경우)
     - catalog, schema 설정이 의도대로 작동하지 않을 수 있다.
     - query 옵션을 사용하는 것이 더 안정적이다.
+
+    - 221021 JDBC Source Connector 소스코드 분석결과
+        => 여러 schema에 같은 이름 테이블이 있는 경우, schema인식 오류 이슈 발생
+        => ★ 결론: MS SQL SERVER은 query모드를 쓰거나, 커넥터 소스코드를 살짝 수정해야한다.
+        => SQL SERVER가 아니라면 다음 방법을 시도해볼 수 있다.
+            => whitelist 기술방식 시도 e.g) table => schema.table 또는 catalog.schema.table
+            => table.types, catalog.pattern, schema.pattern 옵션 등 조합
+            => connection.url에 schema 명시
 
 - batch.max.rows: 한번에 가져오는 batch의 최대 row 수
     - bulk모드의 "batch.max.rows" 옵션은 다른모드일 때와 작동방식이 다르다.
@@ -70,8 +78,10 @@ body = {
         # "query": query,
         "db.timezone": "Asia/Seoul",
         "table.whitelist": ','.join(db_tables),  # 특정 테이블들만 조회
+        # "table.types": "VIEW",     # default: TABLE
         # "table.blacklist": "xxx",  # 특정 테이블 제외
         # "catalog.pattern": db_name,
+
         # "schema.pattern": "dbo",
 
         "value.converter": "org.apache.kafka.connect.json.JsonConverter",
