@@ -1,11 +1,11 @@
-"""221021
-"""
+"""util.py."""
 
 import os
 import json
 import requests
 import glob
 from time import sleep
+from datetime import datetime
 
 CONNECT_DEFAULT = 'localhost:8083'
 KAFKA_HOME = '/usr/local/kafka'
@@ -33,13 +33,17 @@ def get_connectors(filepath):
     return connectors
 
 
-def create_connector(connector, connect=CONNECT_DEFAULT):
+def create_connector(connector, suffix=False, connect=CONNECT_DEFAULT):
     """커넥터 생성. 커넥트가 Distributed 모드일 때 사용.
 
     Args:
-        connector (dict): 커넥터 json. http body.
-        connect (str):    {IP}:{Port}
+        - connector (dict): 커넥터 json. http body.
+        - suffix (bool):    커넥터 이름에 날짜표기 유무 (default: False)
+        - connect (str):    {IP}:{Port}
     """
+    if suffix is True:
+        now = datetime.today().strftime("%y%m%d")
+        connector['name'] = connector['name'] + '_' + now
     sleep(1)
     res = send_http(f'http://{connect}/connectors', connector)
     print(res)
@@ -64,6 +68,17 @@ def show_connector(connector, connect=CONNECT_DEFAULT):
 
 def create_topic(topic, partitions, replications=1,
                  broker=BROKER_DEFAULT):
+    """커넥터 생성. 커넥트가 Distributed 모드일 때 사용.
+
+    Args:
+        - topic (str):         토픽명
+        - partitions (int):    파티션 수
+        - replications (int):  리플리케이션팩터 수
+        - broker (str):        {IP}:{Port}, (default:localhost:9092)
+
+    Note:
+        - 토픽 생성. 이미 토픽이 존재하면 에러만 출력 후 변화없음.
+    """
     cmd = f'{KAFKA_HOME}/bin/kafka-topics.sh' \
         + f' --create --topic {topic}' \
         + f' --bootstrap-server {broker}' \
@@ -88,3 +103,7 @@ def show_topics(broker=BROKER_DEFAULT):
 def show_records(topic, broker=BROKER_DEFAULT):
     cmd = f'kafkacat -b {broker} -t {topic} -q -e'
     os.system(cmd)
+
+
+def test_fucntion():
+    print('test')

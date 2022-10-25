@@ -1,6 +1,5 @@
 import os
 import util
-from datetime import datetime
 from connectors import jdbc_src_super
 
 #####################################
@@ -11,7 +10,7 @@ WORK_DIR = os.getcwd()
 connectors = util.get_connectors(f'{WORK_DIR}/connectors_codetable/jdbc_src_*.json')  # NOQA
 
 # 공통사항 반영
-common = jdbc_src_super.super
+common = jdbc_src_super.SUPER
 for connector in connectors:
     config = connector['config']
     config.update(common['config'])
@@ -31,11 +30,9 @@ for connector in connectors:
     connector['config'] = config
 
 # 토픽 및 커넥터 생성
-now = datetime.today().strftime("%y%m%d_%H%M")
 for connector in connectors:
-    connector['name'] = connector['name'] + '_' + now
     util.create_topic(topic=str(connector['config']['topic.prefix']), partitions=1)  # NOQA
-    util.create_connector(connector)
+    util.create_connector(connector, suffix=True)
 
 
 util.show_connectors()
