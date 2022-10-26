@@ -24,17 +24,6 @@ def send_http(url, body):
     return res
 
 
-def get_connectors2(filepath):
-    """Connector 설정 파일을 리스트로 반환."""
-    connectors = []
-    path_list = glob.glob(filepath)
-    for path in path_list:
-        with open(path, 'r') as file:
-            data = json.load(file)
-        connectors += [data]
-    return connectors
-
-
 def get_json(filepath):
     with open(filepath, 'r') as file:
         data = json.load(file)
