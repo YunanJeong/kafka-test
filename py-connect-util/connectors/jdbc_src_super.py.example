@@ -1,0 +1,40 @@
+"""상위 커넥터 (공통항목)."""
+
+#####################################
+# 공통항목
+#####################################
+db_ip = 'localhost:1433'
+db_name = 'DatabaseName'
+db_user = 'db_username'
+db_pass = 'pa$$w0rd'
+
+topic_format = "kst_{table}"
+query_format = """
+SELECT CONVERT(DATETIME2, GETDATE()) AS UpdateTime
+, '{table}' AS 'TableName'
+, * FROM {table}
+"""
+SUPER = {
+    # "name": connector_name,
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+        "connection.url": f"jdbc:sqlserver://{db_ip};databaseName={db_name}",
+        "connection.user":     db_user,
+        "connection.password": db_pass,
+        "tasks.max": "1",                     # 테이블 개수 만큼
+
+        "topic.prefix": topic_format,
+        "mode": "bulk",
+        "query": query_format,
+        "db.timezone": "Asia/Seoul",
+
+        # JsonConverter에서 스키마 미사용하기
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": False,
+
+        "poll.interval.ms": 1800000,  # 30분  # default: 5000ms # bulk 주기
+        "batch.max.rows":   100,              # default: 100개
+
+        "timestamp.delay.interval.ms": 2000,  # default: 0ms
+    }
+}
