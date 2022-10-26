@@ -106,38 +106,30 @@ resource "null_resource" "basic_remote"{
     agent = false
   }
 
+  provisioner "file"{
+    source = "${path.module}/config"
+    destination = "/home/ubuntu/config"
+  }
   provisioner "file" {
     content = data.template_file.kafka_properties.rendered
-    destination = "/home/ubuntu/server.properties"
-  }
-  provisioner "file"{
-    content = file("${path.module}/config/connect-distributed.properties")
-    destination = "/home/ubuntu/connect-distributed.properties"
-  }
-
-  provisioner "file"{
-    content = file("${path.module}/config/zookeeper.service")
-    destination = "/home/ubuntu/zookeeper.service"
-  }
-  provisioner "file"{
-    content = file("${path.module}/config/broker.service")
-    destination = "/home/ubuntu/broker.service"
+    destination = "/home/ubuntu/config/server.properties"
   }
   provisioner "file"{
     content = data.template_file.connect_service.rendered
-    destination = "/home/ubuntu/connect.service"
+    destination = "/home/ubuntu/config/connect.service"
   }
+
   # 실행된 원격 인스턴스에서 수행할 cli명령어
   provisioner "remote-exec" {
     inline = [
       "cloud-init status --wait",
+      # JDK
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
+      # Kafka 설치
       "wget ${var.kafka_index}  &&  tar xvf ~/${var.kafka_ver}.tgz",
       "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 kafka로 변경하면서 이동
-
-      # broker 및 connect 설정 파일 이동
-      "sudo mv ~/*.properties /usr/local/kafka/config/",
+      "sudo mv ~/config/*.properties /usr/local/kafka/config/",
 
       # 필요 커넥터 설치
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
@@ -145,22 +137,14 @@ resource "null_resource" "basic_remote"{
       "sudo mkdir -p /opt/connectors",
       "sudo mv ~/confluentinc-kafka-connect-*/  /opt/connectors/",
 
-      # 서비스등록 (zookeeper, broker, connect)
-      "sudo mv ~/*.service /etc/systemd/system/",
+      # ksqldb
+      "chmod +x ~/config/install_ksqldb.sh",
+      "sudo ~/config/install_ksqldb.sh",
+
+      # 서비스등록 (zookeeper, broker, connect, ksqldb)
+      "sudo mv ~/config/*.service /etc/systemd/system/",
       "sudo systemctl daemon-reload",
-      "sudo systemctl start broker.service connect.service",  # zookeeper는 broker의 requires로 실행
-
-      # 실행확인 # remote-exec의 마지막이 데몬실행이면 무시된다. 바로 뒤에 간단한 커맨드나 아주 짧은 지연이라도 있어야 무시되지 않는다.
-      "jps -vm",
-
-
-
-      # 카프카 정상동작 확인용 정보 요청 # terraform으로 실행시 broker id 가 -1로 인식되는 문제가 있음.
-      #"${var.kafka_ver}/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092",
-      # 토픽 리스트 확인
-      # ./bin/kafka-topics.sh --list --bootstrap-server localhost:9092,
-      # 토픽 데이터 확인
-      # ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {토픽명} --from-beginning
+      "sudo systemctl restart broker.service connect.service ksqldb.service",  # zookeeper는 broker의 requires로 실행
     ]
   }
 }
