@@ -53,4 +53,4 @@ kafka-test
 		- 카프카 logs 경로에 남는 로그파일은 syslog(stdout)과 별도로 남음
 
 ## How to Analyze and Manage Kafka Messages
-- [kafkacat과 jq, 기타 필수 쉘 명령어 사용법](https://github.com/YunanJeong/kafka-test/blob/main/manage_kafka_msg.md)
+- [kafkacat과 jq, 기타 필수 쉘 명령어 사용법](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafkacat_and_jq.md)
