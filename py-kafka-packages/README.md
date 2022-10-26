@@ -1,5 +1,5 @@
-# python-kafka-test
-- python kafka test
+# py-kafka
+- py-kafka
 
 ## Kafka python package
 - `confluent-kafka-python`: confluent 공식, C extension 활용, 처리속도 빠름, Windows에서 사용하기 힘든 이슈있다고 함, C extension으로 인해 디버그 힘듦, 비동기처리시 시간순 제어 가능.
