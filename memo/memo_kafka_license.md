@@ -35,6 +35,30 @@
         - `Trial (Evaluation) License`
             - 30일 평가판
 
+## 설치 방법에 따른 라이센스
+- Apache Kafka 공홈
+	- https://kafka.apache.org/quickstart
+    - Apache 2.0 License
+
+- Confluent 공홈
+	- https://www.confluent.io/installation/
+	- 첫페이지는 회원가입이 아니다. 약관 동의를 위해 이름, 메일을 요구한다.
+		- 아무거나 입력해도 페이지는 넘어간다.
+	- Local, Distributed, Community 로 구분된다. 각각 라이센스가 다르니 주의! (FAQ 참고)
+
+	- Local
+		- zip or tar: Confluent Enterprise License
+		- docker:
+			- 이미지에 포함된 제품&기능별 라이센스 구분
+			- Quick Start를 누르면 Confluent Cloud 페이지로 이동 (Confluent Enterprise License)
+	- Distributed
+		- Confluent for Kubernetes: Confluent Enterprise License
+		- Ansible Playbooks: Apache 2.0 License
+	- Community
+		- zip, tar: Community 제품만 있는 로컬파일
+		- docker:
+			- 이미지에 포함된 제품&기능별 라이센스 구분
+			- Quick Start를 누르면 가이드 문서로 이동. docker 적용법 확인가능
 
 ## 참고자료
 - `Confluent Community License FAQ`
