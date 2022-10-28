@@ -12,6 +12,7 @@
     - 독자적인 라이센스 정책을 쓴다.
         - `Confluent Community License`
             - ★ Commercial Use 가능
+            - 결론: `그냥 이거 쓰면 된다`
             - 단 한 가지 예외사항
                 - Under the Confluent Community License, you can access the source code and modify or redistribute it; there is `only one thing you cannot do, and that is use it to make a competing SaaS offering`.
                 - Confluent의 제품과 "경쟁될 수 있는" SaaS(Paas,Iaas) 서비스를 만드는 일이 아니어야 한다.
@@ -36,11 +37,11 @@
             - 30일 평가판
 
 ## 설치 방법에 따른 라이센스
-- Apache Kafka 공홈
+- Apache Kafka 공홈 (Apache Kafka 설치)
 	- https://kafka.apache.org/quickstart
     - Apache 2.0 License
 
-- Confluent 공홈
+- Confluent 공홈 (Apache Kafka + Confluent Platform 설치)
 	- https://www.confluent.io/installation/
 	- 첫페이지는 회원가입이 아니다. 약관 동의를 위해 이름, 메일을 요구한다.
 		- 아무거나 입력해도 페이지는 넘어간다.
@@ -54,11 +55,15 @@
 	- Distributed
 		- Confluent for Kubernetes: Confluent Enterprise License
 		- Ansible Playbooks: Apache 2.0 License
+
 	- Community
 		- zip, tar: Community 제품만 있는 로컬파일
 		- docker:
 			- 이미지에 포함된 제품&기능별 라이센스 구분
 			- Quick Start를 누르면 가이드 문서로 이동. docker 적용법 확인가능
+
+    - Ubuntu DEB
+    - RPM
 
 ## 참고자료
 - `Confluent Community License FAQ`
