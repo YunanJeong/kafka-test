@@ -1,0 +1,33 @@
+[Unit]
+Description = broker
+Requires = zookeeper.service
+After = zookeeper.service network.target
+# Requires: 먼저 실행되어야 하는 서비스. 여기 기술된 서비스를 먼저 실행시킨다.
+# After: 먼저 실행되어야 하는 서비스. 여기 기술된 서비스가 실행될 때 까지 기다린다.
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = broker
+WorkingDirectory = /usr/local/kafka
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+ExecStop = /usr/local/kafka/bin/kafka-server-stop.sh
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+Environment=KAFKA_HEAP_OPTS="-Xmx1200m -Xms1200m"
+LimitNOFILE=128000
+
+# Restart: 주로 on-failure와 on-abnormal을 쓰면된다. 상세사항은 북마크 참고
+# RestartSec: 자동 Restart될 때 시간 간격. 너무 짧은 ms로 설정하면 repeated too quickly하다고 오류뜨니 주의
+# ExecStop: stop시 적용될 명령어. 설정하지 않으면 일반적인 kill이 적용된다.
+# Environment: 실행시 필요한 환경변수 추가. 여러개일 경우 Environment를 여러번 쓰거나 EnvironmentFile 옵션을 활용한다.
+# EXTRA_ARGS=-Duser.timezone=Asia/Seoul: 해당 서비스가 사용할 타임존을 설정한다.
+# KAFKA_HEAP_OPTS: 이 변수는 쌍따옴표로 값이 할당돼야 한다. 따옴표, 이스케이프 문자 사용 불가. Environment 할당값은 쌍따옴표 붙일 필요 없으므로 제거해준다.
+# LimitNOFILE=128000: systemd 실행시 file descriptor 시스템설정은 무시한다. 여기서 별도 설정 필요. 128000은 공식 권장 최소값.
+
+[Install]
+WantedBy=multi-user.target
+# multi-user.target: 우분투의 실행단계(runlevel)과 관련된 것으로,
+# multi-user.target은 일반적으로 systemd-service이 실행될 때 까지 기다리겠다는 의미다.
