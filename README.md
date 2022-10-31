@@ -34,23 +34,9 @@ kafka-test
 - https://www.google.com/search?q=kafka+record+timestapme&tbm=isch&ved=2ahUKEwib6f2Lm4L6AhXPZ94KHWiqBJ0Q2-cCegQIABAA&oq=kafka+record+timestapme&gs_lcp=CgNpbWcQAzoECCMQJzoECAAQEzoGCAAQHhATOgUIABCABDoECAAQHjoECAAQGFDQB1iRKWD3LWgAcAB4AIABcYgB_BqSAQUxNC4yMJgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=ZU8YY9uiIs_P-Qbo1JLoCQ&bih=969&biw=1920&rlz=1C1GCEA_enKR959KR967#imgrc=0ffhDAgddKBNRM
 
 
-## 설치 후 빠른 실행시 확인해야할 것
-- server.properties
-	- advertised.listeners에 해당 broker에 해당하는 hostname(또는 ip) 기술
-	- log.dirs는 record가 저장되는 장소다.(서버, 시스템 로그를 의미하지 않는다.)
-		- 디폴트가 /tmp 로 되어있는데, 이는 os에서 삭제해버릴 수도 있는 경로다. /data를 생성해서 써주자.
-- connect-distributed.properties
-	- connector plugin 경로 지정
-- file descriptor 설정
-	- systemd 서비스 실행시, 서비스파일에서 설정해야 함
-- s3 sink connector 사용시 AWS KEY
-	- 실행환경에서 ~/.aws/credentials 파일만 있으면 됨.
-	- systemd 서비스 실행시, 서비스파일에서 설정해야 함
-- log4j 설정
-	- 카프카의 config 경로에 broker용과 connect용 설정이 별도로 있음
-	- systemd 서비스 실행시,
-		- 설정 파일에서 stdout을 지우면, syslog에도 로그가 남지 않음
-		- 카프카 logs 경로에 남는 로그파일은 syslog(stdout)과 별도로 남음
+## 설치관련
+[라이센스 자세한 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafka_license.md)
+[설치방법 및 관련 라이센스](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafka_install.md)
 
 ## How to Analyze and Manage Kafka Messages
 - [kafkacat과 jq, 기타 필수 쉘 명령어 사용법](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafkacat_and_jq.md)
