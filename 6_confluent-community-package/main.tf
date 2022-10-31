@@ -123,13 +123,13 @@ resource "null_resource" "basic_remote"{
   provisioner "remote-exec" {
     inline = [
       "cloud-init status --wait",
-      # JDK
-      "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
+      # JDK JAVA 11
+      "sudo apt update ; sudo apt install -y openjdk-11-jdk-headless",
 
       # Kafka 설치
-      "wget ${var.kafka_index}  &&  tar xvf ~/${var.kafka_ver}.tgz",
-      "sudo mv ~/${var.kafka_ver}/ /usr/local/kafka/",  # 디렉토리 이름을 kafka로 변경하면서 이동
-      "sudo mv ~/config/*.properties /usr/local/kafka/config/",
+      "chmod +x ~/config/install_confluent_community.sh",
+      "sudo ~/config/install_confluent_community.sh",
+      "sudo mv ~/config/*.service /etc/kafka/",
 
       # 필요 커넥터 설치
       "wget ${var.jdbc_con_index} ${var.s3_con_index}",
@@ -137,14 +137,21 @@ resource "null_resource" "basic_remote"{
       "sudo mkdir -p /opt/connectors",
       "sudo mv ~/confluentinc-kafka-connect-*/  /opt/connectors/",
 
-      # ksqldb
-      "chmod +x ~/config/install_ksqldb.sh",
-      "sudo ~/config/install_ksqldb.sh",
+      # 서비스 실행 (아래 4개는 순서대로 실행해야함. service파일에 after 기본설정되어있으나, requires는 없음)
+      "sudo systemctl enable confluent-zookeeper confluent-kafka confluent-schema-registry",
+      "sudo systemctl enable confluent-kafka-connect confluent-ksqldb",  # confluent-kafka-rest
+      "sudo systemctl daemon-reload",
+      "sudo systemctl start confluent-zookeeper",
+      "sudo systemctl start confluent-kafka",
+      "sudo systemctl start confluent-schema-registry",
+
+      # 원하는 confluent platform 구성요소 실행
+      "sudo systemctl start confluent-kafka-connect confluent-ksqldb",
 
       # 서비스등록 (zookeeper, broker, connect, ksqldb)
-      "sudo mv ~/config/*.service /etc/systemd/system/",
-      "sudo systemctl daemon-reload",
-      "sudo systemctl restart broker.service connect.service ksqldb.service",  # zookeeper는 broker의 requires로 실행
+      #"sudo mv ~/config/*.service /lib/systemd/system/",
+      #"sudo systemctl daemon-reload",
+      #"sudo systemctl restart broker.service connect.service ksqldb.service",  # zookeeper는 broker의 requires로 실행
     ]
   }
 }

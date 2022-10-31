@@ -8,7 +8,6 @@
 - 그러나, 장기적으로 ksql 등 추가기능을 쓰려면 Confluent Platform으로 Apache Kafka의 초기 구성을 잡는게 편하다.
 
 
-
 ## 정리
 ### Apache Kafka (`Apache 2.0 License`)
     - 아파치재단(ASF)에서 관리하는 오픈소스

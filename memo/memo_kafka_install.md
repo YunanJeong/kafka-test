@@ -39,27 +39,28 @@
         - deb 설치시, `/etc`
 - 서비스 등록
     - 둘 다 서비스 파일이 제공됨
-    - zip은 개발자가 파일복사 후 systemd 등록해야 하고,
+    - zip은 개발자가 파일복사 후 systemd 등록 필요
+        - 서비스파일 내 경로관련 설정은 모두 root(/)기준으로 기술되어 있음. 해당 부분 수정 필요. root로 옮기거나 환경변수로 상위경로 설정
     - deb는 설치시 서비스등록이 완료됨
     - 특이점은 `etc/systemd/system`이 아니라 아니라  `lib/systemd/system`을 사용함
 - 로그경로
     - 서비스 파일의 환경변수(LOG_DIR)에 의해 지정됨 (기본 설정: `/var/log/confluent`)
 - AWS_KEY
     - S3 Sink 커넥터 사용시 connect 서비스 파일에 AWS_KEY 관련 환경변수 등록 필요
-- confluent cli
-    - deb 설치시 dependency 중 하나로 자동 설치 및 셋업 됨
-    - zip에는 없음
 - File Descriptors 설정
-    - 둘 다 broker 서비스 파일에 환경변수 등록으로 설정가능
     - [File Descriptors설정 문서 추천방법](https://docs.confluent.io/platform/current/kafka/deployment.html#file-descriptors-and-mmap)
         - OS단위로 설정. 최소 10만개 권장. 세그먼트 파일 개수 확인하고 엔지니어가 조정.
-    - 딱히 deb 패키지 설치한다고 자동설정된다는 언급은 없다.
+    - 서비스 실행시, 환경변수 설정필요. 설치방식 상관없이 기본 제공 파일에 이미 설정되어있음.
+- confluent cli
+    - deb 설치시 dependency 중 하나로 자동 설치 및 셋업
+    - zip에는 없음
+    - 사실상 유료 cloud 서비스에서 클러스터 관리 목적이 크기 때문에 로컬에서 필요없다.
 
 ## 설치완료 후 빠른 실행시 확인해야할 것
 - server.properties
 	- advertised.listeners에 해당 broker에 해당하는 hostname(또는 ip) 기술
 	- log.dirs는 record가 저장되는 장소다.(서버, 시스템 로그를 의미하지 않는다.)
-		- 디폴트가 /tmp 로 되어있는데, 이는 os에서 삭제해버릴 수도 있는 경로다. /data를 생성해서 써주자.
+		- 디폴트가 `/tmp` 인데, 이는 os에서 주기적으로 삭제할 수 있다. `/data`를 생성해서 써주자.
 - connect-distributed.properties
 	- connector plugin 경로 지정
 - file descriptor 설정
