@@ -11,14 +11,14 @@
 
 ## 정리
 ### Apache Kafka
-    - 아파치재단(ASF)에서 관리하는 오픈소스 (`Apache 2.0 License`)
-    - ASF는 개인, 기업 등이 일종의 후원or 자원봉사 개념으로 소프트웨어를 기여하는 곳이다.
-    - Confluent 기업도 ASF를 통해 Apache Kafka를 관리하는 주체이다.
+- 아파치재단(ASF)에서 관리하는 오픈소스 (`Apache 2.0 License`)
+- ASF는 개인, 기업 등이 일종의 후원or 자원봉사 개념으로 소프트웨어를 기여하는 곳이다.
+- Confluent 기업도 ASF를 통해 Apache Kafka를 관리하는 주체이다.
 
 ### Confluent Platform
-    - "Apache Kafka와 별개로" Kafka 활용성을 높여주는 플랫폼
-    - "ASF와 관련없이" Confluent에서 서비스하는 플랫폼이다.
-    - 독자적인 라이센스 정책을 쓴다.
+- Apache Kafka 활용성을 높여주는 플랫폼을 의미 (설치시 Apache Kafka가 포함)
+- **아파치 재단과 별개로** Confluent에서 제공하는 플랫폼
+- 독자적인 라이센스 정책을 쓴다.
 
 - `Confluent Community License`
     - **★ Commercial Use 가능**
