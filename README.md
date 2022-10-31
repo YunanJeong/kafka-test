@@ -3,18 +3,21 @@ kafka-test
 
 ## 디렉토리
 ```
+├── 0_kafka-broker-basic
+├── 1_kafka-broker-connect-basic
+├── 2_kafka-broker-connect-systemd
+├── 3_kafka-jdbc-connector-test
+├── 4_kafka-ksql-service
+├── 5_confluent-community-archive
+├── 6_confluent-community-package
+├── LICENSE
 ├── README.md
-├── basic-instance/
-├── kafka-broker-basic/
-├── kafka-broker-connect-basic/
-├── kafka-broker-connect-systemd/
-├── kafka-control/
-├── kafka-jdbc-connector-test/
-├── kafka_timestamp_management.md
-├── memo_jdbc_src_con_options.md
-├── memo_s3_sink_con_options.md
-├── python-kafka-test/
-└── test-db-broker-s3/
+├── basic-instance
+├── memo
+├── py-connect-examples
+├── py-connect-util
+├── py-kafka-packages
+└── test-db-broker-s3
 ```
 
 ## 봐야할 내용
