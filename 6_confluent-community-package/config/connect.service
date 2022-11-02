@@ -1,3 +1,6 @@
+################################################
+# Confluent Platform Debian Package
+################################################
 
 [Unit]
 Description = connect
@@ -8,10 +11,9 @@ Type = simple
 User = root
 Group = root
 SyslogIdentifier = connect
-WorkingDirectory = /usr/local/kafka
 Restart = on-failure
 RestartSec = 10s
-ExecStart = /usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties
+ExecStart = /bin/connect-distributed /etc/kafka/connect-distributed.properties
 Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
 
 ##################################################

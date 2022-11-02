@@ -11,10 +11,10 @@ SyslogIdentifier = ksqldb
 WorkingDirectory = /usr/bin
 Restart = on-failure
 RestartSec = 10s
-ExecStart = /usr/bin/ksql-server-start /etc/ksqldb/ksql-server.properties
+ExecStart = /confluent/bin/ksql-server-start /confluent/etc/ksqldb/ksql-server.properties
 Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
-Environment=KSQL_LOG4J_OPTS="-Dlog4j.configuration=file:/etc/ksqldb/log4j-rolling.properties"
-Environment=LOG_DIR="/usr/local/kafka/logs"
+Environment=KSQL_LOG4J_OPTS="-Dlog4j.configuration=file:/confluent/etc/ksqldb/log4j-rolling.properties"
+Environment=LOG_DIR="/var/log/confluent/ksql"
 
 # 환경변수 KSQL_LOG4J_OPTS: log4j 설정파일 지정
   # ksqldb standalone의 디폴트 설정은 stdout만 있고, 별도 로그파일을 생성하지 않는다. 서비스로 실행시 syslog에 남는다.
@@ -27,7 +27,7 @@ Environment=LOG_DIR="/usr/local/kafka/logs"
 
 # 환경변수 LOG_DIR: 로그 저장 경로. default: /usr/logs
   # 여기서는 편의상 kafka, connect 로그와 같은 위치를 사용했다.
-  # 권장 경로: /var/log/confluent
+  # 권장 경로: /var/log/confluent/ksql
 
 [Install]
 WantedBy=multi-user.target

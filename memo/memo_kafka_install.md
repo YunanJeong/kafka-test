@@ -31,30 +31,42 @@
 ### RPM
 - CentOS 등에서 패키지 설치
 
-# 아카이브(zip,tar) vs. 패키지(deb) 초기 셋업 비교
+# Confluent Platform의 아카이브(zip,tar) vs. 패키지(deb) 초기 셋업
 - 초기 구성 경로
     - zip 최상위 경로 = deb 설치시 루트경로
     - e.g) 설정파일의 위치는
-        - zip 설치시, `{kafka directory}/etc/`
-        - deb 설치시, `/etc`
-- 서비스 등록
-    - 둘 다 서비스 파일이 제공됨
-    - zip은 개발자가 파일복사 후 systemd 등록 필요
-        - 서비스파일 내 경로관련 설정은 모두 root(/)기준으로 기술되어 있음. 해당 부분 수정 필요. root로 옮기거나 환경변수로 상위경로 설정
-    - deb는 설치시 서비스등록이 완료됨
-    - 특이점은 `etc/systemd/system`이 아니라 아니라  `lib/systemd/system`을 사용함
+        - zip: `{KAFKA_HOME}/etc/`
+        - deb: `/etc`
+    - bin실행파일
+        - zip: `{KAFKA_HOME}/bin/`
+        - deb: `/usr/bin`과 `/bin`에 둘 다 설치됨
+        - 참고: Apache Kafka와 달리 sh 파일이 아니라 바이너리 파일이 제공됨
 - 로그경로
-    - 서비스 파일의 환경변수(LOG_DIR)에 의해 지정됨 (기본 설정: `/var/log/confluent`)
-- AWS_KEY
-    - S3 Sink 커넥터 사용시 connect 서비스 파일에 AWS_KEY 관련 환경변수 등록 필요
-- File Descriptors 설정
-    - [File Descriptors설정 문서 추천방법](https://docs.confluent.io/platform/current/kafka/deployment.html#file-descriptors-and-mmap)
-        - OS단위로 설정. 최소 10만개 권장. 세그먼트 파일 개수 확인하고 엔지니어가 조정.
-    - 서비스 실행시, 환경변수 설정필요. 설치방식 상관없이 기본 제공 파일에 이미 설정되어있음.
+    - zookeeper, broker, connect
+        - zip: `{KAFKA_HOME}/logs/`
+        - deb: `/var/log/kafka/`
+        - 서비스 파일에서 환경 변수 `LOG_DIR` 등록하여 변경가능
+    - ksqldb, schema registry 등 confluent 고유제품들
+        - `/var/log/confluent/{제품명}/` (기본 제공 서비스파일에 이미 `LOG_DIR` 등록되어 있음)
+        - zip 설치여도 `/var/log/confluent/` 디렉토리는 자동생성
+        - 서비스 파일에 `KSQL_LOG4J_OPTS` 환경변수로 log4j 설정파일을 참조해줘야 로그파일 및 syslog 생성함
+
+- 서비스 등록
+    - `lib/systemd/system`에서 기본 서비스 파일 제공됨
+    - zip: systemd 직접 등록 필요
+        - 서비스파일 내 경로관련 값은 모두 root(/)기준으로 기술되어 있음. 해당 부분 수정 필요
+    - deb: 설치시 서비스등록 완료. 빠른 실행 정도는 가능하지만, production시 어차피 수정 필요
+
+- ksql 등 실행파일 환경변수 등록
+    - zip: 수동등록
+    - deb: 설치시 자동등록
+
 - confluent cli
-    - deb 설치시 dependency 중 하나로 자동 설치 및 셋업
-    - zip에는 없음
-    - 사실상 유료 cloud 서비스에서 클러스터 관리 목적이 크기 때문에 로컬에서 필요없다.
+    - zip: 없음
+    - deb: dependency 중 하나로 자동 설치 및 셋업
+    - 사실상 유료 cloud 서비스에서 클러스터 관리 목적이 크다. 로컬 1노드 기준, `$ confluent local` 커맨드 일부 사용가능
+
+
 
 ## 설치완료 후 빠른 실행시 확인해야할 것
 - server.properties
@@ -63,11 +75,16 @@
 		- 디폴트가 `/tmp` 인데, 이는 os에서 주기적으로 삭제할 수 있다. `/data`를 생성해서 써주자.
 - connect-distributed.properties
 	- connector plugin 경로 지정
-- file descriptor 설정
+- File Descriptors 설정
 	- systemd 서비스 실행시, 서비스파일에서 설정해야 함
-- s3 sink connector 사용시 AWS KEY
-	- 실행환경에서 ~/.aws/credentials 파일만 있으면 됨.
-	- systemd 서비스 실행시, 서비스파일에서 설정해야 함
+    - [File Descriptors 값 조정 방법](https://docs.confluent.io/platform/current/kafka/deployment.html#file-descriptors-and-mmap)
+
+
+- S3 Sink Connector 사용시 AWS KEY
+	- 실행환경에서 `~/.aws/credentials` 파일만 있으면 됨.
+	- systemd 실행시, connect 서비스 파일에 AWS_KEY 관련 환경변수 등록 필요
+
+
 - log4j 설정
 	- 카프카의 config 경로에 broker용과 connect용 설정이 별도로 있음
 	- systemd 서비스 실행시,
