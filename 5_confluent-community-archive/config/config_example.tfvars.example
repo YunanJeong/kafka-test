@@ -22,9 +22,6 @@ aws_secret_key = ""
 ######################################################################
 # Set Up Kafka (공식 버전 업데이트에 따라 링크 사용 불가 상태일 수 있으므로 확인 필요)
 ######################################################################
-kafka_index = "https://dlcdn.apache.org/kafka/3.2.3/kafka_2.13-3.2.3.tgz"
+kafka_index = "http://packages.confluent.io/archive/7.2/confluent-community-7.2.2.tar.gz"
 jdbc_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.2/confluentinc-kafka-connect-jdbc-10.5.2.zip"
 s3_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.2.0/confluentinc-kafka-connect-s3-10.2.0.zip"
-kafka_ver = "kafka_2.13-3.2.3"
-jdbc_con_ver = "confluentinc-kafka-connect-jdbc-10.5.2"
-s3_con_ver = "confluentinc-kafka-connect-s3-10.2.0"

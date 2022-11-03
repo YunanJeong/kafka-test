@@ -40,9 +40,5 @@ variable "private_key_path"{
 ######################################################################
 # Set Up Kafka
 ######################################################################
-variable "kafka_index"{}
 variable "jdbc_con_index"{}
 variable "s3_con_index"{}
-variable "kafka_ver"{}
-variable "jdbc_con_ver"{}
-variable "s3_con_ver"{}

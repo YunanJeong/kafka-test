@@ -123,9 +123,9 @@ resource "null_resource" "basic_remote"{
       "sudo apt update ; sudo apt install -y openjdk-11-jdk-headless",
 
       # Kafka 설치
-      "curl -O http://packages.confluent.io/archive/7.2/confluent-community-7.2.2.tar.gz",
+      "curl -O ${var.kafka_index}",
       "tar xzf confluent-*.tar.gz",
-      "sudo mv ~/confluent-*/ /confluent/",  # 디렉토리 이름을 kafka로 변경하면서 이동
+      "sudo mv ~/confluent-*/ /confluent/",  # 디렉토리 이름을 confluent로 변경하면서 이동
       "sudo mv ~/config/*.properties /confluent/etc/kafka/",
 
       # 필요 커넥터 설치
