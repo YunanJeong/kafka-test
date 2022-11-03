@@ -28,11 +28,15 @@ kafka-test
 4. 이후 클러스터 구성해보기
 
 ## Record - Kafka Message Structure
-- kafka에서 가장 작은 메시지 단위는 Record라고 부른다.
-	- Record = Message = Event = Data = log 1줄 이라고 보면 된다.
-- 한 Record 안에는 Headers, key, value가 들어있다.
-	- 이 중 Headers에는 topic, partition, timestamp 정보가 있으며, MetaData라고 보면된다.
-	- key, value는 일반적으로 Body 또는 Business Relevant Data 라고 표현되는 부분이다. (원본 데이터 내용)
+### Kafka의 가장 작은 메시지 단위를 Record라고 부른다.
+Record = Message = Event = Data = log 1줄 이라고 보면 된다.
+### Record
+- Header
+	- 메타데이터가 자동생성되어 기록됨(topic, patition, timestamp(Ingestion Time) 정보 등)
+	- 시스템 입장에서 Record를 분류하기 위한 정보
+- Body(Business Relevant Data)
+	- key: 개발&운영자 입장에서 Record를 분류하기 위한 정보
+	- value: 핵심 Payload, 원본데이터에 가까움
 
 - [참고 그림](https://www.google.com/search?q=kafka+record+timestapme&tbm=isch&ved=2ahUKEwib6f2Lm4L6AhXPZ94KHWiqBJ0Q2-cCegQIABAA&oq=kafka+record+timestapme&gs_lcp=CgNpbWcQAzoECCMQJzoECAAQEzoGCAAQHhATOgUIABCABDoECAAQHjoECAAQGFDQB1iRKWD3LWgAcAB4AIABcYgB_BqSAQUxNC4yMJgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=ZU8YY9uiIs_P-Qbo1JLoCQ&bih=969&biw=1920&rlz=1C1GCEA_enKR959KR967#imgrc=0ffhDAgddKBNRM)
 
