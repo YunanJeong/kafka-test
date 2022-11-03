@@ -22,6 +22,10 @@ Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
 Environment=KAFKA_HEAP_OPTS="-Xmx1200m -Xms1200m"
 LimitNOFILE=128000
 
+
+# Type: 실행타입을 의미. simple과 oneshow 있음. 보통은 simple
+# User: default: cp-kafka
+# Group: default: confluent
 # SyslogIdentifier: syslog에서 로그구별하기 위한 식별자. default는 서비스명
 # WorkingDirectory: 서비스에서 인식되는 '~'경로를 설정
 # RootDirectory: 서비스에서 인식되는 '/'경로를 설정. 서비스에서 사용되는 모든 라이브러리가 RootDirectory 아래에 있어야 한다.
