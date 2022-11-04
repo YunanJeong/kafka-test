@@ -4,10 +4,10 @@ kafka-test
 ## 디렉토리
 ```
 ├── 0_kafka-broker-basic            # Set up kafka 1 node (zookeeper, broker) by Apache Kafka
-├── 1_kafka-broker-connect-basic    # Add kafka connect to module 1
-├── 2_kafka-broker-connect-systemd  # Run module2's kafka as systemd service
-├── 3_kafka-jdbc-connector-test     # Add connectors(jdbc-src, s3-sink) to module 3
-├── 4_kafka-ksql-service            # Add ksqlDB to module 4
+├── 1_kafka-broker-connect-basic    # Add kafka connect to "module 0"
+├── 2_kafka-broker-connect-systemd  # Run "module 1"'s kafka as systemd service
+├── 3_kafka-jdbc-connector-test     # Add connectors(jdbc-src, s3-sink) to "module 2
+├── 4_kafka-ksql-service            # Add ksqlDB to "module 3"
 ├── 5_confluent-community-archive   # Set up kafka 1 node by Confluent Platform Community(zip or tar)
 ├── 6_confluent-community-package   # Set up kafka 1 node by Confluent Platform Community(deb)
 ├── LICENSE
