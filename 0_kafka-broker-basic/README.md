@@ -1,5 +1,5 @@
 ## kafka-basic
-- kafka 시작하기
+- kafka 시작 테스트
 - terraform 사용
 - EC2 인스턴스 1개에 zookeeper, kafka 각각 하나씩 실행시킨다.
 - 접속 후 `$jps -vm` 으로 각 프로세스 실행 유무 확인
@@ -18,4 +18,4 @@
 
 ## 버전
 - Terraform: v1.2.1 on linux_amd64
-- kafka binary 2.13
+- Apache Kafka: 3.2.0 (scala 2.13)
