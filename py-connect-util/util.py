@@ -2,6 +2,7 @@
 
 import os
 import json
+import yaml
 import requests
 import glob
 from time import sleep
@@ -22,6 +23,12 @@ def send_http(url, body):
     }
     res = requests.post(url, json.dumps(body, ensure_ascii=False), headers=headers)  # NOQA
     return res
+
+
+def get_yaml(filepath):
+    with open(filepath, 'r') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    return data
 
 
 def get_json(filepath):
