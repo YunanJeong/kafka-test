@@ -26,8 +26,8 @@ def send_http(url, body):
 
 
 def get_yaml(filepath):
-    with open(filepath, 'r') as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
+    with open(filepath, 'r') as file:
+        data = yaml.load(file, Loader=yaml.FullLoader)
     return data
 
 
