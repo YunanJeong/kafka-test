@@ -74,7 +74,7 @@ def show_connectors(connect=CONNECT_DEFAULT):
 
 
 def show_connector(connector, connect=CONNECT_DEFAULT):
-    cmd = f'curl {connect}/{connector} | jq | sort'
+    cmd = f'curl {connect}/connectors/{connector} | jq | sort'
     os.system(cmd)
 
 
