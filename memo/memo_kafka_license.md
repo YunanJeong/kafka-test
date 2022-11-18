@@ -38,7 +38,7 @@
     - 1 클러스터에 1 브로커만 사용가능
         - 브로커 1개만 가진 클러스터를 여러 개 운용하는 것은 가능
     - Adding a broker starts a trial license that expires in 30 days. You cannot revert from a trial back to a developer license.
-        - 브로커를 추가하면 평가판으로 전환된다고 표현되어다.
+        - 브로커 하나를 추가하면 평가판으로 전환된다고 한다.
         - 맥락상 브로커 2개 이상을 가진 클러스터 생성을 의미하는 듯 하다.
 
 - `Trial (Evaluation) License`
