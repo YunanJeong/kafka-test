@@ -25,7 +25,7 @@
         - Under the Confluent Community License, you can access the source code and modify or redistribute it; there is **only one thing you cannot do, and that is use it to make a competing SaaS offering**.
         - Confluent의 제품과 "경쟁될 수 있는" SaaS(Paas,Iaas) 서비스를 만드는 일이 아니어야 한다.
         - e.g.) confluent의 ksqldb제품과 경쟁하기 위해 ksqldb 소스를 사용한다 => 라이센스 위반
-        - e.g.) AWS에서 Confluent Community License에 해당하는 기능으로 어떤 서비스를 제공한다 => 라이센스 위반
+        - e.g.) AWS 등 클라우드 기업이 Confluent Community License의 제품으로 어떤 서비스를 만들어 제공한다 => 라이센스 위반
         - 이 제한 때문에 Community License에 해당하는 제품은 공식적으로는 "Open-source"가 아니다.
         - "Source-available"이라고 표현된다.
         - 따라서, 어지간하면 회사에서 써도 된다. 헷갈리는 부분이 있다면 참고자료의 FAQ링크를 참조하자. 매우 잘 설명되어 있다.
