@@ -62,6 +62,14 @@ resource "aws_security_group" "kafka_sgroup"{
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 8080
+    to_port = 8080
+    description = "for kafka monitoring"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 }
 
 ######################################################################
