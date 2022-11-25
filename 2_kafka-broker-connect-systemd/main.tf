@@ -26,7 +26,7 @@ provider "aws" {
 ######################################################################
 # 보안그룹 생성 or 수정
 resource "aws_security_group" "basic_sgroup"{
-  name = "yunan_basic_sgroup"
+  name = "yunan_basic_sgroup_for_example2"
   # Inbound Rule 1
   ingress {
     # from, to로 포트 허용 범위를 나타낸다.
@@ -47,7 +47,7 @@ resource "aws_security_group" "basic_sgroup"{
 }
 
 resource "aws_security_group" "kafka_sgroup"{
-  name = "yunan_kafka_sgroup"
+  name = "yunan_kafka_sgroup_for_example2"
   ingress {
     from_port = 9092
     to_port = 9092
