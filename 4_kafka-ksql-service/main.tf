@@ -37,8 +37,8 @@ resource "aws_security_group" "basic_sgroup"{
     cidr_blocks = var.my_ip_list
   }
 
-  # Outbound Rule 1 (아래 예시는 설정하지 않은것과 같은, 전체 허용 표기법이다.)
-  egress{
+  egress{ # 인스턴스에서 외부로 나가는 request 모두 허용. 이를 없애면 유사 IDC환경 테스트 가능.
+    description = "allows all outbound (apt, ping, ...)"
     protocol  = "-1"
     from_port = 0
     to_port   = 0
@@ -59,6 +59,13 @@ resource "aws_security_group" "kafka_sgroup"{
     from_port = 8083
     to_port = 8083
     description = "for kafka connect"
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8080
+    to_port = 8080
+    description = "for kafka monitoring"
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
