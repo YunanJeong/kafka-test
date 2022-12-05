@@ -16,8 +16,8 @@ kafka-test
 ├── memo
 ├── py-connect-examples             # Test connectors
 ├── py-connect-util                 # Simple library to manage connectors
-├── py-kafka-packages
-└── test-db-broker-s3
+└── py-kafka-packages
+
 ```
 
 ## Record - Kafka Message Structure
@@ -42,3 +42,9 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 
 ## How to Analyze and Manage Kafka Messages
 - [kafkacat과 jq, 기타 필수 쉘 명령어 사용법](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafkacat_and_jq.md)
+
+## Python Kafka Package(Python으로 Producer, Consumer 만들 때 사용)
+- [Python Kafka Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_python_kafka_package.md)
+
+## Connector를 위한 offset 다루기
+- [특히 Source Connector를 위한 connect_offsets 설명 위주](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_connect_offsets.md)
