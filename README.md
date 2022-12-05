@@ -12,11 +12,9 @@ kafka-test
 ├── 6_confluent-community-package   # Set up kafka 1 node by Confluent Platform Community(deb)
 ├── LICENSE
 ├── README.md
-├── basic-instance
-├── memo
+├── memo/                           # Tips for Kafka Operation
 ├── py-connect-examples             # Test connectors
-├── py-connect-util                 # Simple library to manage connectors
-└── py-kafka-packages
+└── py-connect-util                 # Simple library to manage connectors
 
 ```
 
