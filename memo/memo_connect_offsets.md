@@ -28,7 +28,7 @@
 
 ## connect_offsets 수정시 자주 쓰는 커맨드
 1. 커넥터 이름 별 offset이 저장되는 Partiton 넘버 찾기
-- `$ kafkacat -b localhost:9092 -t connect-offsets -e -q -f'Key:%k Partitions: %p \n' | sort -u`
+    - `$ kafkacat -b localhost:9092 -t connect-offsets -e -q -f'Key:%k Partitions: %p \n' | sort -u`
     ```
     Key:["jdbc_src_1",{"query":"query"}]    Partitions: 5
     Key:["jdbc_src_2",{"query":"query"}]    Partitions: 14
@@ -38,23 +38,33 @@
     Key:["jdbc_src_6",{"query":"query"}]    Partitions: 4
     Key:["jdbc_src_7",{"query":"query"}]    Partitions: 12
     ```
+    - 처음 partition이 할당되면 그 커넥터는 항상 그 파티션에 offset을 기록한다.
+    - e.g.) Source Connector "jdbc_src_1"는 항상 5번 partition에 offset을 기록한다.
+    - e.g.) Source Connector "jdbc_src_2"는 항상 14번 partition에 offset을 기록한다.
 
-2. 다음 커맨드처럼 json형식으로 기술해서 jq를 쓸 수도 있다.
+2. 다음 커맨드처럼 json형식으로 출력되도록하여 jq를 쓸 수도 있다.
     ```
     $ kafkacat -b localhost:9092 -t connect-offsets -e -q -f'{"Key": %k , "Payload": %s, "Partition": %p,  "Offset": %o }\n'  | jq
     ```
     ```
-    - f: 문자열
-    - %o: offset넘버
-    - %k: payload. jdbc Source Connector의 경우, record의 value자리에 incrementing key 또는 timestamp key 값이 입력된다. bulk모드일때는 해당 값이 비어있으므로 json이 위 처럼 쓰면 json이 깨진다.
+    - -f: 문자열 포맷을 지정해서 출력가능하게 해준다.
+    - %p: Partition넘버 (Record Headers)
+    - %o: offset넘버 (Record Headers)
+    - %k: Key (Record Body에서 Key부분을 가져온다)
+    - %s: PayLoad (Record Body에서 Value부분을 가져온다) jdbc Source Connector의 경우, value자리에 incrementing key 또는 timestamp key 값이 입력된다. bulk모드일때는 해당 값이 비어있으므로 위 커맨드처럼 문자열 포맷을 기술하면 json이 깨진다. (jq사용시 주의)
     ```
 
-3. Key-value 포맷 확인
+3. Key-value 포맷 및 내용 확인
     - `kafkacat -b localhost:9092 -t connect-offsets -e -q -K###`
 
 4. 원하는 Key-value 입력해서 produce하여 offset 조작
     - `echo '["{connector_name}", {"query":"query"}]###' | kafkacat -b localhost:9092 -t connect-offsets -P -Z -K### -p {partition}`
+    - Record의 Body에 해당하는 Key-Value쌍만 직접 새로 입력하는 것이다. Record의 Headers는 자동생성되는 부분이니 헷갈리지 말자!
+    - 새로운 Record가 connect_offsets의 partition에 등록될 때, Record의 Headers에는 해당 Partition넘버, 최신 Offset넘버 등이 기록된다.
 
+    - 아래 예시는 JDBC conenctor가 어디까지 처리했는지에 대한 정보을 수정하는 것이다.
+        - Connector는 항상 최신 offset을 가진 Record만 참조하여 어디까지 처리했는지 판단한다. 따라서 새로운 key-value를 1개만 넣어줘도 Connector가 다음 처리할 데이터순서가 바뀐다.
+        - 이는 데이터 파이프라인에서 누락이슈 등 발생시 재작업할 때 유용할 수 있다.
     ```
     # jdbc_src_1 커넥터는 369034번 데이터까지 읽은 것으로 수정
     echo '["jdbc_src_1",{"query":"query"}]#{"incrementing":369034}' | kafkacat -b localhost:9092 -t connect-offsets -P  -K# -p 5
