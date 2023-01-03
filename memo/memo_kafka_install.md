@@ -69,9 +69,14 @@
 
 
 ## 설치완료 후 빠른 실행시 확인해야할 것
+- zookeeper.properties
+    - `dataDir`: zookeeper 메타데이터 저장경로
+        - kafka 실행시 kafka cluster id가 랜덤생성되고, 이곳에 저장된다.
+        - 디폴트가 `/tmp`라서 재부팅시 cluster id를 포함한 해당 경로 데이터가 비워진다.
+        - 이러면 kafka cluster가 정상 재실행되지 않으므로, dataDir 경로를 별도로 만들어주자.
 - server.properties
-	- advertised.listeners에 해당 broker에 해당하는 hostname(또는 ip) 기술
-	- log.dirs는 record가 저장되는 장소다.(서버, 시스템 로그를 의미하지 않는다.)
+	- `advertised.listeners`에 해당 broker가 구동되는 hostname(또는 ip) 기술
+	- `log.dirs`: record 저장 경로 (Kafka시스템 운영 로그가 아니다.)
 		- 디폴트가 `/tmp` 인데, 이는 os에서 주기적으로 삭제할 수 있다. `/data`를 생성해서 써주자.
 - connect-distributed.properties
 	- connector plugin 경로 지정
