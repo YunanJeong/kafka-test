@@ -1,0 +1,22 @@
+################################################
+# Confluent Platform Debian Package
+################################################
+
+[Unit]
+Description = zookeeper
+After = network.target
+
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = zookeeper
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /bin/zookeeper-server-start /etc/kafka/zookeeper.properties
+ExecStop = /bin/zookeeper-server-stop
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+
+[Install]
+WantedBy=multi-user.target

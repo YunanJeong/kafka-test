@@ -1,0 +1,27 @@
+################################################
+# Confluent Platform Debian Package
+################################################
+
+[Unit]
+Description = connect
+After = broker.service network.target
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = connect
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /bin/connect-distributed /etc/kafka/connect-distributed.properties
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+
+##################################################
+# 보안 주의
+##################################################
+Environment="AWS_ACCESS_KEY_ID=${AWS-ACCESS-KEY-HERE}"
+Environment="AWS_SECRET_ACCESS_KEY=${AWS-SECRET-KEY-HERE}"
+# 서비스로 실행시 로컬의 credential 파일을 인지하지 못하므로 여기서 환경변수를 활용해준다.
+
+[Install]
+WantedBy=multi-user.target

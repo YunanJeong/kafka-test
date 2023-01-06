@@ -1,0 +1,42 @@
+tags = {
+    Owner = "kkkkkkkkk@mygmail.com"
+    Service = "service_tag"
+}
+my_ip_list = ["x.x.x.x/32", "x.x.x.x/32"]  # yunan_internet_pc, yunan_home
+
+######################################################################
+# Set Up Basic
+######################################################################
+ami = "ami-063454de5fe8eba79"  # Ubuntu 22.04 LTS
+tag_name = "yunan-kafka-service-jdbc-s3"
+instance_type = "m5.large"
+
+######################################################################
+# AWS Credentials (보안주의!)
+######################################################################
+key_pair_name = "my_keypair"
+private_key_path = "/home/ubuntu/.ssh/my_keypair.pem"
+aws_access_key = ""
+aws_secret_key = ""
+
+######################################################################
+# Set Up Kafka (공식 버전 업데이트에 따라 링크 사용 불가 상태일 수 있으므로 확인 필요)
+######################################################################
+jdbc_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.5.2/confluentinc-kafka-connect-jdbc-10.5.2.zip"
+s3_con_index = "https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.2.0/confluentinc-kafka-connect-s3-10.2.0.zip"
+debezium_index = "https://repo1.maven.org/maven2/io/debezium/debezium-connector-sqlserver/2.1.1.Final/debezium-connector-sqlserver-2.1.1.Final-plugin.tar.gz"
+
+######################################################################
+# Set Up SQL Server
+# sqlserver 모듈에 입력될 variables 값 (보안)
+######################################################################
+mssql_ami = "ami-067fa7ca255f667d2"   # # 기본 윈도우서버 + MSSQL  # # Microsoft Windows Server 2019 Full Locale English with SQL Standard 2019 AMI provided by Amazon
+mssql_instance_type = "m5.large"
+mssql_tags = {
+    Name = "yunan-sql-server-by-terraform"
+    Owner = "ddd"
+    Service = "ddd"
+}
+mssql_db_user = "tester"
+mssql_db_pass = "tester^381"
+mssql_db_port = "1433"

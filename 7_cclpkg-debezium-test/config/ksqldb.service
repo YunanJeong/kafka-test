@@ -1,0 +1,36 @@
+################################################
+# Confluent Platform Debian Package
+################################################
+
+[Unit]
+Description = ksqldb
+After = network.target
+
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = ksqldb
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /bin/ksql-server-start /etc/ksqldb/ksql-server.properties
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+Environment=KSQL_LOG4J_OPTS="-Dlog4j.configuration=file:/etc/ksqldb/log4j-rolling.properties"
+Environment=LOG_DIR="/var/log/confluent/ksql"
+
+# 환경변수 KSQL_LOG4J_OPTS: log4j 설정파일 지정
+  # ksqldb standalone의 디폴트 설정은 stdout만 있고, 별도 로그파일을 생성하지 않는다. 서비스로 실행시 syslog에 남는다.
+
+  # /etc/ksqldb는 ksqldb를 standalone 클린 설치시 설정파일 기본 위치다.
+  # kafka, connect와 달리, ksqldb는 /etc/ksqldb에 있는 로그설정파일을 자동참조하지 않으므로 이 환경변수 설정이 필요하다.
+
+  # log4j-rolling.properties 사용시, 로그를 syslog에는 저장하지 않고, LOG_DIR 경로에만 파일생성한다.
+  # log4j-rolling.properties에서 connect, client 관련 내용을 주석처리하면 ksqldb 서비스 실행시 에러메시지가 발생하지 않는다.
+
+# 환경변수 LOG_DIR: 로그 저장 경로. default: /usr/logs
+  # 여기서는 편의상 kafka, connect 로그와 같은 위치를 사용했다.
+  # 권장 경로: /var/log/confluent/ksql
+
+[Install]
+WantedBy=multi-user.target

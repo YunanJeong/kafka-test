@@ -1,0 +1,7 @@
+{
+    "database.hostname" : "${PUBLIC-IP}",
+    "database.port" : "1433",
+    "database.user" : "tester",
+    "database.password" : "tester^381",
+    "database.names" : "testDB"
+}
