@@ -79,10 +79,10 @@
 	- `log.dirs`: record 저장 경로 (Kafka시스템 운영 로그가 아니다.)
 		- 디폴트가 `/tmp` 인데, 이는 os에서 주기적으로 삭제할 수 있다. `/data`를 생성해서 써주자.
 - connect-distributed.properties
-	- connector plugin 경로 지정
+    - connector plugin 경로 지정
 - File Descriptors 설정
-	- systemd 서비스 실행시, 서비스파일에서 설정해야 함
-    - [File Descriptors 값 조정 방법](https://docs.confluent.io/platform/current/kafka/deployment.html#file-descriptors-and-mmap)
+    - systemd 서비스 실행시, **서비스파일에서 설정해야 함**
+    - [Host시스템에서 File Descriptors 값 변경](https://docs.confluent.io/platform/current/kafka/deployment.html#file-descriptors-and-mmap)
 
 
 - S3 Sink Connector 사용시 AWS KEY
