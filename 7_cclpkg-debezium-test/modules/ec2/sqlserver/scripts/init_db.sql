@@ -7,6 +7,7 @@ GO
 
 --role 멤버 등록(권한 작업)----------------------------
 USE TutorialDB
+EXEC sys.sp_cdc_enable_db;
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${user}')
@@ -43,6 +44,7 @@ VALUES
    ( 3, N'Donna', N'Germany', N'donna0@adventure-works.com', N'TEST_SVC', CONVERT(DATETIME, GETDATE()) ),
    ( 4, N'Janet', N'United States', N'janet1@adventure-works.com', N'TEST_SVC', CONVERT(DATETIME, GETDATE()) ),
    ( 5, N'TestName', N'TestLocation', N'TESTEmail', N'TEST_SVC',  CONVERT(DATETIME, GETDATE()))
+EXEC sys.sp_cdc_enable_table @source_schema = 'dbo', @source_name = 'customers', @role_name = NULL, @supports_net_changes = 0;
 GO
 
 
