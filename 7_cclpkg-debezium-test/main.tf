@@ -106,7 +106,9 @@ resource "null_resource" "ubuntu_remote"{
       "sudo systemctl restart broker.service connect.service ksqldb.service",  # zookeeper는 broker의 requires로 실행
 
       "sudo apt install python-is-python3",
-      "git clone https://github.com/YunanJeong/kafka-connect-manager.git"
+      "git clone https://github.com/YunanJeong/kafka-connect-manager.git",
+      "sudo cp ~/config/test_db_info.json ~/kafka-connect-manager/config/debezium_src/",
+      "sudo chmod +x ~/config/install_docker.sh && sudo ~/config/install_docker.sh"
     ]
   }
 }
