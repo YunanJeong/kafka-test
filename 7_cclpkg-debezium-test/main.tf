@@ -108,7 +108,11 @@ resource "null_resource" "ubuntu_remote"{
       "sudo apt install python-is-python3",
       "git clone https://github.com/YunanJeong/kafka-connect-manager.git",
       "sudo cp ~/config/test_db_info.json ~/kafka-connect-manager/config/debezium_src/",
-      "sudo chmod +x ~/config/install_docker.sh && sudo ~/config/install_docker.sh"
+      "sudo chmod +x ~/config/install_docker.sh && sudo ~/config/install_docker.sh",
+
+      # kafkacat
+      "sudo docker pull confluentinc/cp-kafkacat",
+      "echo \"alias kcat='sudo docker run --tty --network host confluentinc/cp-kafkacat kafkacat'\" >> ~/.bashrc"
     ]
   }
 }
