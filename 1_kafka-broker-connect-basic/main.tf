@@ -117,7 +117,7 @@ resource "null_resource" "basic_remote"{
     inline = [
       "cloud-init status --wait",
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
-      "wget https://dlcdn.apache.org/kafka/3.2.0/${var.kafka_ver}.tgz",
+      "wget https://dlcdn.apache.org/kafka/3.2.3/${var.kafka_ver}.tgz",
       "tar xvf ${var.kafka_ver}.tgz",
 
       "export KAFKA_HEAP_OPTS='-Xmx400m -Xms400m'",

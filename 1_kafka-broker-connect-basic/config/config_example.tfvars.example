@@ -11,7 +11,7 @@ my_ip_list = ["x.x.x.x/32", "x.x.x.x/32"]  # yunan_internet_pc, yunan_home
 ######################################################################
 ami_basic = "ami-xxxxxxxxxxxxxx"  # yunan-testbed-fluentd
 tag_name_basic = "my-basic-instance-by-terraform"
-kafka_dir = "/kafka_2.13-3.2.0"
+kafka_dir = "/kafka_2.13-3.2.3"  # 버전 링크 존재하는지 확인할 것
 instance_type = "t2.micro"
 ######################################################################
 #Set Up Existing Git Server
