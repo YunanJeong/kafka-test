@@ -11,10 +11,11 @@
 # db.timezone의 default는 UTC이다.
 # e.g.) Event Time이 '2023년 1월 17일 0시 0분 0초' 일 때,
  - "db.timezone": "UTC" 이면 UTC로 '2023년 1월 17일 0시 0분 0초'에 해당하는 timestamp가 Kafka에 입력된다.
- - "db.timezone": "Asia/Seoul" 이면 다음과 같은 timestamp가 Kafka에 입력된다.
+ - "db.timezone": "Asia/Seoul" 이면,
     - KST로 '2023년 1월 17일 0시 0분 0초'
-    - UTC로 '2023년 1월 16일 15시 0분 0초'
+    - 즉, UTC로 '2023년 1월 16일 15시 0분 0초'에 해당하는 timestamp가 Kafka에 입력된다.
 
+# jdbc로 시간처리를 하면, Kafka topic에는 항상 timestamp형태로 저장된다는 점을 기억하자!
 """
 
 import json
