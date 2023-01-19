@@ -8,6 +8,7 @@
 - -p: partition 지정
 - -q: quiet
 - -e: exit
+- -o: offset
 - -P: Producer Mode
 - -C: Consumer Mode
 
@@ -37,6 +38,13 @@
 	- '새 메시지가 도착했다'라는 출력이 표시되지 않는다.
 - `$ kafkacat -b localhost:9092 -t topicname -C -e`
 	- e 옵션 사용시 마지막 내용까지 출력한 후 대기모드상태에 있지 않고 자동 exit한다.
+- `$ kafkacat -b localhost:9092 -t topicname -o offset`
+	- `$ kafkacat -b localhost:9092 -t topicname -o beginning`
+		- 처음부터 모든 record 조회(토픽에 쌓인 record가 많으면 최근 새로 업데이트 되는 record만 보이기 때문에 이 옵션이 필요)
+	- `$ kafkacat -b localhost:9092 -t topicname -o -1000`
+		- 최근 1000개 record 조회
+	- `$ kafkacat -b localhost:9092 -t topicname -p 0 -o 1368 -c 1`
+		- '0번 파티션'에서 '1368번 offset'부터 '1개의 record' 조회
 
 ## 쉘에서 메시지 관리&분석 하기
 - 아래 명령어들은 모두 라인 단위로 이루어진다. (다른 라인끼리만 비교한다. 같은 라인 내에서 중복, 정렬 처리를 하지 않는다.)
