@@ -32,12 +32,15 @@
 
 - batch.max.rows: 한번에 가져오는 batch의 최대 row 수
     - batch.max.rows는 connect(connector)의 buffer 크기를 의미한다.
-    - bulk모드의 "batch.max.rows" 옵션은 다른모드일 때와 작동방식이 다르다.
-    - bulk모드는 항상 테이블내용 전체를 한번에 가져와야 한다.
-    - 한 테이블이 중간에 잘리지 않는다.
+    
+    - bulk모드는 항상 테이블내용 전체를 한번에 가져온다. 한 테이블이 중간에 잘리지 않는다.
         - jdbc connector 2022년 초중반까지 버전에서는 bulk모드일 때도 이 설정값에 따라 가져오는 rows가 잘렸다.
     - timestamp 모드에서는 batch.max.rows가 너무 작으면 값이 누락될 수 있다.
-    - 따라서 이 옵션은 무시되거나, 내부적으로만 사용된다고 볼 수 있다.
+    - bulk모드의 "batch.max.rows" 옵션은 다른모드일 때와 작동방식이 약간 다르다.
+        - bulk: 1회 polling시, 전체 테이블 내용을 가져오지만, batch.max.rows 크기만큼 나눠서 broker의 topic에 적재된다. (도중에 record는 connect buffer를 거침)
+        - timestamp, incrementing: (1회 polling시 가져오는 분량) = (batch.max.rows 크기)
+    - 특히 해당 topic을 지속적으로 consume하는 consumer, connector가 있다면, batch.max.rows 크기 단위로 중간에 스트리밍 흐름이 끊길 수 있다.
+        - e.g.) topic의 record를 file 단위로 consume할 때, 원래 하나로 처리되어야할 file이 나눠질 수 있음
 
 """
 
