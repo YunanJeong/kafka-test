@@ -10,6 +10,7 @@ kafka-test
 ├── 4_kafka-ksql-service            # Add ksqlDB to "module 3"
 ├── 5_confluent-community-archive   # Set up kafka 1 node by Confluent Platform Community(zip or tar)
 ├── 6_confluent-community-package   # Set up kafka 1 node by Confluent Platform Community(deb)
+├── 7_cclpkg-debezium-test          # Add debezium connector to "module 5" 
 ├── LICENSE
 ├── README.md
 ├── memo/                           # Tips for Kafka Operation
