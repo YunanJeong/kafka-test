@@ -1,5 +1,5 @@
-# confluent-community-package
-- Confluent Platform Community 버전을  Debian(Ubuntu) 패키지 파일로 로컬 셋업하기
+# confluent-community-archive
+- Confluent Platform Community 버전을  archive(zip or tar) 파일로 로컬 셋업하기
 
 ## 실행
 - 초기화: `$terraform init`
