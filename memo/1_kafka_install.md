@@ -1,4 +1,4 @@
-# 설치 방법에 따른 라이센스
+# 설치 및 실행 방법
 ## Apache Kafka 공홈 (Apache Kafka 설치)
 - https://kafka.apache.org/quickstart
 - Apache 2.0 License
