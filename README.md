@@ -35,15 +35,14 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 		- 핵심 Payload, 원본데이터에 가까움
 
 
-## 설치
-- [라이센스 자세한 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafka_license.md)
-- [설치방법 및 관련 라이센스](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafka_install.md)
-
-## How to Analyze and Manage Kafka Messages
-- [kafkacat과 jq, 기타 필수 쉘 명령어 사용법](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_kafkacat_and_jq.md)
-
-## Python Kafka Package(Python으로 Producer, Consumer 만들 때 사용)
-- [Python Kafka Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_python_kafka_package.md)
-
-## Connector를 위한 offset 다루기
-- [특히 Source Connector를 위한 connect_offsets 설명 위주](https://github.com/YunanJeong/kafka-test/blob/main/memo/memo_connect_offsets.md)
+## 메모
+0. [라이센스 자세한 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/0_kafka_license.md)
+1. [설치 및 실행](https://github.com/YunanJeong/kafka-test/blob/main/memo/1_kafka_install.md)
+2. [Kafka 메시지 관리 및 분석 방법 (kafkacat, jq, 쉘 명령어)](https://github.com/YunanJeong/kafka-test/blob/main/memo/2_kafkacat_and_jq.md)
+3. [Python Kafka Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/3_python_kafka_package.md)
+	- Python으로 Producer, Consumer 만들 때 사용가능한 라이브러리
+4. [Connector를 위한 offset 다루기](https://github.com/YunanJeong/kafka-test/blob/main/memo/4_connect_offsets.md)
+	- 특히 Source Connector를 위한 connect_offsets 설명 위주
+5. [Kafka에서 Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/5_kafka_timestamp_management.md)
+6. [JDBC SRC 커넥터에서 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/6_jdbc_src_time_options.md)
+7. [S3 SINK 커넥터에서 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/7_s3_sink_time_options.md)
