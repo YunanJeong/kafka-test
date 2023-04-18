@@ -1,8 +1,8 @@
 *tfstate*
 *tfvars*
+!*.example
 *.lock.*
 .terraform*
-config.tfvars
 config/*
 !*.properties
 !*.service
