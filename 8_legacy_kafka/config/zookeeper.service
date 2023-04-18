@@ -1,0 +1,19 @@
+[Unit]
+Description = zookeeper
+After = network.target
+
+
+[Service]
+Type = simple
+User = root
+Group = root
+SyslogIdentifier = zookeeper
+WorkingDirectory = /kafka
+Restart = on-failure
+RestartSec = 10s
+ExecStart = /kafka/bin/zookeeper-server-start.sh /kafka/config/zookeeper.properties
+ExecStop = /kafka/bin/zookeeper-server-stop.sh
+Environment="EXTRA_ARGS=-Duser.timezone=Asia/Seoul"
+
+[Install]
+WantedBy=multi-user.target

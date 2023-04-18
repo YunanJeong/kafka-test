@@ -6,3 +6,4 @@ config.tfvars
 config/*
 !*.properties
 !*.service
+!memo.txt

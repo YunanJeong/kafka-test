@@ -1,0 +1,19 @@
+./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties
+./bin/kafka-server-start.sh -daemon ./config/server.properties 
+sudo ./bin/kafka-server-stop.sh
+sudo ./bin/zookeeper-server-stop.sh
+
+# 0.9 버전 기준
+# (--bootstrap-server localhost:9092 대신 --zookeeper localhost:2181)
+
+# 토픽 조회
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+# 토픽 생성
+./bin/kafka-topics.sh --create --replication-factor 1 --partitions 1 --topic test --zookeeper localhost:2181
+
+# 토픽 내용 확인 컨슘
+./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning --zookeeper localhost:2181
+
+# 프로듀스
+./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
