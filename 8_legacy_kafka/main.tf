@@ -84,7 +84,9 @@ resource "null_resource" "ubuntu_remote"{
       "sudo apt update ; sudo apt install -y openjdk-8-jdk-headless",
 
       # Kafka 설치
-      "wget https://archive.apache.org/dist/kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz",
+      # "wget https://archive.apache.org/dist/kafka/0.9.0.0/kafka_2.11-0.9.0.0.tgz",
+      # "wget https://archive.apache.org/dist/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz",
+      "wget https://archive.apache.org/dist/kafka/1.0.0/kafka_2.12-1.0.0.tgz",
       "sudo tar xzf kafka_*.tgz",
       "sudo mv ~/kafka_*/ /kafka/", 
       "sudo mv ~/config/*.properties /kafka/config/",
