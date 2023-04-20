@@ -11,6 +11,7 @@ kafka-test
 ├── 5_confluent-community-archive   # Set up kafka 1 node by Confluent Platform Community(zip or tar)
 ├── 6_confluent-community-package   # Set up kafka 1 node by Confluent Platform Community(deb)
 ├── 7_cclpkg-debezium-test          # Add debezium connector to "module 6" 
+├── 8_legacy_kafka                  # Module For Old Kafka 1 node 
 ├── LICENSE
 ├── README.md
 ├── memo/                           # Tips for Kafka Operation
@@ -46,3 +47,4 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 5. [Kafka에서 Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/5_kafka_timestamp_management.md)
 6. [JDBC SRC 커넥터에서 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/6_jdbc_src_time_options.md)
 7. [S3 SINK 커넥터에서 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/7_s3_sink_time_options.md)
+8. [카프카 복제도구 - 미러메이커, 레플리케이터](https://github.com/YunanJeong/kafka-test/blob/main/memo/8_mirrormaker_replication.md)
