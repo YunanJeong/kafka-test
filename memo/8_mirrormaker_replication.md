@@ -4,8 +4,7 @@
 ## MM(미러메이커 구버전)
 - Apache Kafka에 포함되는 오픈소스 (`bin/kafka-mirror-maker`)
 - 3버전대에서 deprecated, 4버전대부터 완전삭제
-- 3버전대 Kafka에서 legacy mode(`bin/kafka-mirror-maker`)로 실행 가능
-- 과거 MM보다 최신 Kafka의 legacy mode MM이 기능이 더 많음
+- 3버전대 Kafka에서 legacy MM1(`bin/kafka-mirror-maker`) 실행 가능
 - connect 미사용(consumer + producer로 단순 구현됨)
 - [버전 호환성 낮음](https://stackoverflow.com/questions/37864543/kafka-mirrormaker-from-older-version-to-newer-version)
 - 동일버전 Kafka 간 미러링이 아니면 호환성 이슈 종종 발생
@@ -24,6 +23,8 @@
 	- `connect-standalone.sh`를 사용하는 것은 아니다.
 - distributed 모드
 	- `connect-dstributed.sh`로 일반적인 connect를 켜둔 상태에서 REST api로 필요한 커넥터들을 실행함
+- 복제 정책
+	- MM2 커넥터에서 `LegacyReplicationPolicy`를 설정하면 1버전 미만의 구버전 호환도 가능하다고 함
 ## Replicator
 -  [Confluent Enterprise License 필요](https://docs.confluent.io/platform/current/multi-dc-deployments/replicator/index.html#compatibility) 
 - Connector 형태로 제공됨
