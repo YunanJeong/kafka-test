@@ -33,7 +33,7 @@
 	- 평가 및 테스트용으로 무료가능
 	- 상용, 운영환경배포는 허가되지 않음
 ---
-# MirroMaker1 Example: Old to Latest Cluster
+# MirrorMaker1 Example: Old to Latest Cluster
 매우 오래된 Kafka에서 최신 Kafka로 데이터 복제하기
 - 소스 클러스터가 2.4 이전 버전이면 MM1을 써야함
 - 목적지 클러스터는 topic 자동생성 옵션 허용 필요
