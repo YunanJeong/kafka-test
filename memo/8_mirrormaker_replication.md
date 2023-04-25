@@ -70,7 +70,8 @@
 
 ## 1.0 => 3.2 (Confluent 7.2) 테스트
 - 3.2Kafka의 legacy MM1을 사용한다.
-    - 1.0Kafka의 MM1 사용시 연결은 되지만, offset처리가 비정상 동작
-    - consumer.properties에 `auto.offset.reset=earliest` 속성을 추가했음에도 적용되지 않음 (미러메이커 재실행시, 중단된 동안 복제되지않은 데이터를 무시하고 계속 최신 데이터만 가져와버림)
+    - 1.0Kafka의 MM1 사용시 다음 문제가 있음
+		- 연결은 되지만, offset처리가 비정상 동작
+    	- consumer.properties에 `auto.offset.reset=earliest` 속성을 추가했음에도 적용되지 않음 (미러메이커 재실행시, 중단된 동안 복제되지않은 데이터를 무시하고 계속 최신 데이터만 가져와버림)
 - 참고
 	- 1버전부터 zookeeper가 아닌 broker(bootstrap.servers) 연결정보로 Consume을 수행한다.
