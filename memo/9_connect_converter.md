@@ -1,11 +1,10 @@
 # 카프카 커넥트 사용시, converter 종류
-- String
 - BytesArray: 완전 동일하게 데이터를 옮길 때 씀
 - Avro: Schema Registry 사용시 많이 씀
 - Json: Kafka에서 Json형식으로 데이터를 관리하는 경우가 많으므로, 가장 일반적
 
 # 일반적인 경우 default
-- key.converter: Json or String
+- key.converter: Json
 - value.converter: Json
 - 이는 Kafka에서 가장 널리 사용되는 저장형식에 해당한다.
 - 개별 connector에서 별도 설정하지 않으면 connect 설정파일(`connect-standalone.properties`, `connect-distributed`.properties)을 따른다.
