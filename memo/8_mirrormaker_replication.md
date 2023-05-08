@@ -75,3 +75,6 @@
     	- consumer.properties에 `auto.offset.reset=earliest` 속성을 추가했음에도 적용되지 않음 (미러메이커 재실행시, 중단된 동안 복제되지않은 데이터를 무시하고 계속 최신 데이터만 가져와버림)
 - 참고
 	- 1버전부터 zookeeper가 아닌 broker(bootstrap.servers) 연결정보로 Consume을 수행한다.
+---
+# MirrorMaker2 Example
+- [kafka-connect-manager 레포지토리에 기록](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src.yml.example)
