@@ -77,4 +77,32 @@
 	- 1버전부터 zookeeper가 아닌 broker(bootstrap.servers) 연결정보로 Consume을 수행한다.
 ---
 # MirrorMaker2 Example
-- [kafka-connect-manager 레포지토리에 기록](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src.yml.example)
+## Converter
+-MM2에선 key, value 둘 다 ByteArrayConverter로 명시해서 써주자.
+	- 미러메이커 특성상 그대로 복제하는 것이 목적이므로 ByteArrayConverter가 일반적으로 제일 나아보인다.
+	- 다른 Converter를 쓰면 별도 처리할 이슈가 많다.
+```
+key.converter: org.apache.kafka.connect.converters.ByteArrayConverter
+value.converter: org.apache.kafka.connect.converters.ByteArrayConverter
+```
+	
+## 중단 테스트
+- connect 종료 후 재실행시, 중단시간 동안 소스클러스터에 쌓인 데이터가 어떻게 처리되는가?
+	- 중단된 부분부터 미러링이 계속되어 잘 처리됨
+	- 중단된 동안 새로 생성된 topic도 인식하여 잘 처리됨
+- connector 종료 후 재실행시, 중단시간 동안 소스클러스터에 쌓인 데이터가 어떻게 처리되는가?
+	- 중단된 부분부터 미러링이 계속되어 잘 처리됨
+	- connect 종료시와 마찬가지
+- connector 종료 후 재실행시(같은 설정인데 connector name이 다른 경우), 중단시간 동안 소스클러스터에 쌓인 데이터가 어떻게 처리되는가? 
+	- 완전히 새로 시작하는 것과 같음. offset이 별도 관리됨.
+	- 타겟클러스터에 기존 topic들이 남아있는데, 설정이 같으므로 해당 topic에 동일한 Record들이 중복으로 들어가게됨 (기존 Record도 남아있음)
+	- 따라서 이런 경우, 기존 topic들을 삭제하거나, 소스클러스터 alias를 변경해서 다른 topic에 넣어주는 방식 등으로 중복을 피해야할 것 같다.
+
+## 시작 테스트
+- MM2를 처음 시작하는 경우, 소스클러스터에 있는 topic이 처음(offset 0)부터 전부 타겟클러스터로 미러링됨
+	- 데이터를 복제하기보다는 topic을 복제한다는 느낌이 강함
+	- 이는 MM1의 consumer default 설정(`auto.offset.reset=latest')과는 다름
+	- MM1에서 `auto.offset.reset=earlist`로 설정한 것처럼 동작
+	- kafka 3.X버전 대의 MM2를 쓸 때, `auto.offset.reset=latest`설정이 안된다는 이슈가 있음 ( )
+
+- [이외 항목들은 샘플파일 주석들을 참고](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src.yml.example)
