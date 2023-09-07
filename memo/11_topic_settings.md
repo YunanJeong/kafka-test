@@ -22,6 +22,12 @@
 
 - 지정 용량을 초과하면 새로운 segment로 롤링
 
+### segment.index.bytes
+
+- index: 메시지의 오프셋과 파일 내 위치를 매핑
+- 검색 속도에 영향 줌
+- 보통 default로 두면됨
+
 ## retention 관련
 
 Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
@@ -29,13 +35,22 @@ Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
 ### retention.ms
 
 - closed segment 내부 모든 record가 지정시간을 초과하면 해당 segment를 삭제 취급
-- segment 내부에 지정시간을 초과하지 않은 record가 하나라도 있으면, segment는 삭제되지 않음
+- segment 내부에 지정시간을 초과하지 않은 record가 하나라도 있으면, 삭제되지 않음
 
 ### retention.bytes
 
 - topic의 closed segment들이 지정용량을 초과하면 삭제 취급
 - 개별 segment가 아닌, **대상 topic의 모든 closed segment들 용량 합산**으로 계산
+- `-1`: 용량제한 없음
 
 ### delete.retention.ms
 
 - `retention.ms`, `retention.bytes`에 의한 처리 이후, 지정시간을 초과하면 실제 segment 파일을 삭제
+
+## 기타
+
+### min.insync.replicas
+
+- 보통 브로커 3개라면 2 정도 권장
+- 브로커 1개라면 1
+- [참고](https://songhayoung.github.io/2020/07/13/kafka/acks-replicas/#Introduction)
