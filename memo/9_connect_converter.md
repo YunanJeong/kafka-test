@@ -16,8 +16,11 @@ value.converter: Json
 
 ## MirrorMaker2
 
-- key.converter: BytesArray
-- value.converter: BytesArray
+```properties
+key.converter: BytesArray
+value.converter: BytesArray
+```
+
 - 그대로 복제(미러링)하는 것이 목적이므로 기본 설정이 BytesArray다.
   - BytesArray가 아니면, 문자인코딩, 스키마 포함여부 등 신경쓸 것이 많아진다.
 - 다만 위와 같이 알려져있으나, 기존 dstributed connect에 MM2 connector를 붙일 경우, connect설정을 기본으로 따르게 된다.
