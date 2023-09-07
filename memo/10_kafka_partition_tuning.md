@@ -9,7 +9,7 @@
 ## Consume할 때
 
 - 대상 topic의 파티션 수가 많을수록 처리속도가 빠르다.
-  - consumer-group 또는 connector의 tasks.max 숫자는 해당 topic의 파티션 수에 맞추는 것이 권장사항
+- consumer-group 또는 connector의 tasks.max 숫자는 해당 topic의 파티션 수에 맞추는 것이 권장사항
 
 ## Produce할 때
 
