@@ -28,6 +28,12 @@
 - 검색 속도에 영향 줌
 - 보통 default로 두면됨
 
+### segment.jitter.ms
+
+- segment 롤링 트리거에 무작위 지연시간을 부여하여 모든 브로커에서 동시에 롤링이 발생하는 것을 방지
+- 부하 분산용
+- 0이면 무작위성 없음
+
 ## retention 관련
 
 Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
