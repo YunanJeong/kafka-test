@@ -36,6 +36,6 @@ Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
 - topic의 closed segment들이 지정용량을 초과하면 삭제 취급
 - 개별 segment가 아닌, **대상 topic의 모든 closed segment들 용량 합산**으로 계산
 
-#### delete.retention.ms
+### delete.retention.ms
 
 - `retention.ms`, `retention.bytes`에 의한 처리 이후, 지정시간을 초과하면 실제 segment 파일을 삭제
