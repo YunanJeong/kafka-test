@@ -32,6 +32,8 @@
 
 Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
 
+오동작 방지를 위해 가급적 retention은 segement보다 큰 값으로 설정 필요
+
 ### retention.ms
 
 - closed segment 내부 모든 record가 지정시간을 초과하면 해당 segment를 삭제 취급
