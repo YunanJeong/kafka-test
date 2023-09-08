@@ -49,3 +49,6 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 7. [S3 SINK 커넥터에서 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/7_s3_sink_time_options.md)
 8. [카프카 복제도구 - 미러메이커, 레플리케이터](https://github.com/YunanJeong/kafka-test/blob/main/memo/8_mirrormaker_replication.md)
 9. [Connect에서 Converter 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/9_connect_converter.md)
+
+10. [topic partition 개수 정하기](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_kafka_partition_tuning.md)
+11. [topic 개별 세팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/11_topic_settings.md)
