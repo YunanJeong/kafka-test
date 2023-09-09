@@ -45,7 +45,7 @@
 - non-production 기준으로 전체 상용기능을 무기한 사용해볼 수 있음
 - 1 클러스터에 1 브로커만 사용가능
   - 브로커 1개만 가진 클러스터를 여러 개 운용하는 것은 가능
-  - 브로커 1개를 더 추가하는 즉시 평가판으로 전환
+  - 클러스터에 브로커 1개를 더 추가하는 즉시 평가판으로 전환
 
   ```txt
   Adding a broker starts a trial license that expires in 30 days. You cannot revert from a trial back to a developer license.
@@ -58,7 +58,7 @@
 ## 참고자료
 
 - [Confluent Community License FAQ](https://www.confluent.io/confluent-community-license-faq/)
-  - ★ kafka와 관련된 세 가지 라이센스 별로 사용가능한 제품범위가 표로 잘 정리되어 있다. (`Apache 2.0 License`, `Confluent Community License`, `Confluent Enterprise License`)
+  - Confluent 사의 각 제품이 어떤 라이센스에 해당하는지 정리된 표
 
 - [Confluent 공식문서의 라이센스 타입 설명](https://docs.confluent.io/platform/current/installation/license.html#license-types)
 
