@@ -13,7 +13,7 @@
 - -P: Producer Mode
 - -C: Consumer Mode
 
-- 예시)
+- 예시
   - broker: localhost:9092
   - topic's name: topicname
 - `$ kafkacat -b localhost:9092 -L`

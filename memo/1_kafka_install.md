@@ -1,4 +1,4 @@
-# 설치 및 실행 방법
+# Kafka 설치, 실행, 설정
 
 ## Apache Kafka
 
