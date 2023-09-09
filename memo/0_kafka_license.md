@@ -4,9 +4,9 @@
 
 - 개인은 Confluent Platform의 `Confluent Community License`를 무료 이용가능하다.
 - 회사는 Confluent Platform의 `Confluent Community License`를 무료 이용가능하다.
-  - 단, Confluent Platform을 활용하여 Confluent사의 경쟁 제품을 만들면 안된다. (e.g. 클라우드 서비스(SaaS,PaaS,...))
+  - 단, Confluent Platform을 활용하여 Confluent사의 경쟁가능성있는 제품을 만들면 안된다. (e.g. 클라우드 서비스(SaaS,PaaS,...))
 - Confluent Platform 없이 Apache Kafka는 무료 이용가능하다.
-- 그러나, 장기적으로 ksql 등 추가기능을 쓰려면 Confluent Platform으로 Apache Kafka의 초기 구성을 잡는게 편하다.
+- 그러나, 장기적으로 ksql 등 추가기능을 쓰려면 Confluent Platform으로 Apache Kafka의 초기 구성을 잡는게 편할 수 있다.
 
 ## Apache Kafka (`Apache 2.0 License`)
 
@@ -17,8 +17,8 @@
 ## Confluent Platform
 
 - Apache Kafka 활용성을 높여주는 플랫폼
-- **아파치 재단과 별개로** Confluent 사에서 제공하는 플랫폼
-- Apache Kafka 포함하여 배포됨
+- **아파치 재단과 별개로 Confluent 사에서 제공**하는 플랫폼
+- Apache Kafka를 포함하여 배포됨
 - Confluent 사의 독자 라이센스 정책 사용
 
 ### `Confluent Community License`
@@ -58,9 +58,7 @@
 ## 참고자료
 
 - [Confluent Community License FAQ](https://www.confluent.io/confluent-community-license-faq/)
-	- ★ kafka와 관련된 세 가지 라이센스 별로 사용가능한 제품범위가 표로 잘 정리되어 있다.
-    - `Apache 2.0 License`, `Confluent Community License`, `Confluent Enterprise License`
-
+  - ★ kafka와 관련된 세 가지 라이센스 별로 사용가능한 제품범위가 표로 잘 정리되어 있다. (`Apache 2.0 License`, `Confluent Community License`, `Confluent Enterprise License`)
 
 - [Confluent 공식문서의 라이센스 타입 설명](https://docs.confluent.io/platform/current/installation/license.html#license-types)
 
