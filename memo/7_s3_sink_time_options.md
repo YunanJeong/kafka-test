@@ -113,3 +113,33 @@
   - 데이터 전송 중 S3 Sink Connector를 교체하는 경우
   - 어지간하면 중복, 손실이 없다. 최소한 중복은 있어도 손실은 없다. (At-least-Once Delivery 수준)
     - 다만 At-least-Once도 Exactly-Once도 이 경우 '보장'하는 수준은 아닌 것 같다.
+
+## 이슈: S3 Sink Connector로 S3 업로드시 Last Modified 시간 표기 문제
+
+S3 Object에 표기되는 Last Modified 시간이 실제와 다른 경우가 있다.
+
+Delay 된게 아니라, 지정 업로드 시각보다 더 이른 시간으로 찍힌다.
+
+- e.g. 1
+  - 11시 업로드 파일이 10:52:00과 같이 더 이른 시간으로 표기된다.
+  - 하지만 Connect 시스템 로그에선 11시에 가깝게 S3 Output Stream 생성과 File Commit을 정확히 수행한 것으로 나타난다.
+  - 또한, 해당 파일에는 timestamp가 10:00:00~10:59:59에 해당하는 모든 로그가 적재되어, 데이터 무결성에도 문제가 없음을 확인할 수 있다.
+
+- e.g. 2
+  - [S3 Connector 프로젝트에 관련 이슈 정리한 것](https://github.com/confluentinc/kafka-connect-storage-cloud/issues/681)
+
+### 문제원인 (추정)
+
+- Kafka Buffer, or 처리속도
+  - S3 업로드 파일이 특정 크기 이상일 때 발생
+  - 한 번에 업로드 하는 S3 파일 크기가 늘어나는 만큼 시간 차이가 더 크게 난다.
+
+- [Last Modified의 의미가 통상적인 의미, 공식문서의 의미와 약간 다름](https://stackoverflow.com/questions/40698341/s3-last-modified-timestamp-for-eventually-consistent-overwrite-puts)
+
+- 결국, 특정 크기 이상은 업로드 정시를 맞추기 위해 더 일찍 buffer에 담아두는 것이 추정원인이긴 한데, 명확하지가 않다.
+
+### 해결방안
+
+- 데이터 무결성에 문제없다면, 시간표기 차이기 때문에 크게 신경쓰지 않아도 된다. AWS도 종종 완벽하지 않다.
+
+- 단, 후속 파이프라인에서 Last Modified 표기 시간을 중요하게 활용할 수 있는데, 이 때는 Kafka Topic Partition 개수를 늘려서 한번에 업로드 하는 파일 크기를 줄이면 더 안정적으로 관리할 수 있다.
