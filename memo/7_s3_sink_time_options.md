@@ -134,12 +134,15 @@ Delay 된게 아니라, 지정 업로드 시각보다 더 이른 시간으로 �
   - S3 업로드 파일이 특정 크기 이상일 때 발생
   - 한 번에 업로드 하는 S3 파일 크기가 늘어나는 만큼 시간 차이가 더 크게 난다.
 
-- [Last Modified의 의미가 통상적인 의미, 공식문서의 의미와 약간 다름](https://stackoverflow.com/questions/40698341/s3-last-modified-timestamp-for-eventually-consistent-overwrite-puts)
+- [Last Modified의 실제 동작 방식이 통상적인 의미, 공식문서 설명과 약간 다름](https://stackoverflow.com/questions/40698341/s3-last-modified-timestamp-for-eventually-consistent-overwrite-puts)
+  - S3 Object는 수정한다는 개념이 없다.
+  - 수정 = 새 파일로 덮어쓰기
+  - 결국, Last Modified는 Upload Time과 거의 비슷하다.
 
-- 결국, 특정 크기 이상은 업로드 정시를 맞추기 위해 더 일찍 buffer에 담아두는 것이 추정원인이긴 한데, 명확하지가 않다.
+- 종합하면, 특정 크기 이상 데이터는 업로드 정시를 맞추기 위해 더 일찍 buffer에 담아두기 때문인 것으로 보인다. (추정)
 
 ### 해결방안
 
 - 데이터 무결성에 문제없다면, 시간표기 차이는 크게 신경쓰지 않아도 된다. AWS도 종종 완벽하지 않다.
 
-- 단, 후속 파이프라인에서 Last Modified 표기 시간을 중요하게 활용할 수 있는데, 이 때는 Kafka Topic Partition 개수를 늘려서 한번에 업로드 하는 파일 크기를 줄이면 더 안정적으로 관리할 수 있다.
+- 단, 후속 데이터 파이프라인에서 Last Modified 표기 시간을 중요하게 활용할 수 있는데, 이 때는 Kafka Topic Partition 개수를 늘려서 한번에 업로드 하는 파일 크기를 줄이면 더 안정적으로 관리할 수 있다.
