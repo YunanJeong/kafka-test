@@ -11,7 +11,7 @@
 ## segment 관련
 
 - 카프카 데이터는 segment라고 불리는 파일 단위로 저장된다.
-- 저장경로: `server.properties`의 `log.dirs`로 결정
+- 저장경로: `server.properties`의 `log.dirs`로 결정됨
 - segment는 topic 파티션 별로 생성된다.
 
 ### segment.ms
@@ -38,7 +38,7 @@
 
 Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
 
-오동작 방지를 위해 가급적 retention은 segement보다 큰 값으로 설정 필요
+오동작 방지를 위해 가급적 retention은 segment보다 큰 값으로 설정 필요
 
 ### retention.ms
 
