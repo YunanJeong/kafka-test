@@ -17,6 +17,7 @@
 ### segment.ms
 
 - 지정된 시간을 초과하면 새로운 segment로 롤링
+- segment 파일이 open된 시점 기준으로 지정시간 초과시 closed됨
 
 ### segment.bytes
 
