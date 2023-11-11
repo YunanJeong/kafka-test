@@ -21,13 +21,13 @@ prefix(`producer.`)를 붙이면 커넥트에서도 producer속성을 설정할 
 - 단위: bytes
 - Default: 33554432 (32MB)
 - 작용
-  - (broker가 수용가능한 데이터처리량에 비해) 값이 작으면 max.block.ms 동안 블로킹한뒤 익셉션 발생.
+  - (broker가 수용가능한 데이터처리량에 비해) 값이 작으면 `max.block.ms` 동안 블로킹한뒤 익셉션 발생.
   - 값이 크면, 메모리 낭비
 - batch.size만큼 레코드가 쌓일 경우, 이 설정과 무관하게 즉시 Produce 실행
 
 ### producer.max.block.ms
 
-- buffer.memory 설명 참고
+- `buffer.memory` 설명 참고
 
 ### producer.linger.ms
 

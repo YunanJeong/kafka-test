@@ -20,4 +20,4 @@
 
 ## 각 시간옵션 관련 설명
 
-https://developer.confluent.io/patterns/stream-processing/wallclock-time/
+<https://developer.confluent.io/patterns/stream-processing/wallclock-time/>
