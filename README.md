@@ -69,3 +69,5 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 10. [topic partition 개수 정하기](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_kafka_partition_tuning.md)
 
 11. [topic 개별 세팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/11_topic_settings.md)
+
+12. [Connect 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/12_connect_settings.md)
