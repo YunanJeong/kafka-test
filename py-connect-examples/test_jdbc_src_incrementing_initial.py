@@ -1,7 +1,10 @@
 """incrementing_initial 테스트.
 - incrementing 모드 첫 실행시 가져올 첫 행을 지정하는 방법
-- 서브쿼리의 where 절로 조건을 걸 수 있다.
-
+  - 서브쿼리의 where 절로 조건을 걸 수 있다.
+  - offset을 수동 지정해도 되지만, 다소 번거롭다.
+  - TIP) query 대신 whitelist 모드로만 가져오는 경우,
+    - 커넥터 최초 실행시는 query모드로 일부 로그를 가져온 후,
+    - offset이 신규등록되면 whitelist모드로 옵션을 수정하면 된다.
 - incrementing 모드는 원래 첫실행시 테이블의 모든 행을 가져오도록 되어있다.
 - bulk모드 외에는 where절을 바로 사용할 수 없다.
 

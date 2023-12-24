@@ -8,7 +8,7 @@
         - e.g) tablename => TutorialDB.dbo.tablename
 
     - 다음 옵션들을 활용할 수 있다.
-        - catalog.pattern: 카탈로그 지정(DB명에 해당)
+        - catalog.pattern: 카탈로그 지정(MySQL 등에서 DB명에 해당)
         - schema.pattern: 스키마 지정(MSSQL Server의 "dbo"가 이에 해당한다.)
         - catalog 및 schema 정보는 다음 쿼리로 확인할 수 있다.
             - SELECT * FROM {db_name}.INFORMATION_SCHEMA.tables
@@ -88,9 +88,9 @@ body = {
         # "query": query,
         "db.timezone": "Asia/Seoul",
         "table.whitelist": ','.join(db_tables),  # 특정 테이블들만 조회
-        # "table.types": "VIEW",     # default: TABLE
-        # "table.blacklist": "xxx",  # 특정 테이블 제외
-        # "catalog.pattern": db_name,
+        # "table.types": "VIEW",      # default: TABLE
+        # "table.blacklist": "xxx",   # 특정 테이블 제외
+        # "catalog.pattern": db_name, # MySQL 등에서 하나의 서버에 여러 DB가 있을 때 특정 DB 지정
 
         # "schema.pattern": "dbo",
 
