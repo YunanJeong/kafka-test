@@ -1,6 +1,6 @@
 # topic settings
 
-카프카의 토픽 옵션 정리
+자주 설정하는 토픽 옵션 정리
 
 ## Default
 
@@ -18,6 +18,11 @@
 
 - 지정된 시간을 초과하면 새로운 segment로 롤링
 - segment 파일이 open된 시점 기준으로 지정시간 초과시 closed됨
+
+```sh
+# server.properties에서 신규 생성 토픽의 default segment.ms 변경
+log.roll.ms=172800000
+```
 
 ### segment.bytes
 

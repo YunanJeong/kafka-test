@@ -2,12 +2,6 @@
 
 - 정답은 없으나 결국은 특정 값을 설정해야 한다.
 - 빠른 설정을 위해 구체적인 방법과 이유를 여기에 기술한다.
-- 신규 생성 토픽의 default 파티션 수는 다음과 같이 설정할 수 있다.
-
-```server.properties
-# server.properties에서 신규 생성 토픽의 파티션 수를 6으로 지정하는 예시
-num.partitions=6
-```
 
 ## 토픽 당 파티션 개수 (`첫 구축시 최우선 고려사항`)
 
@@ -22,6 +16,13 @@ num.partitions=6
   - 향후 스케일아웃 대비
 - 클러스터에서 소규모, 대규모는 통상 10개 전후로 구분하여 칭함
 - [[참고]](https://dev.to/jeden/notes-on-kafka-partition-count-and-replication-factor-5dck)
+
+```server.properties
+# server.properties에서 신규 생성 토픽의 파티션 수를 6으로 지정하는 예시
+num.partitions=6
+```
+
+- 신규 생성 토픽의 default 파티션 수는 위와 같이 설정할 수 있다.
 
 ## 처리량 한계 고려
 
