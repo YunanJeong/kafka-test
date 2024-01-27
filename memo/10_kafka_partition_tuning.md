@@ -33,7 +33,7 @@ num.partitions=6
 - 권장 한계값이다. 이 값보다 낮으면 자원낭비지만, 높으면 안정성이 떨어진다.
 - [처리량으로 최적화](https://dattell.com/data-architecture-blog/kafka-optimization-how-many-partitions-are-needed/)
 
-## 카프카 지원 사양 고려
+## 클러스터 or 브로커 당 파티션 개수 한도
 
 ```sh
 - 브로커 당 2000~4000개 활성화된 파티션 (최대 4,000)
