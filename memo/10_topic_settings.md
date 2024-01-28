@@ -60,11 +60,3 @@ Kafka가 쓰는 중인 파일open된 segment는 적용대상이 아님
 ### delete.retention.ms
 
 - `retention.ms`, `retention.bytes`에 의한 처리 이후, 지정시간을 초과하면 실제 segment 파일을 삭제
-
-## 기타
-
-### min.insync.replicas
-
-- 보통 브로커 3개라면 2 정도 권장
-- 브로커 1개라면 1
-- [참고](https://songhayoung.github.io/2020/07/13/kafka/acks-replicas/#Introduction)
