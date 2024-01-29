@@ -66,8 +66,10 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 
 9. [Connect에서 Converter 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/9_connect_converter.md)
 
-10. [topic partition 개수 정하기](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_kafka_partition_tuning.md)
+10. [토픽튜닝할 것들(segment,retention 등)](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_topic_settings.md)
 
-11. [topic 개별 세팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/11_topic_settings.md)
+11. [토픽튜닝: partition](https://github.com/YunanJeong/kafka-test/blob/main/memo/11_topic_settings_partition.md)
 
-12. [Connect 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/12_connect_settings.md)
+12. [토픽튜닝: replication](https://github.com/YunanJeong/kafka-test/blob/main/memo/12_topic_settings_replication.md)
+
+13. [Connect 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/13_connect_settings.md)
