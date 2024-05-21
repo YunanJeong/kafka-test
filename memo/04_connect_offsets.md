@@ -9,6 +9,24 @@
   - offset정보의 실제저장경로는 `server.properties의 log.dir 설정경로(kafka-logs)`이다.
   - topic 삭제시 관련 offset도 삭제된다.
 
+### Sink Connector의 offset 재설정
+
+- 일반적인 consumer의 offset 제어와 동일
+
+```sh
+# 설정 전 커넥터 중단
+
+# 특정 커넥터의 오프셋 확인
+## (conect-your-connector-name은 자동생성된 consumer group의 이름이다.)
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-your-connector-name --describe
+
+# 특정 오프셋으로 오프셋 재설정
+## (e.g. 12345번까지 읽은 것으로 취급하기)
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-your-connector-name --reset-offsets --to-offset 12345 --topic your_topic --execute
+
+# 설정 후 커넥터 재실행
+```
+
 ## Source connector를 위한 connect_offsets 다루기
 
 - Source Connector는 Producer이기 때문에 Kafka의 일반 offset관리와는 별도 수행된다.
