@@ -11,8 +11,7 @@
 
 ### Sink Connector의 offset 재설정
 
-- 일반적인 consumer의 offset 제어와 동일
-- `__consumer_offset`의 데이터가 변경된다.
+- 일반적인 consumer의 offset 제어와 동일 (`__consumer_offsets`의 데이터를 변경)
 
 ```sh
 # 설정 전 커넥터 중단
