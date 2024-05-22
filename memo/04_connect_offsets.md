@@ -12,6 +12,7 @@
 ### Sink Connector의 offset 재설정
 
 - 일반적인 consumer의 offset 제어와 동일
+- `__consumer_offset`의 데이터가 변경된다.
 
 ```sh
 # 설정 전 커넥터 중단
@@ -42,7 +43,7 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 
 ### Source Connector의 offset 유지 방법
 
-    - 같은 커넥터명으로 삭제, 수정, 등록
+- 같은 커넥터명으로 삭제, 수정, 등록
 
 ### Source Connector의 offset 초기화 방법 [[1]](https://rmoff.net/2019/08/15/reset-kafka-connect-source-connector-offsets/) [[2]](https://soojong.tistory.com/entry/Source-Connector-Offset-%EC%B4%88%EA%B8%B0%ED%99%94-%ED%95%98%EA%B8%B0)
 
