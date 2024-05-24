@@ -1,5 +1,20 @@
 # connect-offsets
 
+## offset
+
+- 일반적으로 데이터 스트림, 파일 등을 읽을 때 현재 위치를 나타낼 때 사용
+- 각 메시지마다 offset넘버를 가지고 있고, 현재 어디까지 읽었는지 offset을 별도저장하는 곳이 있음.
+  - Kafka의 경우
+  - sink connector: __consumer_offsets
+  - src connector: connect-offsets
+- 일반적으로 offset: 5 라고 기록되어있으면
+  - 5번부터 읽을 차례: O
+  - 4번까지 읽음: O
+  - 5번까지 읽음: X
+  - `Completed until 5`: O
+    - 번역에 주의한다.
+    - 5번 `전 까지(until)`읽었으니까, 이제 5번부터 읽을 차례라는 의미다.
+
 ## Sink Connector를 위한 offset 다루기
 
 - Sink Connector는 Consumer이므로, broker에서 일반적인 offset으로 취급, 관리된다.
