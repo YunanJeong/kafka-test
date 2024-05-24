@@ -14,8 +14,6 @@
 
 ## 용례: SMT 중 TimestampConverter로 시간 값 변환 (String to String)
 
-### 상황
-
 ### 원본
 
 ```json
