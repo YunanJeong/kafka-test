@@ -21,7 +21,7 @@
 bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-your-connector-name --describe
 
 # 특정 오프셋으로 오프셋 재설정
-## (e.g. 12345번까지 읽은 것으로 취급하기)
+## (e.g. offset이 12345번인 Record부터 읽을 차례라고 지정)
 bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-your-connector-name --reset-offsets --to-offset 12345 --topic your_topic --execute
 
 # 설정 후 커넥터 재실행
