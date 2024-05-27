@@ -1,16 +1,16 @@
 # SMT(Single Message Transformations)
 
-- 커넥터에서 간단한 메시지 변환을 할 수 있도록 해주는 기능
-- kstreams, ksqldb 등을 쓰기 애매할 때 유용하게 사용가능
+- 커넥터에서 간단한 메시지 편집 기능
+- kstreams, ksqldb, 여타 ETL파이프라인 등을 쓰기 애매할 때 유용
 - 커넥터의 config에서 설정가능
 - `커넥터 유형마다 사용가능한 SMT의 기능이 제한`되며, 이는 일반적으로 문서에 잘 나와있음
 - SMT의 confluent 일부 문서가 부실하거나 오류가 있으니 주의
 
-## SMT가 적용되는 시점 (중요)
+## SMT 적용 시점 (중요)
 
 - 커넥터 핵심 기능 수행 후 `출력직전 SMT 적용`
-- source connector: kafka에 쓰기 직전 데이터 변환됨
-- sink connector: 외부 시스템으로 전송 직전 데이터 변환됨
+- Source Connector: Kafka에 쓰기 직전 데이터 변환
+- Sink Connector: 외부 시스템으로 전송 직전 데이터 변환
 
 ## 용례: SMT 중 TimestampConverter로 시간 값 변환 (String to String)
 
@@ -21,7 +21,7 @@
 ```
 
 - S3 Sink Connector로 Kafka Record를 S3로 업로드하려 한다.
-- TimeBasedPartitioner로 업로드하려는데, 원본 시간문자열이 ISO8601 표준을 따르지 않아 제대로 인식이 안된다.
+- TimeBasedPartitioner로 업로드하려는데, 원본 시간문자열이 ISO8601 표준을 따르지 않아 처리불가한 상황
 
 ### 결과
 
@@ -52,5 +52,9 @@ transforms.StampToStr.type: "org.apache.kafka.connect.transforms.TimestampConver
 transforms.StampToStr.field: myLogEventTime
 transforms.StampToStr.format: "yyyy-MM-dd'T'HH:mm:ss.SSS'+09:00'"  # 출력 형식: ISO8601로 표기(시간대를 직접기입)  
 transforms.StampToStr.target.type: string
-
 ```
+
+### 참고
+
+- S3 Sink Connector에서 string to string, timestamp to timestamp는 지원되지 않거나 오류 발생한다.
+- Confluent 문서에서는 되는 것처럼 기술되어있는데 주의하자
