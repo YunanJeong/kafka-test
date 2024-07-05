@@ -26,6 +26,7 @@
   - JDBC Connector에서 DB 당 처리할 테이블이 100개 이상, 그러한 DB가 100개 이상, 총 커넥터 수는 400개 이상인 경우
   - 처리할 데이터가 많을 때는 `poll.interval.ms`를 줄여서 빠르게 데이터를 처리하면 캐시메모리 부하 감소
   - 처리할 데이터가 적을 때는 `poll.interval.ms`를 늘려서 신규 생성 로그 감지를 천천히하면 힙메모리 부하 감소
+    - 특히 `task 수가 많은 경우 한 노드 내에서 컨텍스트 스위칭 비용이 커질 가능성`이 높다.
 - Connect 단독으로 노드를 사용하게 한다. resources.limit은 설정하지 않는다.
 - (위 자원할당 방법들로 안되면) 스케일 업&아웃이나 별도 최적화된 Kafka Client앱을 만든다.
 - [컨테이너 환경에서의 java 애플리케이션의 리소스와 메모리 설정](https://findstar.pe.kr/2022/07/10/java-application-memory-size-on-container/)
