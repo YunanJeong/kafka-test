@@ -1,5 +1,12 @@
 # connector-control
 
+## curl 예시
+
+```sh
+# 커넥터 설정파일(myconfig.json)로 PUT
+curl -XPUT localhost:8083/connectors/myconnector/config -H "Content-Type: application/json" -d @myconfig.json
+```
+
 ## 업데이트(PUT)
 
 ```sh
