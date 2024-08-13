@@ -74,8 +74,8 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 
 13. [Connect 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/13_connect_settings.md)
 
-14. [커넥터 등록, 업데이트, 삭제](https://github.com/YunanJeong/kafka-test/blob/main/memo/14_connector_control)
+14. [커넥터 등록, 업데이트, 삭제](https://github.com/YunanJeong/kafka-test/blob/main/memo/14_connector_control.md)
 
-15. [커넥터 SMT 예시](https://github.com/YunanJeong/kafka-test/blob/main/memo/15_connector_smt)
+15. [커넥터 SMT 예시](https://github.com/YunanJeong/kafka-test/blob/main/memo/15_connector_smt.md)
 
-16. [힙메모리 부족시 트러블슈팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/16_heap_memory_troubleshoot)
+16. [힙메모리 부족시 트러블슈팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/16_heap_memory_troubleshoot.md)
