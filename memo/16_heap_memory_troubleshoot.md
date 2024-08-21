@@ -48,7 +48,9 @@
   - `htop`: buff/cache 메모리는 사실상 여유분으로 보고, 메모리 표기에 포함하지 않음
   - `kube-metric(kubectl, k9s)`: 사용되는 buff/cache 까지 포함하여 메모리 점유 표기
 
-### 기타 메모리 이슈에서 최후의 방법
+### (매우 중요)GC Locker 문제
 
-- 힙메모리 설정시 추가옵션으로 GC를 커스터마이징 한다!
-- `linux-tips`레포지토리의 jvm 항목 참고
+- 처리할 데이터 양에 비해, 커넥터(task)가 많을 때 OOM이 발생하는 경우가 있다.
+- 이 땐 아무리 produce, consume, batch, topic 등 옵션을 커스텀해봐도 효과가 크지 않다.
+- 이는 JVM GCLocker에 의한 문제로 JVM을 모니터링하고 커스텀해야 한다.
+- [JVM 커스텀 옵션](https://github.com/YunanJeong/linux-tips/tree/main/jvm#jvm-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%98%B5%EC%85%98)
