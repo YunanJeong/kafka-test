@@ -65,11 +65,11 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 
 ### Source Connector의 offset 초기화 방법 [[1]](https://rmoff.net/2019/08/15/reset-kafka-connect-source-connector-offsets/) [[2]](https://soojong.tistory.com/entry/Source-Connector-Offset-%EC%B4%88%EA%B8%B0%ED%99%94-%ED%95%98%EA%B8%B0)
 
-#### 1. 다른 커넥터명으로 새로 등록
+1. 다른 커넥터명으로 새로 등록
 
 - 이 경우, 기존 커넥터명으로 저장된 offset은 connect-offsets에 남아있는데, 언제든지 기존 커넥터명을 다시 사용한다면 offset을 이어갈 수 있다.
 
-#### 2. 또는 connect-offsets에 새로운 값을 입력
+2. 또는 connect-offsets에 새로운 값을 입력
 
 ## connect-offsets 수정시 자주 쓰는 커맨드
 
