@@ -71,9 +71,9 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 
 2. 또는 connect-offsets에 새로운 값을 입력
 
-## connect-offsets 수정시 자주 쓰는 커맨드
+### connect-offsets 수정시 자주 쓰는 커맨드
 
-### 1. 커넥터 이름 별 offset이 저장되는 Partiton 넘버 찾기
+#### 1. 커넥터 이름 별 offset이 저장되는 Partiton 넘버 찾기
 
 ```sh
 kafkacat -b localhost:9092 -t connect-offsets -e -q -f'Key:%k Partitions: %p \n' | sort -u
@@ -93,7 +93,7 @@ Key:["jdbc_src_7",{"query":"query"}]    Partitions: 12
 - e.g. Source Connector "jdbc_src_1"는 항상 5번 partition에 offset을 기록한다.
 - e.g. Source Connector "jdbc_src_2"는 항상 14번 partition에 offset을 기록한다.
 
-### 2. 다음 커맨드처럼 json형식으로 출력되도록하여 jq를 쓸 수도 있다.
+#### 2. 다음 커맨드처럼 json형식으로 출력되도록하여 jq를 쓸 수도 있다.
 
 ```sh
 kafkacat -b localhost:9092 -t connect-offsets -e -q -f'{"Key": %k , "Payload": %s, "Partition": %p,  "Offset": %o }\n'  | jq
@@ -107,13 +107,13 @@ kafkacat -b localhost:9092 -t connect-offsets -e -q -f'{"Key": %k , "Payload": %
 - %s: PayLoad (Record Body에서 Value부분을 가져온다) jdbc Source Connector의 경우, value자리에 incrementing key 또는 timestamp key 값이 입력된다. bulk모드일때는 해당 값이 비어있으므로 위 커맨드처럼 문자열 포맷을 기술하면 json이 깨진다. (jq사용시 주의)
 ```
 
-### 3. Key-value 포맷 및 내용 확인
+#### 3. Key-value 포맷 및 내용 확인
 
 ```sh
 kafkacat -b localhost:9092 -t connect-offsets -e -q -K###
 ```
 
-### 4. 원하는 Key-value 입력해서 produce하여 offset 조작
+#### 4. 원하는 Key-value 입력해서 produce하여 offset 조작
 
 - `echo '["{connector_name}", {"query":"query"}]###' | kafkacat -b localhost:9092 -t connect-offsets -P -Z -K### -p {partition}`
 - Record의 Body에 해당하는 Key-Value쌍만 직접 새로 입력하는 것이다. Record의 Headers는 자동생성되는 부분이니 헷갈리지 말자!
