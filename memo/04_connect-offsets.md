@@ -14,6 +14,7 @@
   - `Completed until 5`: O
     - 번역에 주의한다.
     - 5번 `전 까지(until)`읽었으니까, 이제 5번부터 읽을 차례라는 의미다.
+- offset은 partition마다 따로 관리된다. (topic 별이 아님)
 
 ## Sink Connector를 위한 offset 다루기
 
@@ -42,13 +43,13 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 # 설정 후 커넥터 재실행
 ```
 
-## Source connector를 위한 connect_offsets 다루기
+## Source connector를 위한 connect-offsets 다루기
 
-- Source Connector는 Producer이기 때문에 Kafka의 일반 offset관리와는 별도 수행된다.
-- Source Connector의 offset은 connect_offsets라는 별도 Topic에 저장된다. Source Connector가 `몇 번째 데이터까지 Broker로 Push했는지(produce)`, `Broker의 Topic 'connect_offsets'에 표기`해두는 것이다.
-- **Source Connector는 `connect_offsets에서 최신 offset의 Record만 참조`하여, 자신이 어디까지 데이터를 읽었는지 판단한다.**
+- Source Connector는 Producer이기 때문에 Kafka의 일반 offset(__consumer_offsets)과는 별도로 관리된다.
+- Source Connector의 offset은 connect-offsets라는 별도 Topic에 저장된다. Source Connector가 `몇 번째 데이터까지 Broker로 Push했는지(produce)`, `Broker의 Topic 'connect-offsets'에 표기`해두는 것이다.
+- **Source Connector는 `connect-offsets에서 최신 offset의 Record만 참조`하여, 자신이 어디까지 데이터를 읽었는지 판단한다.**
 
-### connect_offsets의 Record 구조
+### connect-offsets의 Record 구조
 
 - Headers: 파티션 넘버, 오프셋 넘버, ...
 - Body:
@@ -58,16 +59,17 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 ### Source Connector의 offset 유지 방법
 
 - 같은 커넥터명으로 삭제, 수정, 등록
+- 단, JDBC Source Connector에서는 커넥터명이 동일하더라도 대상 DB, Table이 바뀌면 offset이 유지되지 않는다. 개별 대상마다 offset이 따로 관리되어야 하기 때문.
 
 ### Source Connector의 offset 초기화 방법 [[1]](https://rmoff.net/2019/08/15/reset-kafka-connect-source-connector-offsets/) [[2]](https://soojong.tistory.com/entry/Source-Connector-Offset-%EC%B4%88%EA%B8%B0%ED%99%94-%ED%95%98%EA%B8%B0)
 
 #### 1. 다른 커넥터명으로 새로 등록
 
-- 이 경우, 기존 커넥터명으로 저장된 offset은 계속 남아있다!
+- 이 경우, 기존 커넥터명으로 저장된 offset은 connect-offsets에 남아있는데, 언제든지 기존 커넥터명을 다시 사용한다면 offset을 이어갈 수 있다.
 
-#### 2. 또는 connect_offsets에 새로운 값을 입력
+#### 2. 또는 connect-offsets에 새로운 값을 입력
 
-## connect_offsets 수정시 자주 쓰는 커맨드
+## connect-offsets 수정시 자주 쓰는 커맨드
 
 ### 1. 커넥터 이름 별 offset이 저장되는 Partiton 넘버 찾기
 
@@ -113,7 +115,7 @@ kafkacat -b localhost:9092 -t connect-offsets -e -q -K###
 
 - `echo '["{connector_name}", {"query":"query"}]###' | kafkacat -b localhost:9092 -t connect-offsets -P -Z -K### -p {partition}`
 - Record의 Body에 해당하는 Key-Value쌍만 직접 새로 입력하는 것이다. Record의 Headers는 자동생성되는 부분이니 헷갈리지 말자!
-- 새로운 Record가 connect_offsets의 partition에 등록될 때, Record의 Headers에는 해당 Partition넘버, 최신 Offset넘버 등이 기록된다.
+- 새로운 Record가 connect-offsets의 partition에 등록될 때, Record의 Headers에는 해당 Partition넘버, 최신 Offset넘버 등이 기록된다.
 
 - 아래 예시는 JDBC conenctor가 어디까지 처리했는지에 대한 정보을 수정하는 것이다.
   - Connector는 항상 최신 offset을 가진 Record만 참조하여 어디까지 처리했는지 판단한다. 따라서 새로운 key-value를 1개만 넣어줘도 Connector가 다음 처리할 데이터순서가 바뀐다.
