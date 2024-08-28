@@ -53,7 +53,7 @@ Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 3. [Kafka Python Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/3_python_kafka_package.md)
     - Python으로 Producer, Consumer 만들 때 사용가능한 라이브러리
 
-4. [Connector를 위한 offset 다루기](https://github.com/YunanJeong/kafka-test/blob/main/memo/4_connect_offsets.md)
+4. [topic의 offset, __consumer_offsets, connect-offsets](https://github.com/YunanJeong/kafka-test/blob/main/memo/4_offsets.md)
     - 특히 Source Connector를 위한 connect_offsets 설명 위주
 
 5. [Kafka Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/5_kafka_timestamp_management.md)

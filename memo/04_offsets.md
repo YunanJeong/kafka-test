@@ -1,6 +1,4 @@
-# connect-offsets
-
-## offset
+# offset
 
 - 일반적으로 데이터 스트림, 파일 등을 읽을 때 현재 위치를 나타낼 때 사용
 - 각 메시지마다 offset넘버를 가지고 있고, 현재 어디까지 읽었는지 offset을 별도저장하는 곳이 있음.
@@ -16,7 +14,11 @@
     - 5번 `전 까지(until)`읽었으니까, 이제 5번부터 읽을 차례라는 의미다.
 - offset은 partition마다 따로 관리된다. (topic 별이 아님)
 
-## Sink Connector를 위한 offset 다루기
+## `__consumer_offsets`
+
+### consumer & consumer-group 에서 reset offset 하기
+
+### Sink Connector를 위한 offset 다루기
 
 - Sink Connector는 Consumer이므로, broker에서 일반적인 offset으로 취급, 관리된다.
 - offset
@@ -43,7 +45,7 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group connect-y
 # 설정 후 커넥터 재실행
 ```
 
-## Source connector를 위한 connect-offsets 다루기
+## `connect-offsets`(Source connector, Producer를 위한 offsets)
 
 - Source Connector는 Producer이기 때문에 Kafka의 일반 offset(__consumer_offsets)과는 별도로 관리된다.
 - Source Connector의 offset은 connect-offsets라는 별도 Topic에 저장된다. Source Connector가 `몇 번째 데이터까지 Broker로 Push했는지(produce)`, `Broker의 Topic 'connect-offsets'에 표기`해두는 것이다.
