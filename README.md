@@ -28,7 +28,7 @@ Kafka의 가장 작은 메시지 단위를 Record라고 부른다.
 
 Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 
-### Record 공식 구조(https://kafka.apache.org/documentation/#record)
+### Record 구조 [(Official)](https://kafka.apache.org/documentation/#record)
 
 ```sh
 length: varint
@@ -43,7 +43,7 @@ value: byte[]
 Headers => [Header]
 ```
 
-### Record 구조를 직관적으로 나타낸 것
+### Record 구조를 직관적으로 나타낸 것 (주로 이거보면 됨)
 
 ```sh
 Kafka Record
@@ -84,7 +84,7 @@ Kafka Record
 }
 ```
 
-### 필드 별 용도 (Record 메타 데이터)
+### 필드 별 용도 (메타 데이터)
 
 - **Kafka 시스템이 Record를 분류**하기 위한 정보를 자동 기록
 - topic
@@ -93,22 +93,30 @@ Kafka Record
   - Record가 저장된 partition number
 - offset
   - Record에 부여된 Offset number
-- timestamp
-  - 메타 데이터로 기록된 시간
-  - CreateTime:
-  - LogAppendTime: 
+- **timestamp**
+  - Record마다 메타 데이터로 기록된 시간
+  - **retention 설정 기간의 기준값**
+  - 다음 두 타입 중 선택가능
+  - **CreateTime(default)**
+    - 메시지가 프로듀서에 의해 생성된 시각
+    - KStreams 등으로 Record를 재처리 후 신규토픽에 적재해도 CreateTime은 유지됨
+  - **LogAppendTime**
+    - 메시지가 Topic에 적재된 시각
 
 ### 필드 별 용도 (Business Data)
 
 - **key**
-  - **Kafka 사용자가 Record를 분류**하기 위한 정보를 기록
+  - Kafka 사용자가 Record를 분류하기 위한 정보를 기록
+  - 동일한 key를 가진 Record는 동일한 Partition에 저장됨
+  - 메시지의 순서보장이 필요한 경우, 동일 key를 부여하여 단일 partition에 저장하는 방식이 활용됨
+  - key 미사용시, 한 토픽 내에서 라운드로빈으로 균등하게 파티션마다 Record가 분배됨
 - **value**
   - 핵심 Business Data, Payload, Raw Data에 해당
-  - schema정보 포함시 value에 포함됨
-  - schema registry 사용시 value에 schema_id 필드를 기입하는 방식
+  - schema정보 활용시 value에 포함됨
+  - schema registry 사용시 value 내부에 schema_id 필드를 기입하는 방식
 - headers
-  - 사용자가 추가적으로 데이터 분류시 사용하고 싶은 헤더를 key-value 형태로 기입 가능
-  - Kafka 시스템은 이 정보를 데이터 처리에 사용하지 않는다. 단순히 추가 헤더 작성할 수 있는 자리만 제공하는 것일 뿐임
+  - 사용자가 추가적으로 데이터 분류시 사용할 헤더를 key-value 형태로 기입 가능
+  - **key필드와 달리, Kafka 시스템은 headers를 데이터 분류에 사용하지 않음.** 단순히 추가 정보 작성할 수 있는 자리만 제공하는 것임.
 
 ## 메모
 
