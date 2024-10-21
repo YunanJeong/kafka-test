@@ -28,19 +28,87 @@ Kafka의 가장 작은 메시지 단위를 Record라고 부른다.
 
 Record = Message = Event = Data = log 1 row 이라고 보면 된다.
 
-[참고 그림](https://www.google.com/search?q=kafka+record+timestapme&tbm=isch&ved=2ahUKEwib6f2Lm4L6AhXPZ94KHWiqBJ0Q2-cCegQIABAA&oq=kafka+record+timestapme&gs_lcp=CgNpbWcQAzoECCMQJzoECAAQEzoGCAAQHhATOgUIABCABDoECAAQHjoECAAQGFDQB1iRKWD3LWgAcAB4AIABcYgB_BqSAQUxNC4yMJgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=ZU8YY9uiIs_P-Qbo1JLoCQ&bih=969&biw=1920&rlz=1C1GCEA_enKR959KR967#imgrc=0ffhDAgddKBNRM)
+### Record 공식 구조(https://kafka.apache.org/documentation/#record)
 
-### Header
+```sh
+length: varint
+attributes: int8
+    bit 0~7: unused
+timestampDelta: varlong
+offsetDelta: varint
+keyLength: varint
+key: byte[]
+valueLen: varint
+value: byte[]
+Headers => [Header]
+```
 
-- 메타데이터(topic, partition, timestamp(Ingestion Time) 등)
+### Record 구조를 직관적으로 나타낸 것
+
+```sh
+Kafka Record
+├── Topic      
+├── Partition
+├── Offset
+├── Timestamp
+├── Key (Optional)
+├── Value
+└── Headers
+    ├── Header 1
+    │   ├── Key
+    │   └── Value
+    ├── Header 2
+    │   ├── Key
+    │   └── Value
+    └── ...
+```
+
+### Record 예시
+
+- Kafka는 데이터를 bytes 배열로 저장
+- 다음은 Record를 Json으로 Deserialization하여 출력한 예시
+
+```json
+{
+  "topic": "user-activity",
+  "partition": 3,
+  "offset": 42,
+  "timestamp": 1696512480000,
+  "key": "user123",
+  "value": "{\"action\": \"login\", \"timestamp\": \"2023-10-05T14:48:00Z\"}",
+  "headers": [
+    { "key": "source", "value": "web" },
+    { "key": "version", "value": "1.0" },
+    { "key": "correlationId", "value": "abc123xyz" }
+  ]
+}
+```
+
+### 필드 별 용도 (Record 메타 데이터)
+
 - **Kafka 시스템이 Record를 분류**하기 위한 정보를 자동 기록
+- topic
+  - Record가 저장된 topic 명
+- partition
+  - Record가 저장된 partition number
+- offset
+  - Record에 부여된 Offset number
+- timestamp
+  - 메타 데이터로 기록된 시간
+  - CreateTime:
+  - LogAppendTime: 
 
-### Body(Business Data)
+### 필드 별 용도 (Business Data)
 
 - **key**
   - **Kafka 사용자가 Record를 분류**하기 위한 정보를 기록
 - **value**
-  - 핵심 Payload, 원본데이터에 가까움
+  - 핵심 Business Data, Payload, Raw Data에 해당
+  - schema정보 포함시 value에 포함됨
+  - schema registry 사용시 value에 schema_id 필드를 기입하는 방식
+- headers
+  - 사용자가 추가적으로 데이터 분류시 사용하고 싶은 헤더를 key-value 형태로 기입 가능
+  - Kafka 시스템은 이 정보를 데이터 처리에 사용하지 않는다. 단순히 추가 헤더 작성할 수 있는 자리만 제공하는 것일 뿐임
 
 ## 메모
 
