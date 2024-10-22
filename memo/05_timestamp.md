@@ -1,8 +1,7 @@
 # kafka_timestamp_management
 
-## 많은 시스템에서 개발자들이 시간 유형을 지칭하는 보편적 방법
+## 많은 시스템에서 개발자들이 보편적으로 시간 유형을 지칭하는 법
 
-- 이는 Event를 무엇으로 보는지 관점에 따라 바뀔 수 있음
 - <https://developer.confluent.io/patterns/stream-processing/wallclock-time/>
 
 ### Event Time
@@ -18,10 +17,27 @@
 
 - 데이터 파이프라인의 중간, 또는 최종 앱에서 처리된 시스템 시간
 
-## S3 Sink Connector에서
+### 예시
 
-- 다른 이벤트 소스(DB)에서 Kafka로 데이터를 옮겨온 후, 이를 S3로 보내는 상황이라고 가정하자.
-- S3 저장시 시간 기준으로 파티셔닝 할 때, 어떤 시간을 기준으로 할 것인가 지정하는 timestamp 옵션이 있음
+- 아래 Record 예시에서 `일반적으로` 다음과 같이 볼 수 있음
+- Event Time: value필드 안 Raw Data의 timestamp (RecordField 시간)
+- Ingenstion Time: top level의 메타데이터 timestamp (Record 시간)
+
+```json
+{
+  "topic": "user-activity",
+  "partition": 3,
+  "offset": 42,
+  "timestamp": 1696512480000,  # => Ingestion Time
+  "key": "user123",
+  "value": "{\"action\": \"login\", \"timestamp\": \"2023-10-05T14:48:00Z\"}",  # => Event Time
+}
+```
+
+## 외부 시스템이 이벤트 소스인 경우
+
+- 외부 이벤트 소스(DB)에서 Kafka로 데이터를 옮겨온 후, 이를 S3로 보내는 상황이라고 가정하자.
+- S3에서 시간 기준으로 파티셔닝할 때, 어떤 시간을 기준으로 할 것인가 지정하는 S3 Sink Connector의 timestamp 옵션이 있음
 
 ### Record
 
@@ -38,28 +54,30 @@
 ### WallClock
 
 - Processing Time (Wall-clock Time)
-- S3 Sink Connector가 최종적으로 데이터를 처리한 시각 기준 (broker 시간아님)
+- S3 Sink Connector가 최종적으로 데이터를 처리한 시각 기준 (broker 시간 아님)
 
-## 메타데이터 timstamp
+## Kafka Producer 자체가 이벤트 소스인 경우
 
-```json
-# Kafka Message 구조
-```
+- 실제 데이터에서 어떤 시간이 EventTime, IngestionTime인지는 Event가 무엇이냐에 따라 달라질 수 있음
+- `일반적으로 Kafka Record의 메타데이터 timestamp는 Ingestion Time`이라고 보면 되지만,
+- `Producer 앱 자체가 이벤트 소스일 경우, 메타데이터 timestamp를 이벤트 생성시각(EventTime)으로 볼 수도 있다.`
+- 이런 경우를 대비해서 Kafka는 메타데이터 timestamp 기록 방법을 두 가지 타입으로 나누고 있다.
+- 어느 타입으로 쓸 지는 토픽 설정에 따라 달라지며, `server.properties`에서 신규 토픽 생성시 기본값도 설정가능
 
 ```properties
 # server.properties
-# 신규생성 토픽에서 Record의 메타데이터 timestamp 타입  # default: CreateTime
 log.message.timestamp.type=LogAppendTime
 ```
 
-### CreateTime
+### CreateTime (default)
 
 - 메시지가 Producer에 의해 생성된 시각
-- Kafka Streams 등으로 처리 후 신규 토픽에 입력해도 기존 timestamp가 유지됨
-- default
-
+- 특징
+  - 동일 Kafka 내에서 Streams 등으로 처리 후 신규 토픽에 입력해도 기존 메타데이터 timestamp가 유지됨
 
 ### LogAppendTime
 
-- 메시지가 Kafka 브로커에 추가된 시각(토픽에 적재된 시각)
-- 데이터 처리후 신규토픽에 적재시 신규 timestamp가 부여됨
+- 메시지가 Kafka 브로커에 추가된 시각(Record가 Topic에 적재된 시각)
+- 특징
+  - 데이터 처리후 신규토픽에 적재시 항상 신규 timestamp가 부여됨
+
