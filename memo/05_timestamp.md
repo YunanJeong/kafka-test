@@ -28,9 +28,9 @@
   "topic": "user-activity",
   "partition": 3,
   "offset": 42,
-  "timestamp": 1696512480000,  # => Ingestion Time
+  "timestamp": 1696512480000,  # => Ingestion Time (Metadata)
   "key": "user123",
-  "value": "{\"action\": \"login\", \"timestamp\": \"2023-10-05T14:48:00Z\"}",  # => Event Time
+  "value": "{\"action\": \"login\", \"timestamp\": \"2023-10-05T14:48:00Z\"}",  # => Event Time (Rawdata)
 }
 ```
 
@@ -56,11 +56,11 @@
 - Processing Time (Wall-clock Time)
 - S3 Sink Connector가 최종적으로 데이터를 처리한 시각 기준 (broker 시간 아님)
 
-## Kafka Producer 자체가 이벤트 소스인 경우
+## Kafka Producer 자체가 이벤트 소스인 경우 (메타데이터 timestamp 관리)
 
 - 실제 데이터에서 어떤 시간이 EventTime, IngestionTime인지는 Event가 무엇이냐에 따라 달라질 수 있음
 - `일반적으로 Kafka Record의 메타데이터 timestamp는 Ingestion Time`이라고 보면 되지만,
-- `Producer 앱 자체가 이벤트 소스일 경우, 메타데이터 timestamp를 이벤트 생성시각(EventTime)으로 볼 수도 있다.`
+- `Producer 앱 자체가 이벤트 소스이고, 별도의 timestamp 필드를 value 값에 남기지 않는 경우, 자동생성된 메타데이터 timestamp를 이벤트 생성시각(EventTime)으로 사용할 수도 있다.`
 - 이런 경우를 대비해서 Kafka는 메타데이터 timestamp 기록 방법을 두 가지 타입으로 나누고 있다.
 - 어느 타입으로 쓸 지는 토픽 설정에 따라 달라지며, `server.properties`에서 신규 토픽 생성시 기본값도 설정가능
 
@@ -74,10 +74,15 @@ log.message.timestamp.type=LogAppendTime
 - 메시지가 Producer에 의해 생성된 시각
 - 특징
   - 동일 Kafka 내에서 Streams 등으로 처리 후 신규 토픽에 입력해도 기존 메타데이터 timestamp가 유지됨
+  - 일반적인 경우 Ingestion Time으로 취급하여 사용해도 되나, LogAppendTime과 비교하면 Event Time에 가까움
 
 ### LogAppendTime
 
 - 메시지가 Kafka 브로커에 추가된 시각(Record가 Topic에 적재된 시각)
 - 특징
-  - 데이터 처리후 신규토픽에 적재시 항상 신규 timestamp가 부여됨
+  - 진정한 의미로 IngestionTime에 가까움
+  - 데이터 처리후 신규토픽에 적재시 항상 신규 메타데이터 timestamp가 부여됨
 
+### 참고
+
+- 특히 `메타데이터 timestamp는 retention.ms 등 보유기간 설정의 기준이 되는 값`이므로 이 때 CreateTime, LogAppendTime 설정에 유의한다.
