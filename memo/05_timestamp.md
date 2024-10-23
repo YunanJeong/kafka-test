@@ -62,7 +62,7 @@
 - `일반적으로 Kafka Record의 메타데이터 timestamp는 Ingestion Time`이라고 보면 되지만,
 - `Producer 앱 자체가 이벤트 소스이고, 별도의 timestamp 필드를 value 값에 남기지 않는 경우, 자동생성된 메타데이터 timestamp를 이벤트 생성시각(EventTime)으로 사용할 수도 있다.`
 - 이런 경우를 대비해서 Kafka는 메타데이터 timestamp 기록 방법을 두 가지 타입으로 나누고 있다.
-- 어느 타입으로 쓸 지는 토픽 설정에 따라 달라지며, `server.properties`에서 신규 토픽 생성시 기본값도 설정가능
+- 어느 타입으로 쓸 지는 토픽 설정에 따라 달라지며, `server.properties`에서 신규 토픽 생성시 기본값도 설정가능 [(공식문서)](https://kafka.apache.org/documentation/#brokerconfigs_log.message.timestamp.type)
 
 ```properties
 # server.properties
