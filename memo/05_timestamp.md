@@ -86,3 +86,4 @@ log.message.timestamp.type=LogAppendTime
 ### 참고
 
 - 특히 `메타데이터 timestamp는 retention.ms 등 보유기간 설정의 기준이 되는 값`이므로 이 때 CreateTime, LogAppendTime 설정에 유의한다.
+- [confluent community CreateTime, LogAppendTime](https://developer.confluent.io/courses/kafka-streams/time-concepts/)
