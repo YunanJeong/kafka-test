@@ -15,7 +15,7 @@
 
 - Apache Kafka에 포함되는 오픈소스
 - Kafka 2.4 버전부터 지원
-- Kafka 3.5.0 버전부터 Exactly-once semantics 지원 (230420 현재 미출시)
+- Kafka 3.5.0 버전부터 Exactly-once semantics 지원
 - Connector로 제공됨 (Kafka 설치시 기본탑재)
   - MirrorSourceConnector
   - MirrorSinkConnector
