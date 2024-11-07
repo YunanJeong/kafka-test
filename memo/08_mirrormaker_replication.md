@@ -19,7 +19,7 @@
 - Connector로 제공됨 (Kafka 설치시 기본탑재)
   - MirrorSourceConnector
   - MirrorSinkConnector
-    - 현재 미출시
+    - Kafka 3.9 기준 아직 미출시
     - 일부 블로그나 문서에서 같이 나열되고 있으나,
     - [KIP382](https://cwiki.apache.org/confluence/display/KAFKA/KIP-382%3A+MirrorMaker+2.0)에 따르면 커넥터 목록에 나열되어있으나, coming soon이라고 한다.
     - 실제 배포된 커넥트에서 사용가능한 플러그인 목록(`/connector-plugins`)을 조회해도 안나옴
