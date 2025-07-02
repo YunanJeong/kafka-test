@@ -1,51 +1,73 @@
 # How to Manage and Analyze Kafka Messages
 
-## kafkacat 활용
+## kcat(구 kafkacat) 활용
 
-- 설치: `$ sudo apt install kafkacat`
-- -L: List, 메타 정보 조회
-- -b: broker 지정
-- -t: topic 지정
-- -p: partition 지정
-- -q: quiet
-- -e: exit
-- -o: offset
-- -P: Producer Mode
-- -C: Consumer Mode
+- 이름이 kcat, kafkacat로 혼용되며 배포환경마다 다름
+- 공식명은 kcat으로 굳어짐 (Ubuntu24부터 kcat)
+
+```sh
+# 설치
+sudo apt install kcat
+#  -L: List, 메타 정보 조회
+#  -b: broker 지정
+#  -t: topic 지정
+#  -p: partition 지정
+#  -q: quiet
+#  -e: exit
+#  -o: offset
+#  -P: Producer Mode  # 내용 입력시 반드시 파이프라인(|)으로 stdin처리 
+#  -C: Consumer Mode
+```
+
+### kcat 조회
 
 - 예시
   - broker: localhost:9092
-  - topic's name: topicname
-- `$ kafkacat -b localhost:9092 -L`
+  - topic: mytopic
+- `$ kcat -b localhost:9092 -L`
   - 해당 브로커의 메타정보를 보여준다.
   - 브로커, 토픽, 파티션 목록을 보여 준다.
-- `$ kafkacat -b localhost:9092 -t topicname -L`
+- `$ kcat -b localhost:9092 -t mytopic -L`
   - 브로커와 토픽을 지정하고, L옵션을 설정
   - 해당 토픽에 한정해서 메타정보를 보여준다.
-- `$ kafkacat -b localhost:9092 -t topicname`
+
+### kcat Consume
+
+- `$ kcat -b localhost:9092 -t mytopic`
   - 브로커와 토픽을 지정
   - 기본적으로 Consumer mode로 취급되어 해당 토픽의 Record를 보여준다.
-  - `$ kafkacat -b localhost:9092 -t topicname -C` 와 동일
+  - `$ kcat -b localhost:9092 -t mytopic -C` 와 동일
   - 지정 토픽이 존재하지 않는 경우, Consume을 수행했을 때
     - kafka 내장 쉘명령어는 해당 빈 토픽을 자동생성하지만,
-    - kafkacat은 자동생성하지 않고 에러를 출력한다.
-- `$ kafkacat -b localhost:9092 -t topicname -P`
-  - 브로커와 토픽을 지정하고, Producer mode로 설정했다.
-  - 쉘에서 입력한 내용이 토픽의 Record로 저장된다.
-  - 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
-  - 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
-- `$ kafkacat -b localhost:9092 -t topicname -C -q`
+    - kcat은 자동생성하지 않고 에러를 출력한다.
+- `$ kcat -b localhost:9092 -t mytopic -C -q`
   - Consumer Mode에서 q 옵션 사용시, Record 내용만 조회할 수 있다.
   - '새 메시지가 도착했다'라는 출력이 표시되지 않는다.
-- `$ kafkacat -b localhost:9092 -t topicname -C -e`
+- `$ kcat -b localhost:9092 -t mytopic -C -e`
   - e 옵션 사용시 마지막 내용까지 출력한 후 대기모드상태에 있지 않고 자동 exit한다.
-- `$ kafkacat -b localhost:9092 -t topicname -o offset`
-  - `$ kafkacat -b localhost:9092 -t topicname -o beginning`
+- `$ kcat -b localhost:9092 -t mytopic -o offset`
+  - `$ kcat -b localhost:9092 -t mytopic -o beginning`
     - 처음부터 모든 record 조회(토픽에 쌓인 record가 많으면 최근 새로 업데이트 되는 record만 보이기 때문에 이 옵션이 필요)
-  - `$ kafkacat -b localhost:9092 -t topicname -o -1000`
+  - `$ kcat -b localhost:9092 -t mytopic -o -1000`
     - 최근 1000개 record 조회
-  - `$ kafkacat -b localhost:9092 -t topicname -p 0 -o 1368 -c 1`
+  - `$ kcat -b localhost:9092 -t mytopic -p 0 -o 1368 -c 1`
     - '0번 파티션'에서 '1368번 offset'부터 '1개의 record' 조회
+
+### kcat Produce
+
+- `$ kcat -b localhost:9092 -t mytopic -P`
+  - 브로커와 토픽을 지정하고, Producer mode로 설정했다.
+  - 명령어 입력 후 이어서 쉘에 입력한 내용이 토픽의 Record로 저장된다.
+  - 다른 쉘에서 Consumer mode를 열어놓고 실시간으로 확인해볼 수 있다.
+  - 지정 토픽이 존재하지 않는 경우, 자동 생성한다.
+
+```sh
+# kcat Produce 내용 입력시, stdin 버퍼링으로 인해 처리되지않는 이슈가 잦다.
+# kafka 트러블슈팅시 상당히 방해가 된다.
+# kcat Produce시에는 """반드시""" 파이프라인(|)을 활용하도록 하자
+echo "myRecordMessage" | kcat -b localhost:9092 -t mytopic -P
+cat myrecordfile.txt   | kcat -b localhost:9092 -t mytopic -P 
+```
 
 ## 쉘에서 메시지 관리&분석 하기
 
@@ -76,7 +98,7 @@
 ### jq ([공홈](https://stedolan.github.io/jq/))
 
 - command-line JSON processor
-- kafka record가 json 형식이면, kafkacat과 jq의 조합이 유용
+- kafka record가 json 형식이면, kcat과 jq의 조합이 유용
 - 설치
 
   ```sh
@@ -142,8 +164,8 @@ cat sample.json | jq -c
 #### 1. kafka topic 데이터를 파일로 저장
 
 ```sh
-# kafkacat에서 -q, -e 옵션을 써줘야, 깔끔한 jsonline 리스트로 파일이 생성된다
-kafkacat -b localhost:9002 -t mytopic -C -q -e > sample.json
+# kcat에서 -q, -e 옵션을 써줘야, 깔끔한 jsonline 리스트로 파일이 생성된다
+kcat -b localhost:9002 -t mytopic -C -q -e > sample.json
 ```
 
 #### 2. 데이터 분석
