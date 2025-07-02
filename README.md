@@ -120,27 +120,27 @@ Kafka Record
 
 ## 메모
 
-0. [Kafka 라이센스 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/0_kafka_license.md)
+0. [Kafka 라이센스 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/00_kafka_license.md)
 
-1. [Kafka 설치, 실행, 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/1_kafka_install.md)
+1. [Kafka 설치, 실행, 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/01_kafka_install.md)
 
-2. [Kafka 메시지 관리 및 분석 방법 (kafkacat, jq, 쉘 명령어)](https://github.com/YunanJeong/kafka-test/blob/main/memo/2_kafkacat_and_jq.md)
+2. [Kafka 메시지 관리 및 분석 방법 (kafkacat, jq, 쉘 명령어)](https://github.com/YunanJeong/kafka-test/blob/main/memo/02_kafkacat_and_jq.md)
 
-3. [Kafka Python Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/3_python_kafka_package.md)
+3. [Kafka Python Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/03_python_kafka_package.md)
     - Python으로 Producer, Consumer 만들 때 사용가능한 라이브러리
 
-4. [topic의 offset, __consumer_offsets, connect-offsets](https://github.com/YunanJeong/kafka-test/blob/main/memo/4_offsets.md)
+4. [topic의 offset, __consumer_offsets, connect-offsets](https://github.com/YunanJeong/kafka-test/blob/main/memo/04_offsets.md)
     - 특히 Source Connector를 위한 connect_offsets 설명 위주
 
-5. [Kafka Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/5_kafka_timestamp_management.md)
+5. [Kafka Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/05_kafka_timestamp_management.md)
 
-6. [JDBC src connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/6_jdbc_src_time_options.md)
+6. [JDBC src connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/06_jdbc_src_time_options.md)
 
-7. [S3 sink connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/7_s3_sink_time_options.md)
+7. [S3 sink connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/07_s3_sink_time_options.md)
 
-8. [Kafka 복제도구: MirrorMaker1, MirrorMaker2, Replicator](https://github.com/YunanJeong/kafka-test/blob/main/memo/8_mirrormaker_replication.md)
+8. [Kafka 복제도구: MirrorMaker1, MirrorMaker2, Replicator](https://github.com/YunanJeong/kafka-test/blob/main/memo/08_mirrormaker_replication.md)
 
-9. [Connect에서 Converter 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/9_connect_converter.md)
+9. [Connect에서 Converter 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/09_connect_converter.md)
 
 10. [토픽튜닝할 것들(segment,retention 등)](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_topic_settings.md)
 
