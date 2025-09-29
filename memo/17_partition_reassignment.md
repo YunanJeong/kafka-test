@@ -71,12 +71,12 @@ kafka-reassign-partitions.sh \
   --bootstrap-server localhost:9092 \
   --topics-to-move-json-file topics.json \
   --broker-list "0,1" \
-  --generate > reassignment.json
+  --generate > reassignment_cur_prop.json
 
 # broker-list에는 broker id를 입력
 # --generate로 만들 수 있는 건 제한적임
 # => 기본 포맷 참고용으로 쓰고, 실제 원하는 형태는 reassignment.json을 편집해야 함
-#
+# --generate로 생성된 건 current, proposed 두 json이 들어있는데 이중 proposed 부분을 별도 추출해서 사용해야 함 
 # e.g.) 
 # - 만약 브로커 3대인데 RF=2이고, 균등 분배하려면 reassigntment.json을 수동작성해야 함
 # - 만약 대상토픽의 현재 RF가 1이면, --broker-list 에 여러 브로커를 지정해도 제대로 된 reassignment.json이 생성되지 않는다.
