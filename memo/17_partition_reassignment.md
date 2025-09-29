@@ -46,7 +46,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 \
 ```
 
 ```sh
-# 대상토픽 정의파일 생성
+# 대상토픽 정의파일 생성  # 쓰기권한 없을시 /tmp 경로 시도
 cat > topics.json <<EOF
 {
   "topics": [
