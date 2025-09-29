@@ -83,7 +83,8 @@ kafka-reassign-partitions.sh \
 ```
 
 - broker 3대(0,1,2) 중 2대에 __consumer_offsets 토픽의 파티션을 고르게 분배하는 reassignement.json 설정 예시
- 
+  - 기존 replica 위치한 곳은 그대로 두고 하나만 더 추가하는게 안정적임
+
 ```json
 {
   "version": 1,
