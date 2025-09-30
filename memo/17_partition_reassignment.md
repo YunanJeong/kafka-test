@@ -20,7 +20,8 @@
 - `__consumer_offsets` 토픽의 Replication Factor 변경
   - __consumer_offsets의 replication factor는 topic 최초 생성시 broker 설정값(offsets.topic.replication.factor)에 따르고, 생성 이후엔 변경 불가
   - 이미 운영 중인 서비스에서 RF 변경 필요시, __consumer_offset을 지우고 신규생성할 수 없으므로 수동 변경이 필요
-  - 파티션(레플리카) 재할당을 통해서 특정 개수만큼 복제하면 자동으로 RF도 그 개수인 것으로 인식됨
+  - `파티션(레플리카) 재할당을 통해서 특정 개수만큼 복제하면 자동으로 RF도 해당 개수로 표기됨`
+    - 한 토픽 내 모든 파티션은 같은 개수만큼 replica를 가져야 함. 어떤 파티션은 2개, 어떤 파티션은 3개, 이런식으로는 설정자체가 불가능.
   - `__consumer_offsets`과 같은 internal topic의 replication factor 변경은 위험하므로 각종 Kafka UI에서 변경하는 것이 차단되어 있어서, CLI작업 필요
 
 ## 재할당 방법
@@ -83,8 +84,8 @@ kafka-reassign-partitions.sh \
 # => 기본 포맷 참고용으로 쓰고, 실제 원하는 형태는 reassignment.json을 편집해야 함
 # --generate로 생성된 건 current, proposed 두 json이 들어있는데 이중 proposed 부분을 별도 추출해서 사용해야 함 
 # e.g.) 
-# - 만약 브로커 3대인데 RF=2이고, 균등 분배하려면 reassigntment.json을 수동작성해야 함
-# - 만약 대상토픽의 현재 RF가 1이면, --broker-list 에 여러 브로커를 지정해도 제대로 된 reassignment.json이 생성되지 않는다.
+# - 만약 브로커 3대인데 RF를 2로 두고 균등 분배하고 싶으면 reassigntment.json을 수동작성해야 함
+# - 만약 대상토픽의 현재 RF가 1이면, --broker-list 에 여러 브로커를 지정해도 제대로 된 reassignment.json이 생성되지 않으므로 포맷만 참고한다.
 ```
 
 - broker 3대(0,1,2) 중 2대에 __consumer_offsets 토픽의 파티션을 고르게 분배하는 reassignment.json 설정 예시
@@ -162,7 +163,7 @@ kafka-reassign-partitions.sh \
 ### 5. 진행상태 모니터링
 
 - __consumer_offsets 수준은 금방 처리되므로 꼭 필요하지 않음
-- 파티션 재분배의 경우 실제 대용량 데이터를 broker간 옮겨야 하므로 꽤 오래걸리기 때문에 진행상황 모니터링이 필요할 수 있음.
+- 파티션 재분배의 경우 실제 대용량 데이터를 broker간 옮겨야 하므로 꽤 오래걸리기 때문에 진행상황 모니터링이 필요할 수 있음
 
 ```sh
 # 진행상황 모니터링
