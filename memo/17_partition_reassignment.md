@@ -5,10 +5,15 @@
 
 ## 필요한 상황
 
-- 신규 broker 추가시 파티션 분배
+- 스케일아웃: 신규 broker 추가시 파티션 분배
   - 신규 topic 생성시 leader partition과 follower partition(replica)들은 각 broker에 균등하게 분배되지만
   - 클러스터에 신규 broker node 추가시, 기존 topic의 partition이 자동으로 신규 broker에 분배되지 않음
   - 이 때 수동 재할당 작업 필요
+- 스케일인
+  - broker 제거시 replica 수동 재분배 필요
+  - 수동 재분배 하지 않고 broker만 제거시, 클러스터에서 1대가 죽은 것으로 취급됨
+  - 계속 유지할 broker쪽으로 replica를 모두 옮겨준 후 broker 제거 필요
+  - 이후 leader partition은 유지되는 broker쪽으로 자동 선출됨
 - 토픽의 Replication Factor 변경
   - RF 변경시, 명령어와 설정을 통해서 replica의 broker 별 배치를 일일이 지정해줘야 함
   - Kafbat UI 등을 쓰면 이 과정이 자동화/간소화 되어있음
@@ -24,14 +29,14 @@
 - 이 스크립트는 JSON 형식의 재할당 계획 파일(reassignment.json)을 입력받아 실행한다.
 - 재할당 계획 JSON에는 다음이 포함된다:
   - 대상 토픽
-  - 각 파티션의 replica를 어느 브로커에 둘지
+  - 각 partition의 replica를 어느 브로커에 둘지
   - (선택적으로) 리더를 어느 브로커로 둘지 등
 - 재할당 계획 JSON은 아래와 같이 `kafka-reassign-partitions.sh --generate` 옵션으로 자동 생성할 수 있다. 또는 자동생성된 포맷을 참고하여 직접 json을 작성해도 된다.
 
 ## `__consumer_offsets`의 replication factor (1=>2) 변경, 재할당 방법
 
 - broker의 주소는 localhost:9092로 표기
-- 모든 파티션의 복제본을 만들면 replication factor도 그에 맞게 수정된 것으로 표기되며 향후 동작도 그렇게 함
+- 모든 partition의 replica를 만들면 replication factor도 그에 맞게 수정된 것으로 표기되며 향후 동작도 그렇게 함
 
 ### 1. 현 상태 확인
 
@@ -82,8 +87,9 @@ kafka-reassign-partitions.sh \
 # - 만약 대상토픽의 현재 RF가 1이면, --broker-list 에 여러 브로커를 지정해도 제대로 된 reassignment.json이 생성되지 않는다.
 ```
 
-- broker 3대(0,1,2) 중 2대에 __consumer_offsets 토픽의 파티션을 고르게 분배하는 reassignement.json 설정 예시
-  - 기존 replica 위치한 곳은 그대로 두고 하나만 더 추가하는게 안정적임
+- broker 3대(0,1,2) 중 2대에 __consumer_offsets 토픽의 파티션을 고르게 분배하는 reassignment.json 설정 예시
+  - **"기존 replica 위치한 곳은 그대로 두고"** 다른 곳에 replica를 추가하는게 안정적임
+  - log_dirs는 최근 버전에 있는건데, 보통은 any이고 replica 수 만큼 기술하면 됨
 
 ```json
 {
