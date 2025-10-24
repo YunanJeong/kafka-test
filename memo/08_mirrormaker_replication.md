@@ -132,6 +132,28 @@ value.converter: org.apache.kafka.connect.converters.ByteArrayConverter
 source.consumer.auto.offset.reset: earliest  # default(MM2)
 ```
 
+### MirrorMaker2(MirrorSourceConnector)에서 내부 consumer/producer 설정 override하기
+
+- 내부 consumer/producer 설정 이름에 prefix를 붙여서 커넥터 설정에 기술하면 제어가능
+  - `source.consumer.*`
+  - `target.producer.*`
+- `MirrorSourceConnector에선 위와 같이 사용하는 것이 맞다(실험 완료).`
+- MirrorMaker 구현체, 버전에 따라 prefix 표기법이 매우 다양해서 각종 자료, AI를 참고해도 잘못된 정보가 많다.
+- 의심되면 auto.offset.reset 등 확인하기 쉬운걸로 테스트를 꼭 진행해보자.
+
+```yaml
+# MirrorMaker2(MirrorSourceConnector)에서 auto.offset.reset 설정방법 예시
+source.consumer.auto.offset.reset: earliest  # default(MM2)
+```
+
+- MM2(MirrorSourceConnector)에서 적용되지 않는 prefix사례(에러케이스)
+  - <source.cluster.alias>.consumer.*
+    - source.cluster.alias 옵션에서 지정한 이름을 prefix로 사용하여 override한다는 사례가 있는데 MirrorSourceConnector에선 사용불가
+  - source.cluster.consumer.*
+    - 공홈[[3]](https://cwiki.apache.org/confluence/display/KAFKA/KIP-382:+MirrorMaker+2.0)에 기술된 방식이지만 실제 MirrorSourceConnector에선 불가
+  - consumer.override.*
+    - 일반적인 connector에서 connect 옵션을 커스텀할 때 사용되지만, MirrorSourceConnector에선 불가
+
 ### [이외 항목들은 샘플파일 주석들을 참고](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src_example.yml)
 
 ## MirrorMaker2를 활용한 라이브 Kafka 마이그레이션 사례
