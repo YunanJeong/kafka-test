@@ -122,12 +122,15 @@ value.converter: org.apache.kafka.connect.converters.ByteArrayConverter
 ### 시작 테스트
 
 - MM2를 처음 시작하는 경우, 소스클러스터에 있는 topic이 처음(offset 0)부터 전부 타겟클러스터로 미러링됨
-  - 데이터를 복제하기보다는 topic을 복제한다는 느낌이 강함
-  - 이는 MM1의 consumer default 설정(`auto.offset.reset=latest')과는 다름
-  - MM1에서 `auto.offset.reset=earlist`로 설정한 것처럼 동작
-  - 최신 데이터만 가져오려면 consumer에 대해 `auto.offset.reset=latest`설정을 줘야하는데 MM2에서 적용되지 않는 이슈[[1]](https://issues.apache.org/jira/browse/KAFKA-13988) [[2]](https://stackoverflow.com/questions/72602550/kafka-mirrormaker-2-replication-from-latest-offset-instead-of-earliest)가 있음. 일부러 막아놓은듯한 느낌도 들고.
-  - 최신 데이터만 가져오는 설정은 안되지만 최근 데이터로 범위를 한정시키는 대체 방법은 다음과 같다.
-    - offset 조작
-    - 일부 topic만 Regex로 지정
+  - 이는 MM1의 consumer default 설정(`auto.offset.reset=latest')과는 다르니 주의
+  - MM 버전, 구현체 마다 default 및 설정옵션 이름이 너무 다양하게 바뀌므로 각종 자료 참고시 주의할 것[[1]](https://issues.apache.org/jira/browse/KAFKA-13988) [[2]](https://stackoverflow.com/questions/72602550/kafka-mirrormaker-2-replication-from-latest-offset-instead-of-earliest)
 
-### [이외 항목들은 샘플파일 주석들을 참고](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src.yml.example)
+```yaml
+# MirrorMaker2(MirrorSourceConnector)에서 auto.offset.reset 설정방법
+# earliest (처음부터 가져오기)
+# latest   (최신부터 가져오기)
+source.consumer.auto.offset.reset: earliest  # default(MM2)
+```
+
+### [이외 항목들은 샘플파일 주석들을 참고](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src_example.yml)
+
