@@ -134,3 +134,30 @@ source.consumer.auto.offset.reset: earliest  # default(MM2)
 
 ### [이외 항목들은 샘플파일 주석들을 참고](https://github.com/YunanJeong/kafka-connect-manager/blob/master/config/mirrormaker2/mm2_src_example.yml)
 
+## MirrorMaker2를 활용한 라이브 Kafka 마이그레이션 사례
+
+### 조건
+
+- 데이터 파이프라인으로 활용되는 Kafka(DB=>Kafka=>S3)
+- 외부 플랫폼과 연결은 Connect사용
+- 데이터 중복/누락이 없도록 Offset정보를 유지해야 하며, 일시적인 중지는 허용
+- 구 Kafka 3.2.3(Zookeeper O, Jdk 11, Native Ubuntu Service)
+- 신 Kafka 4.0.0(KRaft Only, Jdk 17, Kubernetes)
+
+### 방법
+
+- 위 두 버전은 기능/사양/기반플랫폼이 많이 바뀌어서, 직접적인 클러스터 연결 등이 불가능함
+- 하지만 여전히 topic 기반 데이터 관리방식은 동일한데, 특히 offset과 connector 관리에도 동일하게 내부 시스템 토픽이 활용됨
+- MirrorMaker에서만 양측의 호환성을 고려해주고, 내부 토픽들을 그대로 이전한다면, 기존과 동일한 역할의 데이터 파이프라인을 유지할 수 있음
+  - connect-offsets: source connector(producer)의 offset
+  - connect-configs: connector 등록 및 설정 정보
+  - connect-status: connector 상태(running, stop, pause 등)
+  - __consumer_offsets: consumer 및 sink connector의 offset
+
+### 적용
+
+1. source connector(produce) 중지
+2. Kafka 내 잔여 데이터 처리(Consumer-group을 체크하여 consumer-lag(잔여처리량)이 0이 될 때까지)
+3. sink connector(consume) 중지
+4. MirrorMaker로 내부토픽 및 비즈니스토픽 이전
+5. 신규 Kafka에서 connector 재실행
