@@ -34,9 +34,11 @@ WHERE timestamp_column > ? AND timestamp_column < ?
 ORDER BY timestamp_column ASC
 ```
 
-```
+```SQL
+-- Connect 서버 시간이 아닌, DB의 현재시간을 사용한다.
+-- DB현재시간 계산에 Connector Config에서 받아온 zoneId가 사용됨
 SELECT * FROM table_name 
 WHERE timestamp_column > ?(이전 쿼리에서 가져온 데이터중 가장 큰 timestamp 값)
-  AND timestamp_column < ?(현재시간 - timestamp.delay.interval.ms)
+  AND timestamp_column < ?(DB현재시간 - timestamp.delay.interval.ms)
 ORDER BY timestamp_column ASC
 ```
