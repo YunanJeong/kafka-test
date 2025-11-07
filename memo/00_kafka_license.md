@@ -16,10 +16,17 @@
 
 ## Confluent Platform
 
-- Apache Kafka 활용성을 높여주는 플랫폼
-- **아파치 재단과 별개로 Confluent 사에서 제공**하는 플랫폼
-- Apache Kafka를 포함하여 배포됨
-- Confluent 사의 독자 라이센스 정책 사용
+- Confluent 회사에서 제공하는 Apache Kafka의 배포판
+  - Apache Kafka를 그대로 포함하며 활용성을 높이기 위한 기능이 추가됨
+- 아파치 재단과 별개로 Confluent 사에서 제공하며, 독자 라이센스 정책 사용
+- "Confluent Platform"이라고 해서 꼭 유료 SaaS를 의미하는 것이 아니다. 배포판을 칭하는 것에 가깝다.
+  - 이를테면 Confluent Hub 웹사이트에서 제공하는 플러그인들은 각각 라이센스 및 지원환경 여부를 표기하는데 아래와 같다.
+  - Self Hosted: Apache Kafka를 로컬 설치
+  - Confluent Platform(Self-Managed): Confluent platform을 로컬설치
+  - Confluent Cloud(Full-Managed): Confluent SaaS
+- 특히, **Confluent Platform에서 무료 사용가능하면서, Self Hosted에서는 사용금지인 플러그인들이 있으니 주의**하자.
+  - (e.g. Confluent 전용 Connect SMT 플러그인들)
+  - **자바 jar파일로 제공되기 때문에, 기술적으로 Self Hosted(Apache Kafka)에서 호환될 수도 있으나, 라이센스 정책상 사용 금지**이기 때문
 
 ### `Confluent Community License`
 
