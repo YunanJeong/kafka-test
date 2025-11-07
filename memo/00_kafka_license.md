@@ -20,13 +20,14 @@
   - Apache Kafka를 그대로 포함하며 활용성을 높이기 위한 기능이 추가됨
 - 아파치 재단과 별개로 Confluent 사에서 제공하며, 독자 라이센스 정책 사용
 - "Confluent Platform"이라고 해서 꼭 유료 SaaS를 의미하는 것이 아니다. 배포판을 칭하는 것에 가깝다.
-  - 이를테면 Confluent Hub 웹사이트에서 제공하는 플러그인들은 각각 라이센스 및 지원환경 여부를 표기하는데 아래와 같다.
-  - Self Hosted: Apache Kafka를 로컬 설치
-  - Confluent Platform(Self-Managed): Confluent platform을 로컬설치
-  - Confluent Cloud(Full-Managed): Confluent SaaS
-- 특히, **Confluent Platform에서 무료 사용가능하면서, Self Hosted에서는 사용금지인 플러그인들이 있으니 주의**하자.
+  - 이를테면 Confluent Hub에서 제공하는 플러그인은 각 라이센스 및 지원환경을 표기하는데 주로 아래와 같이 분류한다.
+  - Self Hosted=> 로컬 설치된 Apache Kafka 환경
+  - Confluent Platform(Self-Managed)=> 로컬설치된 Confluent 환경
+  - Confluent Cloud(Full-Managed)=> Confluent SaaS
+- 특히, **Confluent Platform에서 무료 사용가능하면서, Self Hosted(Apache Kafka)에서는 사용불가인 플러그인들이 있으니 주의**하자.
   - (e.g. Confluent 전용 Connect SMT 플러그인들)
-  - **자바 jar파일로 제공되기 때문에, 기술적으로 Self Hosted(Apache Kafka)에서 호환될 수도 있으나, 라이센스 정책상 사용 금지**이기 때문
+  - 무료 사용가능한 자바 jar파일로 제공되므로, Self Hosted에 삽입하면 호환되지 않을까 생각이 들 수 있으나 시도하면 안 됨
+  - **Confluent Platform전용 jar파일이 기술적으로 Self Hosted(Apache Kafka)에서 호환될 수도 있으나, 라이센스 정책상 사용 금지**이기 때문!!(Confluent 활용 유도 목적)
 
 ### `Confluent Community License`
 
