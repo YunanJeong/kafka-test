@@ -1,6 +1,6 @@
-# kafka-test
+# PoC for Kafka deploy & initial Setup
 
-kafka-test
+Kafka configuration by installation type
 
 ## Tree
 
