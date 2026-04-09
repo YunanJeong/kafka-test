@@ -14,9 +14,7 @@ Kafka configuration by installation type
 ├── 6_confluent-community-package   # Set up kafka 1 node by Confluent Platform Community(deb)
 ├── 7_cclpkg-debezium-test          # Add debezium connector to "module 6" 
 ├── 8_legacy_kafka                  # Module For Old Kafka 1 node 
-├── LICENSE
 ├── README.md
-├── memo/                           # Tips for Kafka Operation
 ├── py-connect-examples             # Test connectors
 └── py-connect-util                 # Simple library to manage connectors
 
@@ -118,40 +116,3 @@ Kafka Record
   - 사용자가 추가적으로 데이터 분류시 사용할 헤더를 key-value 형태로 기입 가능
   - **key필드와 달리, Kafka 시스템은 headers를 데이터 분류에 사용하지 않음.** 단순히 추가 정보 작성할 수 있는 자리만 제공하는 것임.
 
-## 메모
-
-0. [Kafka 라이센스 정리](https://github.com/YunanJeong/kafka-test/blob/main/memo/00_kafka_license.md)
-
-1. [Kafka 설치, 실행, 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/01_kafka_install.md)
-
-2. [Kafka 메시지 관리 및 분석 방법 (kafkacat, jq, 쉘 명령어)](https://github.com/YunanJeong/kafka-test/blob/main/memo/02_kafkacat_and_jq.md)
-
-3. [Kafka Python Package 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/03_python_kafka_package.md)
-    - Python으로 Producer, Consumer 만들 때 사용가능한 라이브러리
-
-4. [topic의 offset, __consumer_offsets, connect-offsets](https://github.com/YunanJeong/kafka-test/blob/main/memo/04_offsets.md)
-    - 특히 Source Connector를 위한 connect_offsets 설명 위주
-
-5. [Kafka Timestamp 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/05_kafka_timestamp_management.md)
-
-6. [JDBC src connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/06_jdbc_src_time_options.md)
-
-7. [S3 sink connector 시간 관련 옵션](https://github.com/YunanJeong/kafka-test/blob/main/memo/07_s3_sink_time_options.md)
-
-8. [Kafka 복제도구: MirrorMaker1, MirrorMaker2, Replicator](https://github.com/YunanJeong/kafka-test/blob/main/memo/08_mirrormaker_replication.md)
-
-9. [Connect에서 Converter 종류](https://github.com/YunanJeong/kafka-test/blob/main/memo/09_connect_converter.md)
-
-10. [토픽튜닝할 것들(segment,retention 등)](https://github.com/YunanJeong/kafka-test/blob/main/memo/10_topic_settings.md)
-
-11. [토픽튜닝: partition](https://github.com/YunanJeong/kafka-test/blob/main/memo/11_topic_settings_partition.md)
-
-12. [토픽튜닝: replication](https://github.com/YunanJeong/kafka-test/blob/main/memo/12_topic_settings_replication.md)
-
-13. [Connect 설정](https://github.com/YunanJeong/kafka-test/blob/main/memo/13_connect_settings.md)
-
-14. [커넥터 등록, 업데이트, 삭제](https://github.com/YunanJeong/kafka-test/blob/main/memo/14_connector_control.md)
-
-15. [커넥터 SMT 예시](https://github.com/YunanJeong/kafka-test/blob/main/memo/15_connector_smt.md)
-
-16. [힙메모리 부족시 트러블슈팅](https://github.com/YunanJeong/kafka-test/blob/main/memo/16_heap_memory_troubleshoot.md)
