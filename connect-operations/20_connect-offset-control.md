@@ -14,12 +14,12 @@
 - connector config 정보 기반으로 모든 DB Table 커넥션 정보를 가져옴
 - 해당 모든 커넥션에 대해 MAX(id) 값 구하기
 
-## MAX(id)를 connect-offsets에 주입하기
+## MAX(id)를 connect-offsets에 주입하기?
 - connector list 추출
 - connect-offsets에서 현재 커넥터 이름과 매치되는 모든 key를 가져옴
 - 해당 key의 value로 MAX(id)값 주입하기
 
-
+## ===> 모든 대상, 테이블로부터 "특정 시간에 매치되는 id" 긁어오기
 
 
 
@@ -40,3 +40,11 @@ curl -s 'http://localhost:8083/connectors?expand=info' \
 # JDBC Source Connector만 추출
 cat /tmp/connector-list | grep "JdbcSourceConnector" 
 ```
+
+
+
+
+- 반드시 기존과 같은 partition에 주입해야됨(파티션을 명시하지않고 전송시 key가 동일하면 알아서 같은 곳으로 전송됨, 만약 명시필수인 도구를 쓰는 경우, 기존과 동일한 partition 넘버를 명시적 지정해주자)
+
+- offset key-value 주입시 공백없는 JSON 규격으로!
+
