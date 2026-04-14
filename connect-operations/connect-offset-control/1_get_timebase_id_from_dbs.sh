@@ -12,7 +12,7 @@ OUTPUT_FILE="$TEMP/id_list.csv"
 
 
 # 헤더 생성
-echo "connector_name,serverid,id,formatted_time,priority" > "$OUTPUT_FILE"
+echo "connector_name,db_name,table_name,serverid,id,formatted_time,priority" > "$OUTPUT_FILE"
 
 # JSON 파일을 한 줄씩 읽어서 처리
 while IFS= read -r line || [ -n "$line" ]; do
@@ -44,11 +44,14 @@ while IFS= read -r line || [ -n "$line" ]; do
     # SQL 쿼리 본체. time 기준으로 가장 가까운 id를 찾는 로직
     # null일시 테이블 내 가장 작은 id 반환.
     # 최종 id값에서 1 빼기(누락방지)
-    # 커넥터명과 매치를 위해 최종결과물에 커넥터명 넣기
+    # 커넥터명과 매치를 위해 최종결과물에 커넥터,DB,Table 이름 넣기
     # id만 인덱스, time은 인덱스 없으므로 쿼리 부하에 주의하여 작성
+    # 최종적으로 null일시, 해당 table에 데이터가 없는 것임
     QUERY="
 SELECT
     '$connector_name' AS connector_name,
+    '$db' AS db_name,
+    '$TABLE' AS table_name,
     res.serverid,
     IF(res.p = 1, res.id - 1, res.id) AS final_id,
     FROM_UNIXTIME(res.time),
