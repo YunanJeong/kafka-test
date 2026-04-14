@@ -1,4 +1,21 @@
 #!/bin/bash
+##############################
+# 1_get_timebase_id_from_dbs.sh
+#
+# 설명: con_list.json 파일의 각 DB에 접속하여 특정 시간 기준으로
+#       ID를 조회하고 결과를 id_list.csv에 저장합니다.
+#
+# 입력: tmp/con_list.json (커넥터 정보 JSON)
+# 출력: tmp/id_list.csv (connector_name,db_name,table_name,serverid,id,formatted_time,priority)
+#
+# 환경변수:
+#   TABLE       - 조회할 테이블명 (기본값: default_tablename)
+#   TARGET_TIME - 타겟 시간 Unix timestamp (기본값: 1767193200)
+#
+# 동작 원리:
+#   1. 타겟 시간 이후 첫 번째 행을 찾아 ID-1 반환 (누락 방지)
+#   2. 데이터가 없으면 전체 최대 ID 행 반환
+##############################
 
 TEMP='./tmp'
 
