@@ -59,8 +59,8 @@ while IFS= read -r line || [ -n "$line" ]; do
     echo "Querying: $connector_name ($host:$port / $db)..."
 
     # SQL 쿼리 본체. time 기준으로 가장 가까운 id를 찾는 로직
-    # null일시 테이블 내 가장 작은 id 반환.
-    # 최종 id값에서 1 빼기(누락방지)
+    # 특정시간 이후 가장 가까운 id 검색 후 1뺀다
+    # null일시 테이블 내 가장 큰 id 반환.(특정시간보다 미래의 데이터가 없으므로 전체(과거)데이터 중 최신을 고르는 것)
     # 커넥터명과 매치를 위해 최종결과물에 커넥터,DB,Table 이름 넣기
     # id만 인덱스, time은 인덱스 없으므로 쿼리 부하에 주의하여 작성
     # 최종적으로 null일시, 해당 table에 데이터가 없는 것임
