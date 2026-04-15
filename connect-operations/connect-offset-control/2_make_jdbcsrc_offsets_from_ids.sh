@@ -15,8 +15,8 @@
 
 TEMP='./tmp'
 
-INPUT_CSV="$TEMP/id_list.csv"
-OUTPUT_FILE="$TEMP/offsets_to_inject.txt"
+INPUT_CSV="$TEMP/${TABLE}_id_list.csv"
+OUTPUT_FILE="$TEMP/${TABLE}_offsets_to_inject.txt"
 
 # 출력 파일 초기화
 > "$OUTPUT_FILE"

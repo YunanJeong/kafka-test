@@ -25,7 +25,7 @@ TABLE="${TABLE:-default_tablename}"
 
 
 INPUT_FILE="$TEMP/con_list.json" # JSON 형식
-OUTPUT_FILE="$TEMP/id_list.csv"
+OUTPUT_FILE="$TEMP/${TABLE}_id_list.csv"
 
 
 # 헤더 생성
