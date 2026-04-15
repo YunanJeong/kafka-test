@@ -148,13 +148,13 @@ cat tmp/offsets_to_inject.txt
 
 ```bash
 # 파이프 사용
-cat tmp/offsets_to_inject.txt | kcat -b localhost:9092 -t connect-offsets -P -K $'\t' -Z
+cat tmp/offsets_to_inject.txt | kcat -b localhost:9092 -t connect-offsets -P -K '\t' -Z
 
 # 또는 -l 옵션으로 파일 직접 읽기
-kcat -b localhost:9092 -t connect-offsets -P -K $'\t' -l tmp/offsets_to_inject.txt
+kcat -b localhost:9092 -t connect-offsets -P -K '\t' -l tmp/offsets_to_inject.txt
 ```
 
-**주요 옵션:** `-P` Producer 모드, `-K $'\t'` Key 구분자(탭), `-Z` 전송 완료 대기, `-l` 파일 읽기
+**주요 옵션:** `-P` Producer 모드, `-K '\t'` Key 구분자(탭), `-Z` 전송 완료 대기, `-e` EOF시 즉시 종료, `-l` 파일 읽기
 
 #### 방법 2: kafka-console-producer 사용
 
