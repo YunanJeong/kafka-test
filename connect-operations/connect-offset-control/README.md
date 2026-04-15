@@ -140,10 +140,25 @@ cat tmp/offsets_to_inject.txt
 
 ### 오프셋 주입 방법
 
-생성된 `tmp/offsets_to_inject.txt` 파일을 Kafka Connect의 offset 토픽에 주입:
+생성된 `tmp/offsets_to_inject.txt` 파일을 Kafka Connect의 offset 토픽에 주입합니다.
+
+**⚠️ 주의:** Kafka Connect를 **중지한 상태**에서 오프셋을 주입해야 합니다.
+
+#### 방법 1: kcat 사용 (권장)
 
 ```bash
-# kafka-console-producer를 사용한 예시
+# 파이프 사용
+cat tmp/offsets_to_inject.txt | kcat -b localhost:9092 -t connect-offsets -P -K $'\t' -Z
+
+# 또는 -l 옵션으로 파일 직접 읽기
+kcat -b localhost:9092 -t connect-offsets -P -K $'\t' -l tmp/offsets_to_inject.txt
+```
+
+**주요 옵션:** `-P` Producer 모드, `-K $'\t'` Key 구분자(탭), `-Z` 전송 완료 대기, `-l` 파일 읽기
+
+#### 방법 2: kafka-console-producer 사용
+
+```bash
 cat tmp/offsets_to_inject.txt | \
   kafka-console-producer \
     --bootstrap-server localhost:9092 \
