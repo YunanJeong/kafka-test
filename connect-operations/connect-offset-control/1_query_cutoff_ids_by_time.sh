@@ -1,31 +1,32 @@
 #!/bin/bash
 ##############################
-# 1_get_timebase_id_from_dbs.sh
+# 1_query_cutoff_ids_by_time.sh
 #
-# 설명: con_list.json 파일의 각 DB에 접속하여 특정 시간 기준으로
-#       ID를 조회하고 결과를 id_list.csv에 저장합니다.
+# 설명: jdbc_src_connectors.jsonl의 각 DB에 접속하여 특정 시간 기준으로
+#       cutoff ID를 조회하고 결과를 cutoff_ids.csv에 저장합니다.
 #
-# 입력: tmp/con_list.json (커넥터 정보 JSON)
-# 출력: tmp/id_list.csv (connector_name,db_name,table_name,serverid,id,formatted_time,priority)
+# 입력: $TEMP/jdbc_src_connectors.jsonl (커넥터 정보 JSONL)
+# 출력: $TEMP/${TARGET_TABLE}_cutoff_ids.csv
 #
 # 환경변수:
-#   TABLE       - 조회할 테이블명 (기본값: default_tablename)
-#   TARGET_TIME - 타겟 시간 Unix timestamp (기본값: 1767193200)
+#   TEMP         - 중간 파일 경로 (기본값: /tmp)
+#   TARGET_TABLE - 조회할 테이블명 (기본값: sample)
+#   TARGET_TIME  - cutoff 기준 시간 Unix timestamp (기본값: 1767193200, 2026-01-01)
 #
 # 동작 원리:
 #   1. 타겟 시간 이후 첫 번째 행을 찾아 ID-1 반환 (누락 방지)
 #   2. 데이터가 없으면 전체 최대 ID 행 반환
 ##############################
 
-TEMP='./tmp'
+TEMP="${TEMP:-/tmp}"
 
 # --- 설정 구간 ---
-TARGET_TIME=1767193200   # 2026/01/01
-TABLE="${TABLE:-default_tablename}"
+TARGET_TIME="${TARGET_TIME:-1767193200}"   # 2026/01/01
+TARGET_TABLE="${TARGET_TABLE:-sample}"
 
 
-INPUT_FILE="$TEMP/con_list.json" # JSON 형식
-OUTPUT_FILE="$TEMP/${TABLE}_id_list.csv"
+INPUT_FILE="$TEMP/jdbc_src_connectors.jsonl"
+OUTPUT_FILE="$TEMP/${TARGET_TABLE}_cutoff_ids.csv"
 
 
 # 헤더 생성
@@ -68,7 +69,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 SELECT
     '$connector_name' AS connector_name,
     '$db' AS db_name,
-    '$TABLE' AS table_name,
+    '$TARGET_TABLE' AS table_name,
     res.serverid,
     IF(res.p = 1, res.id - 1, res.id) AS final_id,
     FROM_UNIXTIME(res.time),
@@ -77,7 +78,7 @@ FROM (
     (
       -- 1순위: 타겟 시간 직후 행 (최신 데이터부터 역순 스캔 유도)
       SELECT serverid, id, time, 1 AS p
-      FROM $TABLE
+      FROM $TARGET_TABLE
       WHERE time >= $TARGET_TIME
       ORDER BY time ASC, id ASC
       LIMIT 1
@@ -86,7 +87,7 @@ FROM (
     (
       -- 2순위: 1순위 부재 시 전체 최대 ID 행
       SELECT serverid, id, time, 2 AS p
-      FROM $TABLE
+      FROM $TARGET_TABLE
       ORDER BY id DESC
       LIMIT 1
     )

@@ -1,16 +1,12 @@
 #!/bin/bash
 ##############################
-# 0_get_connector_list.sh
+# 0_print_jdbc_src_connectors.sh
 #
 # 설명: Kafka Connect API에서 JDBC Source Connector 정보를 조회하여
-#       con_list.json 파일을 생성합니다.
+#       stdout으로 출력합니다. 리다이렉션으로 파일에 저장하세요.
 #
 # 입력: Kafka Connect REST API (http://localhost:8083/connectors)
-# 출력: tmp/con_list.json (JSON Lines 형식)
-#
-# 환경변수:
-#   DB_USER  - DB 사용자명 (기본값: default_user)
-#   DB_PASS  - DB 비밀번호 (기본값: default_password)
+# 출력: stdout (JSON Lines 형식)
 ##############################
 
 # 모든 JDBC Source 커넥터의 DB연결정보 추출하기
