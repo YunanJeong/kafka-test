@@ -1,3 +1,0 @@
-{"name":"my-connector-001","url":"jdbc:mysql://my-db-host-1.internal:3306/my_db_001?useUnicode=true&serverTimezone=Asia/Seoul&useCursorFetch=true&defaultFetchSize=250","catalog":"my_db_001","user":"default_user","password":"default_password"}
-{"name":"my-connector-002","url":"jdbc:mysql://my-db-host-2.internal:3306/my_db_002?useUnicode=true&serverTimezone=Asia/Seoul&useCursorFetch=true&defaultFetchSize=250","catalog":"my_db_002","user":"default_user","password":"default_password"}
-{"name":"my-connector-003","url":"jdbc:mysql://my-db-host-3.internal:3306/my_db_003?useUnicode=true&serverTimezone=Asia/Seoul&useCursorFetch=true&defaultFetchSize=250","catalog":"my_db_003","user":"default_user","password":"default_password"}

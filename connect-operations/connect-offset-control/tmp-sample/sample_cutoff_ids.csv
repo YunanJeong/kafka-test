@@ -1,4 +1,0 @@
-connector_name,db_name,table_name,serverid,id,formatted_time,priority
-my-connector-001,my_db_001,my_table,1,5496789430263982079,2025-01-01 00:00:00,1
-my-connector-002,my_db_002,my_table,2,5496789431622939647,2025-01-01 00:00:01,1
-my-connector-003,my_db_003,my_table,3,5496789431002185727,2025-01-01 00:00:02,1

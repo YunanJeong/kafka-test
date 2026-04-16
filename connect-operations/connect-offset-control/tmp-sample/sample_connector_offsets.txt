@@ -1,3 +1,0 @@
-["my-connector-001",{"protocol":"1","table":"my_db_001.my_table"}]	{"incrementing":5496789430263982079}
-["my-connector-002",{"protocol":"1","table":"my_db_002.my_table"}]	{"incrementing":5496789431622939647}
-["my-connector-003",{"protocol":"1","table":"my_db_003.my_table"}]	{"incrementing":5496789431002185727}
