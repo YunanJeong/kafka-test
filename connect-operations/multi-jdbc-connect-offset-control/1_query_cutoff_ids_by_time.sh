@@ -97,16 +97,16 @@ LIMIT 1;"
 
 
     # TEST 출력
-    echo " mysql -h\"$host\" -P\"$port\" -u\"$user\" -p\"$pw\" -D\"$db\" -N -s -e \"$QUERY\" 2>/dev/null | sed 's/\t/,/g' >> \"$OUTPUT_FILE\" "
+    # echo " mysql -h\"$host\" -P\"$port\" -u\"$user\" -p\"$pw\" -D\"$db\" -N -s -e \"$QUERY\" 2>/dev/null | sed 's/\t/,/g' >> \"$OUTPUT_FILE\" "
 
     # mysql 실행 (-P 옵션에 파싱된 port 적용)
-    # mysql -h"$host" -P"$port" -u"$user" -p"$pw" -D"$db" -N -s -e "$QUERY" 2>/dev/null | sed 's/\t/,/g' >> "$OUTPUT_FILE"
+    mysql -h"$host" -P"$port" -u"$user" -p"$pw" -D"$db" -N -s -e "$QUERY" 2>/dev/null | sed 's/\t/,/g' >> "$OUTPUT_FILE"
 
-    # if [ ${PIPESTATUS[0]} -eq 0 ]; then
-    #     echo "Done: $connector_name ($host)"
-    # else
-    #     echo "Fail: $connector_name ($host)" >&2
-    # fi
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        echo "Done: $connector_name ($host)"
+    else
+        echo "Fail: $connector_name ($host)" >&2
+    fi
 
 done < "$INPUT_FILE"
 
