@@ -14,3 +14,8 @@
 
 15. [커넥터 SMT 예시](./15_connector_smt.md)
 
+20. [커넥터 tasks.max값의 중요성](./20_connector_tasks_max.md)
+
+---
+
+- [다수 커넥터의 connect-offsets 조작하기(backfill작업)](./multi-jdbc-connect-offset-control/)
